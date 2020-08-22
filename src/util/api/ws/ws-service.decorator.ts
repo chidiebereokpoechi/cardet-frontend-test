@@ -1,9 +1,15 @@
+import { forEach } from 'lodash'
 import { ApiUtil } from '../api-util'
-import { subscriptionsMetaKey, WsEventSubscription } from './subscribe-message.decorator'
+import {
+  subscriptionsMetaKey,
+  WsEventSubscription,
+} from './subscribe-message.decorator'
 import { WsEventHandler } from './ws-event-handler'
 
-export const WsService = <T extends new (...args: any[]) => { handler: WsEventHandler } & any>(
-  namespace: string,
+export const WsService = <
+  T extends new (...args: any[]) => { handler: WsEventHandler } & any
+>(
+  namespace: string
 ) => {
   return (target: T) => {
     return class extends target {
@@ -14,8 +20,11 @@ export const WsService = <T extends new (...args: any[]) => { handler: WsEventHa
         const handler = new WsEventHandler(ApiUtil.getUrl(namespace))
         this.handler = handler
 
-        const keys: WsEventSubscription[] = Reflect.getOwnMetadata(subscriptionsMetaKey, target)
-        keys.forEach(({ event, handlerProperty }) => {
+        const keys: WsEventSubscription[] = Reflect.getOwnMetadata(
+          subscriptionsMetaKey,
+          target
+        )
+        forEach(keys, ({ event, handlerProperty }) => {
           this.handler.on(event, this[handlerProperty].bind(this))
         })
       }

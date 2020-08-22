@@ -1,6 +1,9 @@
+import { once } from 'lodash'
 import { observable } from 'mobx'
 import { switchMap, tap } from 'rxjs/operators'
 import { ApiUtil } from '../../util/api'
+import { roomState } from '../rooms'
+import { rootState } from '../root'
 import { User } from './user.entity'
 import { userService } from './user.service'
 
@@ -12,8 +15,8 @@ class UserState {
     this.start()
   }
 
-  public async fetchUser() {
-    userService.getProfile().subscribe({
+  public fetchUser() {
+    return userService.getProfile().subscribe({
       next: ({ data: user }) => {
         if (!user) {
           userService
@@ -29,6 +32,13 @@ class UserState {
         }
 
         this.user = user
+
+        if (!user.room_id) {
+          rootState.setReadyState(true)
+          return
+        }
+
+        roomState.getUserRoom()?.add(() => rootState.setReadyState(true))
       },
     })
   }
@@ -39,7 +49,7 @@ class UserState {
   }
 
   public static create() {
-    return new UserState()
+    return once(() => new UserState())()
   }
 }
 

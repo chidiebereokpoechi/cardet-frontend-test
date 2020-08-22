@@ -1,3 +1,5 @@
+import 'bootstrap/dist/css/bootstrap.css'
+import 'mobx-react-lite/batchingForReactDom'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import 'reflect-metadata'

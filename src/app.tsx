@@ -1,14 +1,15 @@
 import { observer } from 'mobx-react'
 import React from 'react'
 import { GameCanvas, GameRouter, Loader, Stylesheet } from './components'
-import { userState } from './modules/user/user.state'
+import { rootState } from './modules/root'
 
 export const App: React.FC = observer(() => {
-  const { user } = userState
+  const ready = rootState.ready
+
   return (
     <React.Fragment>
       <Stylesheet />
-      <GameCanvas>{user ? <GameRouter /> : <Loader />}</GameCanvas>
+      <GameCanvas>{ready ? <GameRouter /> : <Loader />}</GameCanvas>
     </React.Fragment>
   )
 })

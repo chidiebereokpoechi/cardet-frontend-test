@@ -1,6 +1,5 @@
 import io from 'socket.io-client'
-import { userState } from '../../../modules/user/user.state'
-import { WsApiResponse } from '../api-response'
+import { userState } from '../../../modules/user'
 
 export class WsEventHandler {
   private readonly _socket: SocketIOClient.Socket
@@ -15,7 +14,7 @@ export class WsEventHandler {
   public emit<D = never, R = never>(
     event: string,
     data?: D,
-    handler?: (data: WsApiResponse<R>) => any
+    handler?: (data: R) => any
   ) {
     if (handler) {
       this._socket.emit(event, data, handler)
@@ -25,10 +24,7 @@ export class WsEventHandler {
     this._socket.emit(event, data)
   }
 
-  public on<R = undefined>(
-    event: string,
-    handler: (data: WsApiResponse<R>) => any
-  ) {
+  public on<R = undefined>(event: string, handler: (data: R) => any) {
     this._socket.on(event, handler)
   }
 

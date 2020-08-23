@@ -4,9 +4,3 @@ export interface HttpApiResponse<ResponseType = never> {
   message: string
   status: number
 }
-
-export interface WsApiResponse<ResponseType = never> {
-  ok: boolean
-  data: ResponseType
-  message: string
-}

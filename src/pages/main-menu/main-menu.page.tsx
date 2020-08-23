@@ -4,12 +4,11 @@ import {
   MenuButtonList,
   MenuLinkButton,
   MenuPageWrapper,
-  UserPin,
 } from '../../components'
-import { User } from '../../modules/user'
 import { userState } from '../../modules/user/user.state'
 
 export const MainMenuPage = observer(() => {
+  // eslint-disable-next-line
   const { user } = userState
   return (
     <MenuPageWrapper>
@@ -31,9 +30,6 @@ export const MainMenuPage = observer(() => {
           </MenuButtonList>
         </div>
       </main>
-      <footer>
-        <UserPin {...(user as User)} />
-      </footer>
     </MenuPageWrapper>
   )
 })

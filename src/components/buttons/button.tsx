@@ -4,16 +4,16 @@ import styled from 'styled-components'
 
 const Wrapper = styled(motion.button)`
   display: flex;
-  background: white;
-  height: 2rem;
+  background: black;
+  height: 3rem;
   padding: 0 2rem;
   border: none;
   outline: none;
-  margin-right: 2rem;
-  color: black;
-  border-radius: 1rem;
+  color: white;
+  border-radius: 1.5rem;
   align-items: center;
   justify-content: center;
+  font-weight: bold;
 `
 
 type Props = HTMLMotionProps<'button'>

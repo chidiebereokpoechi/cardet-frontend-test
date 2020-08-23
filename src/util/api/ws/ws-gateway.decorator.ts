@@ -6,7 +6,7 @@ import {
 } from './subscribe-message.decorator'
 import { WsEventHandler } from './ws-event-handler'
 
-export const WsService = <
+export const WsGateway = <
   T extends new (...args: any[]) => { handler: WsEventHandler } & any
 >(
   namespace: string
@@ -24,6 +24,7 @@ export const WsService = <
           subscriptionsMetaKey,
           target
         )
+
         forEach(keys, ({ event, handlerProperty }) => {
           this.handler.on(event, this[handlerProperty].bind(this))
         })

@@ -1,4 +1,5 @@
 export * from './buttons'
 export * from './game'
+export * from './input'
 export * from './layout'
 export * from './misc'

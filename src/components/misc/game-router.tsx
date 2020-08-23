@@ -1,15 +1,16 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { JoinRoomPage, MainMenuPage, PlayOptionsPage } from '../../pages'
+import { Route, Router, Switch } from 'react-router-dom'
+import { JoinRoomPage, MainMenuPage, PlayPage } from '../../pages'
+import { app_history } from '../../util/app-history'
 
 export const GameRouter = () => {
   return (
-    <BrowserRouter>
+    <Router history={app_history}>
       <Switch>
         <Route exact path="/" component={MainMenuPage} />
-        <Route exact path="/play" component={PlayOptionsPage} />
+        <Route exact path="/play" component={PlayPage} />
         <Route exact path="/play/join-room" component={JoinRoomPage} />
       </Switch>
-    </BrowserRouter>
+    </Router>
   )
 }

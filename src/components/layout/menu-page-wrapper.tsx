@@ -7,19 +7,21 @@ export const MenuPageWrapper = styled.div`
 
   header {
     padding: 2rem;
-    font-size: 3rem;
-    font-weight: 600;
+    font-size: 2.5rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
   }
 
   main {
     flex: 1;
-    padding: 2rem;
+    padding: 0 2rem;
     display: flex;
   }
 
   footer {
+    display: flex;
     padding: 2rem;
+    justify-content: center;
   }
 `

@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { User } from '../../modules/user'
 
 const Wrapper = styled.div`
   display: inline-grid;
@@ -16,13 +15,15 @@ const Wrapper = styled.div`
 `
 
 const PictureCircle = styled.div`
-  background: #1a1c1f;
+  background: #f8c94f;
   height: 2rem;
   width: 2rem;
   border-radius: 100%;
 `
 
-type Props = User
+interface Props {
+  name: string
+}
 
 export const UserPin: React.FC<Props> = ({ name }) => {
   return (

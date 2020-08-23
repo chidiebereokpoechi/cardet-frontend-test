@@ -20,6 +20,7 @@ function setDimensions() {
 
 setDimensions()
 window.addEventListener('resize', setDimensions)
+document.addEventListener('DOMContentLoaded', setDimensions)
 
 export const Stylesheet = createGlobalStyle`
   :root {
@@ -29,6 +30,8 @@ export const Stylesheet = createGlobalStyle`
 
   * {
     box-sizing: border-box;
+    outline: none;
+    user-select: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -37,7 +40,6 @@ export const Stylesheet = createGlobalStyle`
     padding: 0;
     margin: 0;
     font-size: 16px;
-    color: white;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 400;
   }
@@ -46,7 +48,19 @@ export const Stylesheet = createGlobalStyle`
     font-weight: 500;
   }
 
-  a {
-    text-decoration: none;
+  a, a:hover, a:focus, a:active {
+    text-decoration: none !important;
+    color: inherit;
+  }
+
+  code {
+    font-size: inherit;
+    background: #dde0e2;
+    padding: .25rem .75rem;
+    border-radius: .25rem;
+    color: inherit;
+    cursor: default;
+    font-weight: inherit;
+    user-select: text;
   }
 `

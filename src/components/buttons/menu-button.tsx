@@ -8,7 +8,6 @@ const Wrapper = styled(motion.button)`
   border: none;
   outline: none;
   display: inline-flex;
-  color: white;
   width: 100%;
   padding: 0;
   margin: 0;

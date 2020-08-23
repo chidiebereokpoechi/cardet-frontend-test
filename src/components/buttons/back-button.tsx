@@ -5,13 +5,13 @@ import styled from 'styled-components'
 
 const Button = styled(Link)`
   display: flex;
-  background: white;
+  background: black;
   height: 2rem;
   width: 3rem;
   border: none;
   outline: none;
   margin-right: 2rem;
-  color: black;
+  color: white;
   border-radius: 1rem;
   align-items: center;
   justify-content: center;

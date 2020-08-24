@@ -2,6 +2,7 @@ import { once } from 'lodash'
 import { action, observable } from 'mobx'
 import { switchMap, tap } from 'rxjs/operators'
 import { ApiUtil } from '../../util/api'
+import { gameManagerState } from '../game'
 import { roomState } from '../rooms'
 import { rootState } from '../root'
 import { User } from './user.entity'
@@ -16,7 +17,7 @@ class UserState {
   }
 
   @action
-  public getRoom() {
+  public initialFetch = once(() => {
     roomState.connectGateway()
 
     if (!this.user?.room_id) {
@@ -24,8 +25,13 @@ class UserState {
       return
     }
 
-    roomState.getUserRoom()?.add(() => rootState.setReadyState(true))
-  }
+    roomState.getUserRoom()?.add(this.fetchGameState)
+  })
+
+  @action
+  public fetchGameState = once(() => {
+    gameManagerState.getGameState()?.add(() => rootState.setReadyState(true))
+  })
 
   @action
   public fetchUser() {
@@ -37,7 +43,7 @@ class UserState {
             .pipe(
               tap(({ data }) => {
                 this.user = data
-                this.getRoom()
+                this.initialFetch()
               }),
               switchMap(({ data }) => userService.authenticate(data)),
               tap(({ data }) => ApiUtil.setToken(data.access_token))
@@ -48,7 +54,7 @@ class UserState {
         }
 
         this.user = user
-        this.getRoom()
+        this.initialFetch()
       },
     })
   }
@@ -58,9 +64,7 @@ class UserState {
     this.fetchUser()
   }
 
-  public static create() {
-    return once(() => new UserState())()
-  }
+  public static create = once(() => new UserState())
 }
 
 export const userState = UserState.create()

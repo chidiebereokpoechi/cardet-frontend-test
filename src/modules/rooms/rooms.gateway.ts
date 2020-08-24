@@ -1,4 +1,5 @@
 import { SubscribeMessage, WsEventHandler, WsGateway } from '../../util/api'
+import { gameManagerState } from '../game'
 import { User, userState } from '../user'
 import { Room } from './room.entity'
 import { roomState } from './room.state'
@@ -17,6 +18,18 @@ export class RoomsGateway {
     roomState.removeUser(user)
   }
 
+  @SubscribeMessage('started-game')
+  @SubscribeMessage('ended-game')
+  public refreshGame() {
+    gameManagerState.getGameState()
+  }
+
+  @SubscribeMessage('played')
+  public played(user: User) {
+    console.log({ user })
+    gameManagerState.getGameState()
+  }
+
   public joinRoom(room_id: string) {
     const user = userState.user as User
     this.handler.emit('join-room', { room_id, user })
@@ -26,5 +39,23 @@ export class RoomsGateway {
     const user = userState.user as User
     const room = roomState.room as Room
     this.handler.emit('leave-room', { room_id: room.id, user })
+  }
+
+  public startGame() {
+    const user = userState.user as User
+    const room = roomState.room as Room
+    this.handler.emit('start-game', { room_id: room.id, user })
+  }
+
+  public endGame() {
+    const user = userState.user as User
+    const room = roomState.room as Room
+    this.handler.emit('end-game', { room_id: room.id, user })
+  }
+
+  public play() {
+    const user = userState.user as User
+    const room = roomState.room as Room
+    this.handler.emit('play', { room_id: room.id, user })
   }
 }

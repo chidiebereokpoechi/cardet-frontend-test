@@ -6,7 +6,7 @@ export const MenuPageWrapper = styled.div`
   height: 100%;
 
   header {
-    padding: 2rem;
+    padding: 2.5rem;
     font-size: 2.5rem;
     font-weight: 700;
     display: flex;
@@ -15,13 +15,18 @@ export const MenuPageWrapper = styled.div`
 
   main {
     flex: 1;
-    padding: 0 2rem;
+    padding: 0 2.5rem;
     display: flex;
+    flex-direction: column;
   }
 
   footer {
     display: flex;
-    padding: 2rem;
+    padding: 2.5rem;
     justify-content: center;
+
+    > * + * {
+      margin-left: 1rem;
+    }
   }
 `

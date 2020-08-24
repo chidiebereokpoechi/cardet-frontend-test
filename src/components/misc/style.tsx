@@ -30,7 +30,7 @@ export const Stylesheet = createGlobalStyle`
 
   * {
     box-sizing: border-box;
-    outline: none;
+    outline: none !important;
     user-select: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

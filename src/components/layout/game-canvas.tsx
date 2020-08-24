@@ -8,5 +8,4 @@ export const GameCanvas = styled.div`
   position: relative;
   overflow: hidden;
   color: #34383c;
-  padding: 1rem;
 `

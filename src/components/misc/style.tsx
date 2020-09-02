@@ -4,6 +4,12 @@ let vh = '100vh'
 let vw = '100vw'
 
 function setDimensions() {
+  if (/((dar)?win)|(linux)|(mac)/gi.test(navigator.platform)) {
+    vh = '640px'
+    vw = '360px'
+    return
+  }
+
   const h =
     window.innerHeight ||
     document.documentElement.clientHeight ||

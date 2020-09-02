@@ -10,7 +10,6 @@ const Wrapper = styled.div`
   .name-section {
     display: flex;
     align-items: center;
-    padding-right: 3rem;
   }
 `
 

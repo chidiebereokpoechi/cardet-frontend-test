@@ -140,7 +140,6 @@ export class Game implements GameState {
 
   @action
   public update(state: GameState) {
-    console.log('Update was called')
     this.clearSelection()
     this.play_count = state.play_count
     this.current_player_index = state.current_player_index

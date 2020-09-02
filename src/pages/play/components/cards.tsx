@@ -2,6 +2,7 @@ import { motion, MotionProps, Variants } from 'framer-motion'
 import { findIndex, includes, random } from 'lodash'
 import { observer } from 'mobx-react'
 import React from 'react'
+import { Shield, Slash, Wind } from 'react-feather'
 import styled from 'styled-components'
 import {
   Card,
@@ -10,16 +11,6 @@ import {
   Game,
   gameManagerState,
 } from '../../../modules/game'
-
-const getRandomRotation = () => ({
-  style: {
-    transform: `translate(${random(-1, 1, true)}px, ${random(
-      -1,
-      1,
-      true
-    )}px) rotate(${random(-2, 2)}deg)`,
-  } as MotionProps,
-})
 
 export const FacedDownCard = styled(motion.div)`
   background: linear-gradient(45deg, #080808, #363d44);
@@ -30,7 +21,7 @@ export const FacedDownCard = styled(motion.div)`
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
 `
 
-const CardComponent = styled(motion.div).attrs(getRandomRotation)`
+export const DumbCard = styled(motion.div)`
   background: white;
   border: 3px solid rgb(255 255 255 / 48%);
   height: 4.5rem;
@@ -76,10 +67,11 @@ interface Props {
   card: Card
   index?: number
   onClick?: () => any
+  dragConstraints?: MotionProps['dragConstraints']
 }
 
 export const PlayingCard: React.FC<Props> = observer(
-  ({ card, index, onClick }) => {
+  ({ card, index, onClick, dragConstraints }) => {
     const { type, value } = card
     const game = gameManagerState.game as Game
 
@@ -124,11 +116,11 @@ export const PlayingCard: React.FC<Props> = observer(
         case CardValue.PICK_THREE:
           return '+3'
         case CardValue.GENERAL_MARKET:
-          return 'J'
+          return <Wind />
         case CardValue.BLOCK:
-          return 'B'
+          return <Shield />
         case CardValue.FREEZE:
-          return 'F'
+          return <Slash />
         default:
           return value
       }
@@ -139,19 +131,19 @@ export const PlayingCard: React.FC<Props> = observer(
         not_turn: {
           zIndex: 0,
           filter: 'brightness(0.5)',
-          scale: 0.75,
+          scale: 1,
           y: 0,
         },
         unplayable: {
           zIndex: 0,
           filter: 'brightness(0.4)',
-          scale: 0.8,
+          scale: 1,
           y: 0,
         },
         playable: {
           zIndex: 0,
           filter: 'brightness(1)',
-          scale: 0.9,
+          scale: 1.1,
           margin: 0,
           y: 0,
         },
@@ -159,6 +151,7 @@ export const PlayingCard: React.FC<Props> = observer(
           zIndex: selected !== false ? selected + 1 : 1,
           filter: 'brightness(1)',
           scale: 1.125,
+          opacity: 1,
           y: -10,
         },
       }),
@@ -191,22 +184,30 @@ export const PlayingCard: React.FC<Props> = observer(
     }, [game, index, playable])
 
     return (
-      <CardComponent
-        style={{
-          background: `var(--${background})`,
-        }}
+      <DumbCard
+        transition={{ duration: 0.1 }}
         initial={{
+          background: `var(--${background})`,
           rotate: random(-2, 2),
+          opacity: 1,
+          zIndex: 0,
+        }}
+        exit={{
+          y: -200,
+          opacity: 0,
         }}
         animate={variant}
         variants={variants}
         onClick={onClick ?? toggleCard}
       >
         {selected !== false && <span className="order">{selected + 1}</span>}
-        <motion.span initial={{ y: 5 }} className="value">
+        <motion.span
+          initial={{ y: typeof display === 'number' ? 5 : 0 }}
+          className="value"
+        >
           {display}
         </motion.span>
-      </CardComponent>
+      </DumbCard>
     )
   }
 )

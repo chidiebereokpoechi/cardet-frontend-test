@@ -11,6 +11,8 @@ export const GamePageWrapper = styled.div`
   header {
     padding: 1rem;
     display: flex;
+    width: 100%;
+    /* position: absolute; */
   }
 
   main {
@@ -37,11 +39,6 @@ export const GamePageWrapper = styled.div`
     > * + * {
       margin-left: 2rem;
     }
-  }
-
-  .self-area {
-    background: #0e4a34;
-    padding: 2rem;
   }
 
   .room-code {

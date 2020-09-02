@@ -89,7 +89,6 @@ class GameManagerState {
     const room = roomState.room as Room
     return gameManagerService.endGame(room.game_manager_id).subscribe({
       next: (response) => {
-        console.log(response)
         if (response.ok) {
           this.game = null
           roomState.gateway.endGame()

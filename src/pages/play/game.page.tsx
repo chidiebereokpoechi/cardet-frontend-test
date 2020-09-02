@@ -5,7 +5,7 @@ import { Menu, X } from 'react-feather'
 import { CircleButton, GamePageWrapper } from '../../components'
 import { Game, gameManagerState } from '../../modules/game'
 import { app_history } from '../../util/app-history'
-import { FacedDownCard, PlayerDeck, PlayingCard } from './components'
+import { FacedDownCard, PlayerDeck, PlayingCard, SelfArea } from './components'
 
 export const GamePage = observer(() => {
   const game = gameManagerState.game as Game
@@ -15,12 +15,11 @@ export const GamePage = observer(() => {
   }, [])
 
   React.useEffect(() => {
-    console.log({ ismyturn: game.is_my_turn })
     const unblock = app_history.block(
       'Are you sure you want to exit the current game'
     )
     return () => unblock()
-  }, [game.is_my_turn])
+  }, [])
 
   return (
     <GamePageWrapper>
@@ -38,6 +37,7 @@ export const GamePage = observer(() => {
             <PlayerDeck
               name={player.name}
               cards_count={player.cards_count}
+              player_id={player.id}
               key={player.id}
             />
           ))}
@@ -53,12 +53,7 @@ export const GamePage = observer(() => {
             onClick={() => gameManagerState.play()}
           />
         </div>
-        <div className="self-area">
-          {game.is_my_turn && (
-            <div className="d-flex justify-content w-100">
-              <b>It is your turn</b>
-            </div>
-          )}
+        {/* <div className="self-area">
           <div
             style={{
               display: 'grid',
@@ -75,7 +70,8 @@ export const GamePage = observer(() => {
               <PlayingCard card={card} key={index} index={index} />
             ))}
           </div>
-        </div>
+        </div> */}
+        <SelfArea />
       </main>
       <footer></footer>
     </GamePageWrapper>

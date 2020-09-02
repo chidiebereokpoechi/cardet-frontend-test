@@ -26,7 +26,6 @@ export class RoomsGateway {
 
   @SubscribeMessage('played')
   public played(user: User) {
-    console.log({ user })
     gameManagerState.getGameState()
   }
 

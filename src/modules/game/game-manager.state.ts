@@ -52,6 +52,7 @@ class GameManagerState {
     const room = roomState.room as Room
     const game = this.game as Game
     if (!game.is_my_turn) return
+    if (game.selected_indices.length === 0) return
     return gameManagerService
       .play(room.game_manager_id, { indices: game.selected_indices })
       .subscribe({

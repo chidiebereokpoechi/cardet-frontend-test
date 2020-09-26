@@ -1,5 +1,6 @@
 import {
   concat,
+  differenceBy,
   filter,
   find,
   first,
@@ -8,13 +9,17 @@ import {
   inRange,
   last,
   map,
+  slice,
+  sortBy,
   without,
 } from 'lodash'
 import { action, computed, observable } from 'mobx'
 import { User, userState } from '../user'
-import { Card } from './card'
+import { Card, IndexedCard } from './card'
 import { GameState } from './game-state.entity'
 import { Player } from './player.entity'
+
+const NUMBER_OF_CENTER_CARDS = 5
 
 export class Game implements GameState {
   @observable
@@ -34,6 +39,9 @@ export class Game implements GameState {
 
   @observable
   public cards: Card[]
+
+  @observable
+  public indexed_cards: IndexedCard[]
 
   @observable
   public playable_cards_indices: number[]
@@ -65,6 +73,11 @@ export class Game implements GameState {
   }
 
   @computed
+  public get center_cards() {
+    return slice(this.played_cards, -1 * NUMBER_OF_CENTER_CARDS)
+  }
+
+  @computed
   public get center_card() {
     return last(this.played_cards) as Card
   }
@@ -84,7 +97,7 @@ export class Game implements GameState {
   public get playable_cards(): Card[] {
     if (this.selected_indices.length > 0) {
       return filter(this.cards, (card) =>
-        Card.canStack([...this.selected_cards, card])
+        Card.canStack([...this.selected_cards, card]),
       )
     }
 
@@ -107,6 +120,7 @@ export class Game implements GameState {
     this.current_player_index = state.current_player_index
     this.played_cards = state.played_cards
     this.cards = state.cards
+    this.indexed_cards = Game.getIndexedCards(this.cards)
     this.playable_cards_indices = state.playable_cards_indices
     this.selected_indices = []
     this.market_count = state.market_count
@@ -134,22 +148,58 @@ export class Game implements GameState {
   }
 
   @action
+  public sortCards(by: keyof Card) {
+    this.indexed_cards = sortBy(this.indexed_cards, ({ card }) => card[by])
+  }
+
+  @action
   public clearSelection() {
     this.selected_indices = []
   }
 
   @action
   public update(state: GameState) {
+    if (this.play_count === state.play_count) {
+      return this
+    }
+
+    if (this.cards.length !== state.cards.length) {
+      this.cards = map(state.cards, (card) => {
+        return find(this.cards, card) ?? card
+      })
+
+      const all_indexed = Game.getIndexedCards(this.cards)
+      const extra_cards = differenceBy(
+        all_indexed,
+        this.indexed_cards,
+        'card.id',
+      )
+
+      const indexed_without_played = filter(
+        this.indexed_cards,
+        ({ card }) => !!find(this.cards, card),
+      )
+
+      this.indexed_cards = indexed_without_played.concat(extra_cards)
+
+      forEach(this.indexed_cards, (card) => {
+        const { index } = find(all_indexed, { card: card.card }) as IndexedCard
+        card.index = index
+      })
+    }
+
     this.clearSelection()
-    this.play_count = state.play_count
     this.current_player_index = state.current_player_index
     this.players = state.players
     this.played_cards = state.played_cards
-    this.cards = state.cards
     this.playable_cards_indices = state.playable_cards_indices
     this.market_count = state.market_count
     this.game_over = state.game_over
     return this
+  }
+
+  public static getIndexedCards(cards: Card[]): IndexedCard[] {
+    return map(cards, (card, index) => ({ card, index }))
   }
 
   public static create(state: GameState) {

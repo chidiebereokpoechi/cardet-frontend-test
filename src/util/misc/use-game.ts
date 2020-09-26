@@ -2,5 +2,5 @@ import { Game, gameManagerState } from '../../modules/game'
 
 export const useGame = () => {
   const game = gameManagerState.game as Game
-  return game
+  return { manager: gameManagerState, game }
 }

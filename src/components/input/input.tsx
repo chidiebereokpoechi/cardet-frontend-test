@@ -9,6 +9,7 @@ export const Input = styled.input`
   text-align: center;
   font-size: 1.5rem;
   color: inherit;
+  user-select: text;
 
   ::placeholder {
     color: inherit;

@@ -32,6 +32,8 @@ export const Stylesheet = createGlobalStyle`
   :root {
     --vh: ${vh};
     --vw: ${vw};
+    --card-height: 60px;
+    --card-width: 45px;
   }
 
   * {

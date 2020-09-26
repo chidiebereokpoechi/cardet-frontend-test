@@ -7,14 +7,14 @@ export class WsEventHandler {
   constructor(url: string) {
     this._socket = io(url, {
       query: { user_id: userState.user?.id },
-      transports: ['websocket'],
+      transports: ['websocket', 'polling'],
     })
   }
 
   public emit<D = never, R = never>(
     event: string,
     data?: D,
-    handler?: (data: R) => any
+    handler?: (data: R) => any,
   ) {
     if (handler) {
       this._socket.emit(event, data, handler)

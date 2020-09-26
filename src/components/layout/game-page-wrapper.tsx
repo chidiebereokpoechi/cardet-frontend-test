@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const GamePageWrapper = styled.div`
-  background: #0f523d;
+  background: #142025;
   height: 100%;
   width: 100%;
   color: #fbffff;
@@ -29,6 +29,17 @@ export const GamePageWrapper = styled.div`
     gap: 1rem;
   }
 
+  .player-name {
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+  }
+
+  .active .player-name {
+    color: var(--green);
+    text-shadow: 0 0 5px var(--green);
+  }
+
   .center-area {
     position: absolute;
     left: 50%;
@@ -36,8 +47,9 @@ export const GamePageWrapper = styled.div`
     transform: translate(-50%, -50%);
     display: flex;
 
-    > * + * {
-      margin-left: 2rem;
+    .center-card {
+      width: var(--card-width);
+      margin-left: 20px;
     }
   }
 

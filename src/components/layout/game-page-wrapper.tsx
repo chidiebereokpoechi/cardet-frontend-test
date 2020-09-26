@@ -29,17 +29,6 @@ export const GamePageWrapper = styled.div`
     gap: 1rem;
   }
 
-  .player-name {
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-  }
-
-  .active .player-name {
-    color: var(--green);
-    text-shadow: 0 0 5px var(--green);
-  }
-
   .center-area {
     position: absolute;
     left: 50%;

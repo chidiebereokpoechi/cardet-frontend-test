@@ -31,7 +31,12 @@ class GameManagerState {
   public pick() {
     const room = roomState.room as Room
     const game = this.game as Game
+
     if (!game.is_my_turn) return
+    if (game.selected_indices.length !== 0) {
+      return game.clearSelection()
+    }
+
     return gameManagerService.pick(room.game_manager_id).subscribe({
       next: (response) => {
         if (response.data) {
@@ -51,8 +56,10 @@ class GameManagerState {
   public play() {
     const room = roomState.room as Room
     const game = this.game as Game
+
     if (!game.is_my_turn) return
     if (game.selected_indices.length === 0) return
+
     return gameManagerService
       .play(room.game_manager_id, { indices: game.selected_indices })
       .subscribe({
@@ -74,6 +81,7 @@ class GameManagerState {
   public startGame() {
     if (this.game) return
     const room = roomState.room as Room
+
     return gameManagerService.startGame(room.game_manager_id).subscribe({
       next: (response) => {
         if (response.data) {
@@ -88,6 +96,7 @@ class GameManagerState {
   public endGame() {
     if (!this.game) return
     const room = roomState.room as Room
+
     return gameManagerService.endGame(room.game_manager_id).subscribe({
       next: (response) => {
         if (response.ok) {

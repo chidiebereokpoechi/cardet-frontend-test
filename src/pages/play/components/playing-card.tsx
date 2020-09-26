@@ -20,10 +20,6 @@ const Wrapper = styled(motion.div)`
   justify-content: center;
   letter-spacing: 1px;
 
-  &.dumb {
-    background: linear-gradient(45deg, #080808, #363d44);
-  }
-
   .order {
     position: absolute;
     top: -10px;
@@ -62,7 +58,7 @@ interface Props {
 export const PlayingCard = observer(
   ({ id, type, value, onClick, selected }: Props) => {
     const background = useMemo(() => {
-      if (type === undefined) return '#201e1f'
+      if (type === undefined) return ['#080808', '#363d44'] // Grey
 
       switch (type) {
         case CardType.ALPHA:
@@ -78,7 +74,7 @@ export const PlayingCard = observer(
         case CardType.FOXTROT:
           return ['#3f326d', '#3c209e'] // Purple
         case CardType.ANY:
-          return 'var(--gray)'
+          return ['#080808', '#363d44'] // Grey
       }
     }, [type])
 
@@ -105,7 +101,6 @@ export const PlayingCard = observer(
 
     return (
       <Wrapper
-        className={!value ? 'dumb' : ''}
         initial={{
           opacity: 1,
           zIndex: 0,

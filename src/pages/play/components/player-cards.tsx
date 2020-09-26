@@ -4,10 +4,10 @@ import { observer } from 'mobx-react'
 import React from 'react'
 import styled from 'styled-components'
 import { PlayingCard } from '.'
-import { IndexedCard } from '../../../modules/game'
+import { IndexedCard, Player } from '../../../modules/game'
 import { userState } from '../../../modules/user'
 import { useGame } from '../../../util'
-import { Crown } from './crown'
+import { PlayerNameTag } from './player-name-tag'
 
 const Wrapper = styled.div`
   /* background: rgba(0, 0, 0, 0.15); */
@@ -27,13 +27,8 @@ const Wrapper = styled.div`
   }
 
   .card-wrapper {
-    margin-left: -10px;
+    margin-left: -5px;
     margin-top: -20px;
-  }
-
-  .player-name {
-    font-size: 80%;
-    font-weight: bold;
   }
 
   footer {
@@ -84,7 +79,7 @@ const CardWrapper: React.FC<IndexedCard> = observer(({ card, index }) => {
         filter: 'brightness(1)',
         scale: 1,
         y: 0,
-        marginLeft: -10,
+        marginLeft: -5,
         marginRight: 0,
       },
       selected: {
@@ -93,7 +88,7 @@ const CardWrapper: React.FC<IndexedCard> = observer(({ card, index }) => {
         scale: 1.075,
         y: -10,
         marginLeft: 0,
-        marginRight: 10,
+        marginRight: 5,
       },
     }),
     [selected],
@@ -135,13 +130,14 @@ const CardWrapper: React.FC<IndexedCard> = observer(({ card, index }) => {
 
 export const PlayerCards: React.FC = observer(() => {
   const { game } = useGame()
+  const active = game.is_my_turn && !game.game_over
 
   return (
-    <Wrapper className={'self-area' + (game.is_my_turn ? ' active' : '')}>
-      <div className="player-name">
-        {game.is_my_turn && <Crown />}
-        <span>{userState.user?.name}</span>
-      </div>
+    <Wrapper className={'self-area' + (active ? ' active' : '')}>
+      <PlayerNameTag
+        name={userState.user?.name as string}
+        id={userState.user?.id as Player['id']}
+      />
       <div className="cards">
         {game.indexed_cards.map(({ card, index }) => (
           <CardWrapper key={index} card={card} index={index} />

@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import React from 'react'
 import { GiLaurelCrown } from 'react-icons/gi'
 
-export const Crown: React.FC = () => {
+export const TurnCrown: React.FC = () => {
   return (
     <motion.div
       layoutId="turn-crown"

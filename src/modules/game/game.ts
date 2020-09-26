@@ -55,6 +55,9 @@ export class Game implements GameState {
   @observable
   public game_over: boolean
 
+  @observable
+  public game_winner: Player | null
+
   @computed
   public get self() {
     const user = userState.user as User
@@ -125,6 +128,7 @@ export class Game implements GameState {
     this.selected_indices = []
     this.market_count = state.market_count
     this.game_over = state.game_over
+    this.game_winner = state.game_winner
   }
 
   @action
@@ -195,6 +199,7 @@ export class Game implements GameState {
     this.playable_cards_indices = state.playable_cards_indices
     this.market_count = state.market_count
     this.game_over = state.game_over
+    this.game_winner = state.game_winner
     return this
   }
 

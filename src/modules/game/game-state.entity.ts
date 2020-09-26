@@ -11,4 +11,5 @@ export interface GameState {
   playable_cards_indices: number[]
   market_count: number
   game_over: boolean
+  game_winner: Player | null
 }

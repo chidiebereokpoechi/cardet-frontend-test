@@ -4,7 +4,7 @@ import styled from 'styled-components'
 const Wrapper = styled.div`
   display: inline-grid;
   grid-template-columns: 2rem 1fr;
-  width: 18rem;
+  width: 100%;
   gap: 1rem;
 
   .name-section {

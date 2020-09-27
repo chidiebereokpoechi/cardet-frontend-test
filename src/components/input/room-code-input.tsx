@@ -79,6 +79,7 @@ const InputWrapper = styled(motion.div)`
     opacity: 0;
     height: 100%;
     width: 100%;
+    user-select: text;
   }
 
   :focus-within {

@@ -15,8 +15,8 @@ function setDimensions() {
     document.body.clientWidth
 
   if (/((dar)?win)|(linux)|(mac)/gi.test(navigator.platform) && h > 768) {
-    vh = '640px'
-    vw = '360px'
+    vh = '800px'
+    vw = '400px'
     return
   }
 
@@ -34,6 +34,7 @@ export const Stylesheet = createGlobalStyle`
     --vw: ${vw};
     --card-height: 60px;
     --card-width: 45px;
+    --color: white;
   }
 
   * {
@@ -58,7 +59,7 @@ export const Stylesheet = createGlobalStyle`
 
   a, a:hover, a:focus, a:active {
     text-decoration: none !important;
-    color: inherit !important;
+    color: var(--color) !important;
   }
 
   code {

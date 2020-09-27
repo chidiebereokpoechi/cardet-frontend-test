@@ -4,12 +4,12 @@ import styled from 'styled-components'
 
 const Wrapper = styled(motion.button)`
   display: flex;
-  background: black;
+  background: white;
   height: 3rem;
   padding: 0 2rem;
   border: none;
   outline: none;
-  color: white;
+  color: black;
   border-radius: 1.5rem;
   align-items: center;
   justify-content: center;

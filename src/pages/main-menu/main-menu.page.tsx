@@ -21,12 +21,12 @@ export const MainMenuPage = observer(() => {
             <MenuLinkButton color="#4D8275" to="/play">
               Play
             </MenuLinkButton>
-            <MenuLinkButton color="#744D82" to="/room">
+            {/* <MenuLinkButton color="#744D82" to="/room">
               Rules
             </MenuLinkButton>
             <MenuLinkButton color="#4D5F82" to="/profile">
               Profile
-            </MenuLinkButton>
+            </MenuLinkButton> */}
           </MenuButtonList>
         </div>
       </main>

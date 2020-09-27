@@ -1,5 +1,6 @@
 export * from './center-cards'
 export * from './crowns'
+export * from './play-menu'
 export * from './player-cards'
 export * from './player-list'
 export * from './player-name-tag'

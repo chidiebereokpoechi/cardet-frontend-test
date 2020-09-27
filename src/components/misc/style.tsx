@@ -58,7 +58,7 @@ export const Stylesheet = createGlobalStyle`
 
   a, a:hover, a:focus, a:active {
     text-decoration: none !important;
-    color: inherit;
+    color: inherit !important;
   }
 
   code {
@@ -66,7 +66,7 @@ export const Stylesheet = createGlobalStyle`
     background: #dde0e2;
     padding: .25rem .75rem;
     border-radius: .25rem;
-    color: inherit;
+    color: black;
     cursor: default;
     font-weight: inherit;
     user-select: text;

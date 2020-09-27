@@ -19,6 +19,7 @@ const Wrapper = styled(motion.div)`
   align-items: center;
   justify-content: center;
   letter-spacing: 1px;
+  cursor: pointer;
 
   .order {
     position: absolute;
@@ -127,5 +128,5 @@ export const PlayingCard = observer(
         )}
       </Wrapper>
     )
-  },
+  }
 )

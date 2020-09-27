@@ -1,8 +1,13 @@
-import { Field, Formik } from 'formik'
+import { Formik } from 'formik'
 import { observer } from 'mobx-react'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { BackButton, Button, Input, MenuPageWrapper } from '../../components'
+import {
+  BackButton,
+  Button,
+  MenuPageWrapper,
+  RoomCodeInput,
+} from '../../components'
 import { roomState } from '../../modules/rooms'
 
 interface JoinRoomModel {
@@ -19,6 +24,7 @@ export const JoinRoomPage = observer(() => {
 
   const validate = React.useCallback((values: JoinRoomModel) => {
     if (values.room_id.length !== 4) {
+      console.log(values)
       return { room_id: 'Incorrect room id format' }
     }
 
@@ -44,7 +50,7 @@ export const JoinRoomPage = observer(() => {
           >
             {({ handleSubmit, isValid }) => (
               <form onSubmit={handleSubmit}>
-                <Field name="room_id" placeholder="Room id" as={Input} />
+                <RoomCodeInput />
                 <div className="d-flex justify-content-center mt-5">
                   <Button type="submit" disabled={!isValid}>
                     <span>Join room</span>

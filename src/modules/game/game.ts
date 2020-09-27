@@ -100,7 +100,7 @@ export class Game implements GameState {
   public get playable_cards(): Card[] {
     if (this.selected_indices.length > 0) {
       return filter(this.cards, (card) =>
-        Card.canStack([...this.selected_cards, card]),
+        Card.canStack([...this.selected_cards, card])
       )
     }
 
@@ -167,6 +167,8 @@ export class Game implements GameState {
       return this
     }
 
+    this.play_count = state.play_count
+
     if (this.cards.length !== state.cards.length) {
       this.cards = map(state.cards, (card) => {
         return find(this.cards, card) ?? card
@@ -176,12 +178,12 @@ export class Game implements GameState {
       const extra_cards = differenceBy(
         all_indexed,
         this.indexed_cards,
-        'card.id',
+        'card.id'
       )
 
       const indexed_without_played = filter(
         this.indexed_cards,
-        ({ card }) => !!find(this.cards, card),
+        ({ card }) => !!find(this.cards, card)
       )
 
       this.indexed_cards = indexed_without_played.concat(extra_cards)

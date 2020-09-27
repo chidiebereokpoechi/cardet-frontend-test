@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { PlayingCard } from '.'
 import { IndexedCard, Player } from '../../../modules/game'
 import { userState } from '../../../modules/user'
-import { useGame } from '../../../util'
+import { sound_manager, useGame } from '../../../util'
 import { PlayerNameTag } from './player-name-tag'
 
 const Wrapper = styled.div`
@@ -47,17 +47,18 @@ const CardWrapper: React.FC<IndexedCard> = observer(({ card, index }) => {
       includes(game.selected_indices, index)
         ? findIndex(game.selected_indices, (_) => _ === index)
         : undefined,
-    [game.selected_indices, index],
+    [game.selected_indices, index]
   )
 
   const playable = React.useMemo(
     () => (!card ? false : includes(game.playable_cards, card)),
-    [game.playable_cards, card],
+    [game.playable_cards, card]
   )
 
   const toggleCard = React.useCallback(() => {
     if (playable) {
       game.toggleCard(index as number)
+      sound_manager.selectCard()
       return
     }
 
@@ -71,27 +72,21 @@ const CardWrapper: React.FC<IndexedCard> = observer(({ card, index }) => {
         filter: 'brightness(0.35)',
         scale: 1,
         y: 0,
-        marginLeft: -10,
-        marginRight: 0,
       },
       playable: {
         zIndex: 0,
         filter: 'brightness(1)',
         scale: 1,
         y: 0,
-        marginLeft: -5,
-        marginRight: 0,
       },
       selected: {
         zIndex: selected !== undefined ? selected + 1 : 1,
         filter: 'brightness(1)',
         scale: 1.075,
         y: -10,
-        marginLeft: 0,
-        marginRight: 5,
       },
     }),
-    [selected],
+    [selected]
   )
 
   const variant = React.useMemo(() => {

@@ -9,7 +9,7 @@ export const GamePageWrapper = styled.div`
   flex-direction: column;
 
   header {
-    padding: 1rem;
+    padding: 1rem 2rem;
     display: flex;
     width: 100%;
     /* position: absolute; */

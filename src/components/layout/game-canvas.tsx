@@ -5,7 +5,9 @@ export const GameCanvas = styled.div`
   width: var(--vw);
   background: white;
   background: linear-gradient(#f1f9ff, #eaeaea);
+  background: #142025;
   position: relative;
   overflow: hidden;
   color: #34383c;
+  color: white;
 `

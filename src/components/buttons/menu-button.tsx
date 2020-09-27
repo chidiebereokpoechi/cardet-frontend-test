@@ -1,6 +1,7 @@
 import { HTMLMotionProps, motion } from 'framer-motion'
 import React from 'react'
 import styled from 'styled-components'
+import { CircleButton } from './circle-button'
 
 const Wrapper = styled(motion.button)`
   background: transparent;
@@ -8,6 +9,7 @@ const Wrapper = styled(motion.button)`
   border: none;
   outline: none;
   display: inline-flex;
+  color: inherit;
   width: 100%;
   padding: 0;
   margin: 0;
@@ -20,31 +22,28 @@ const Wrapper = styled(motion.button)`
     align-items: center;
     justify-content: flex-start;
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: 700;
   }
-`
-
-const Circle = styled.div`
-  height: 3rem;
-  width: 3rem;
-  border-radius: 100%;
-  background: white;
 `
 
 type Props = HTMLMotionProps<'button'> & {
   color?: string
+  icon?: React.ComponentType
 }
 
 export const MenuButton: React.FC<Props> = ({
   children,
   color: _color,
+  icon: Icon,
   ...props
 }) => {
-  const backgroundColor = _color ?? 'white'
+  const backgroundColor = _color
 
   return (
     <Wrapper {...props}>
-      <Circle style={{ backgroundColor }} />
+      <CircleButton style={{ backgroundColor }} as={motion.div}>
+        {Icon && <Icon />}
+      </CircleButton>
       <div className="body">{children}</div>
     </Wrapper>
   )

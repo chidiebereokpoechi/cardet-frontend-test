@@ -3,15 +3,19 @@ import styled from 'styled-components'
 export const Input = styled.input`
   height: 4rem;
   width: 100%;
-  background: linear-gradient(#f1f8fe, #f2f8fb);
-  border: 1px solid #cad4de;
+  border-radius: 2rem;
+  background: #252f33;
+  border: none;
   font-weight: bold;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 2rem;
   color: inherit;
+  letter-spacing: 5px;
+  text-transform: uppercase;
   user-select: text;
 
   ::placeholder {
-    color: inherit;
+    color: #cad4de;
+    letter-spacing: unset;
   }
 `

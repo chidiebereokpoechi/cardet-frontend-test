@@ -5,6 +5,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Blinker = styled(motion.div)`
+  --blue: #a0d5ff;
   background: var(--blue);
   height: 1.75rem;
   width: 0.25rem;
@@ -38,9 +39,13 @@ const BoxWrapper = styled(motion.div)`
   text-transform: uppercase;
   transition: 0.2s;
 
+  span {
+    transform: translateY(5px);
+  }
+
   &.filled {
-    background: white;
-    color: black;
+    background: #919799;
+    color: #2c3b42;
   }
 `
 
@@ -71,6 +76,16 @@ const InputWrapper = styled(motion.div)`
   grid-template-columns: repeat(${ROOM_CODE_LENGTH}, 1fr);
   gap: 1rem;
   border-radius: 1rem;
+  place-items: center;
+  place-content: center;
+
+  .message {
+    font-weight: 700;
+    color: #a0d5ff;
+    font-size: 1rem;
+    grid-column: span 4;
+    text-align: center;
+  }
 
   .input {
     position: absolute;
@@ -90,15 +105,29 @@ const InputWrapper = styled(motion.div)`
 `
 
 export const RoomCodeInput = () => {
-  const [field] = useField({ name: ROOM_CODE_FIELD_NAME })
+  const [field, meta, helpers] = useField({ name: ROOM_CODE_FIELD_NAME })
   return (
     <div>
-      <span className="d-flex mb-3">Enter the room code below</span>
+      <span className="d-flex mb-3 text-align-center">
+        Enter the room code below
+      </span>
       <InputWrapper>
-        <input className="input" {...field} maxLength={ROOM_CODE_LENGTH} />
+        <input
+          className="input"
+          maxLength={ROOM_CODE_LENGTH}
+          onInput={(e) => {
+            const value = e.currentTarget.value.slice(0, 4)
+            helpers.setValue(value)
+          }}
+        />
         {range(0, ROOM_CODE_LENGTH).map((index) => (
           <InputBox value={field.value} index={index} key={index} />
         ))}
+        {meta.error && (
+          <motion.span layoutId="" className="d-flex mt-3 message">
+            {meta.error}
+          </motion.span>
+        )}
       </InputWrapper>
     </div>
   )

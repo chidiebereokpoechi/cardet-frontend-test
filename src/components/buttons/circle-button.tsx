@@ -12,4 +12,5 @@ export const CircleButton = styled(motion.button)`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `

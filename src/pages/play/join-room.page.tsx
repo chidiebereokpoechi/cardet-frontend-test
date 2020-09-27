@@ -24,8 +24,7 @@ export const JoinRoomPage = observer(() => {
 
   const validate = React.useCallback((values: JoinRoomModel) => {
     if (values.room_id.length !== 4) {
-      console.log(values)
-      return { room_id: 'Incorrect room id format' }
+      return { room_id: 'Room ID has format XXXX' }
     }
 
     return {}

@@ -14,6 +14,7 @@ const Wrapper = styled(motion.button)`
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  cursor: pointer;
 `
 
 type Props = HTMLMotionProps<'button'>

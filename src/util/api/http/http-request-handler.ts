@@ -1,6 +1,6 @@
 import { of } from 'rxjs'
 import { ajax, AjaxError } from 'rxjs/ajax'
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, map } from 'rxjs/operators'
 import { HttpApiResponse } from '../api-response'
 import { ApiUtil } from '../api-util'
 import { HttpRequest } from './http-request'
@@ -10,9 +10,6 @@ export class HttpRequestHandler {
     args: HttpRequest<RequestType>,
   ) {
     return ajax(ApiUtil.getRequest(args)).pipe(
-      tap((response) => {
-        console.log(response)
-      }),
       catchError((error) => {
         if (error instanceof AjaxError && error.response) {
           console.log(error.response)

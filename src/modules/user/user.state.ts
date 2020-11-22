@@ -5,6 +5,7 @@ import { ApiUtil } from '../../util/api'
 import { gameManagerState } from '../game'
 import { roomState } from '../rooms'
 import { rootState } from '../root'
+import { UpdateUserModel } from './models'
 import { User } from './user.entity'
 import { userService } from './user.service'
 
@@ -46,7 +47,7 @@ class UserState {
                 this.initialFetch()
               }),
               switchMap(({ data }) => userService.authenticate(data)),
-              tap(({ data }) => ApiUtil.setToken(data.access_token))
+              tap(({ data }) => ApiUtil.setToken(data.access_token)),
             )
             .subscribe()
 
@@ -55,6 +56,17 @@ class UserState {
 
         this.user = user
         this.initialFetch()
+      },
+    })
+  }
+
+  @action
+  public updateUser(model: UpdateUserModel) {
+    return userService.update(model).subscribe({
+      next: (response) => {
+        if (response.data) {
+          this.user = response.data
+        }
       },
     })
   }

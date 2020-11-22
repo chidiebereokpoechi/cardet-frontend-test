@@ -44,7 +44,10 @@ const Wrapper = styled(motion.div)`
     display: flex;
     font-weight: 700;
     flex-direction: column;
-    font-size: 130%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
   }
 `
 
@@ -79,24 +82,27 @@ export const PlayingCard = observer(
       }
     }, [type])
 
-    const display = React.useMemo(() => {
-      if (value === undefined) return ''
+    const display: (
+      | [string | number]
+      | [string | number, number]
+    )[] = React.useMemo(() => {
+      if (value === undefined) return [['']]
 
       switch (value) {
         case CardValue.ANY:
-          return '?'
+          return [['?'], ['Any', 6]]
         case CardValue.PICK_TWO:
-          return '+2'
+          return [['+2'], ['Pick', 6]]
         case CardValue.PICK_THREE:
-          return '+3'
+          return [['+3'], ['Pick', 6]]
         case CardValue.GENERAL_MARKET:
-          return 'J'
+          return [['G'], ['Gen', 6]]
         case CardValue.BLOCK:
-          return 'B'
+          return [['B'], ['Block', 6]]
         case CardValue.FREEZE:
-          return 'F'
+          return [['F'], ['Freeze', 6]]
         default:
-          return value
+          return [[value], ['Card', 6]]
       }
     }, [value])
 
@@ -119,14 +125,15 @@ export const PlayingCard = observer(
           <span className="order">{selected + 1}</span>
         )}
         {value !== undefined && (
-          <motion.span
-            initial={{ y: typeof value === 'number' ? 5 : 0 }}
-            className="value"
-          >
-            {display}
-          </motion.span>
+          <div className="value">
+            {display.map(([displayValue, fontSize], i) => (
+              <motion.span key={i} initial={{ fontSize: fontSize ?? 20 }}>
+                {displayValue}
+              </motion.span>
+            ))}
+          </div>
         )}
       </Wrapper>
     )
-  }
+  },
 )

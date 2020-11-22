@@ -1,7 +1,7 @@
 export class UpdateUserModel {
   public name: string
 
-  private constructor(name: string) {
+  constructor(name: string) {
     this.name = name
   }
 }

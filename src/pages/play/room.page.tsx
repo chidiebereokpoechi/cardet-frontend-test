@@ -46,8 +46,8 @@ export const RoomPage = observer(() => {
         </div>
       </main>
       <footer>
-        <Button onClick={() => leaveRoom()}>Leave</Button>
-        <Button onClick={() => startGame()}>Start</Button>
+        <Button onClick={leaveRoom}>Leave</Button>
+        <Button onClick={startGame}>Start</Button>
       </footer>
     </MenuPageWrapper>
   )

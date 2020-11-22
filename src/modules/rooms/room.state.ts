@@ -1,4 +1,4 @@
-import { once, remove } from 'lodash'
+import { find, once, remove } from 'lodash'
 import { action, observable } from 'mobx'
 import { User, userState } from '../user'
 import { Room } from './room.entity'
@@ -19,7 +19,8 @@ class RoomState {
 
   @action
   public addUser(user: User) {
-    this.room?.members.push(user)
+    if (!find(this.room?.members, { id: user.id }))
+      this.room?.members.push(user)
   }
 
   @action

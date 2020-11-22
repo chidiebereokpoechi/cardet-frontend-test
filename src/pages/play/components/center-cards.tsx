@@ -33,6 +33,10 @@ const Wrapper = styled.div`
 const CardWrapper: React.FC<Card> = observer((card) => {
   const { manager, game } = useGame()
 
+  const play = React.useCallback(() => {
+    if (!game.game_over) manager.play()
+  }, [game.game_over, manager])
+
   return (
     <motion.div
       className="card-wrapper"
@@ -40,28 +44,25 @@ const CardWrapper: React.FC<Card> = observer((card) => {
         rotate: random(-15, 15),
       }}
     >
-      <PlayingCard
-        key={card.id}
-        {...card}
-        onClick={game.game_over ? undefined : () => manager.play()}
-      />
+      <PlayingCard key={card.id} {...card} onClick={play} />
     </motion.div>
   )
 })
 
 export const CenterCards: React.FC = observer(() => {
-  const {
-    game: { center_cards: cards, game_over },
-    manager,
-  } = useGame()
+  const { game, manager } = useGame()
+
+  const pick = React.useCallback(() => {
+    if (!game.game_over) manager.pick()
+  }, [game.game_over, manager])
 
   return (
     <Wrapper className="center-area">
       <div className="market">
-        <PlayingCard onClick={game_over ? undefined : () => manager.pick()} />
+        <PlayingCard onClick={pick} />
       </div>
       <div className="center-cards" ref={rootState.center_card}>
-        {cards.map((card) => (
+        {game.center_cards.map((card) => (
           <CardWrapper key={card.id} {...card} />
         ))}
       </div>

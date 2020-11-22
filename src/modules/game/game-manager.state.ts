@@ -15,7 +15,11 @@ class GameManagerState {
 
   public has_responded: Record<number, boolean> = {}
 
-  private constructor() {}
+  private constructor() {
+    setInterval(() => {
+      this.getGameState()
+    }, 5000)
+  }
 
   public respond(state: GameState) {
     const game = this.game
@@ -59,7 +63,8 @@ class GameManagerState {
 
   @action
   public getGameState() {
-    const room = roomState.room as Room
+    const room = roomState.room
+    if (!room) return
     return gameManagerService.getGameState(room.game_manager_id).subscribe({
       next: (response) => {
         if (response.data) {

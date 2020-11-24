@@ -21,6 +21,8 @@ class UserState {
   public initialFetch = once(() => {
     roomState.connectGateway()
 
+    console.log({ ...this.user })
+
     if (!this.user?.room_id) {
       rootState.setReadyState(true)
       return
@@ -35,27 +37,36 @@ class UserState {
   })
 
   @action
+  public createUser() {
+    userService
+      .create()
+      .pipe(
+        tap(({ data }) => {
+          this.user = data
+          this.initialFetch()
+        }),
+        switchMap(({ data }) => userService.authenticate(data)),
+        tap(({ data }) => ApiUtil.setToken(data.access_token)),
+      )
+      .subscribe()
+
+    return
+  }
+
+  @action
   public fetchUser() {
     return userService.getProfile().subscribe({
       next: ({ data: user }) => {
         if (!user) {
-          userService
-            .create()
-            .pipe(
-              tap(({ data }) => {
-                this.user = data
-                this.initialFetch()
-              }),
-              switchMap(({ data }) => userService.authenticate(data)),
-              tap(({ data }) => ApiUtil.setToken(data.access_token)),
-            )
-            .subscribe()
-
+          this.createUser()
           return
         }
 
         this.user = user
         this.initialFetch()
+      },
+      error: () => {
+        this.createUser()
       },
     })
   }

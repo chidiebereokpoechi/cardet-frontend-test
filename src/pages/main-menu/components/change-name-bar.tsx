@@ -27,6 +27,7 @@ const StyledForm = styled.form`
     padding: 0.5rem 1rem;
     color: white;
     font-weight: bold;
+    user-select: text;
   }
 
   .submit-button:not(:disabled) {

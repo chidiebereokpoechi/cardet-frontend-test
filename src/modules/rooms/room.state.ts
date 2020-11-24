@@ -37,7 +37,10 @@ class RoomState {
       next: (response) => {
         if (response.ok) {
           this.room = response.data
+          return
         }
+
+        this.room = null
       },
     })
   }

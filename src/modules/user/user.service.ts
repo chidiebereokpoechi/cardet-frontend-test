@@ -13,7 +13,7 @@ class UserService {
   }
 
   public create() {
-    return HttpClient.post<never, User>('users')
+    return HttpClient.post<never, User>('users', undefined, false)
   }
 
   public retrieve() {
@@ -23,7 +23,8 @@ class UserService {
   public update(model: UpdateUserModel) {
     return HttpClient.patch<UpdateUserModel, User>(
       `users/${userState.user?.id}`,
-      model
+      model,
+      false,
     )
   }
 }

@@ -10,24 +10,37 @@ class GameManagerService {
   public play(id: string, model: PlayModel) {
     return HttpClient.post<PlayModel, GameState>(
       `game-managers/${id}/play`,
-      model
+      model,
+      false,
     )
   }
 
   public pick(id: string) {
-    return HttpClient.post<never, GameState>(`game-managers/${id}/pick`)
+    return HttpClient.post<never, GameState>(
+      `game-managers/${id}/pick`,
+      undefined,
+      false,
+    )
   }
 
   public sort(id: string) {
-    return HttpClient.post<never, GameState>(`game-managers/${id}/sort`)
+    return HttpClient.post<never, GameState>(
+      `game-managers/${id}/sort`,
+      undefined,
+      false,
+    )
   }
 
   public startGame(id: string) {
-    return HttpClient.post<never, GameState>(`game-managers/${id}`)
+    return HttpClient.post<never, GameState>(
+      `game-managers/${id}`,
+      undefined,
+      false,
+    )
   }
 
   public endGame(id: string) {
-    return HttpClient.delete<GameState>(`game-managers/${id}`)
+    return HttpClient.delete<GameState>(`game-managers/${id}`, false)
   }
 }
 

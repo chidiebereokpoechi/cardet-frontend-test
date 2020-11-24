@@ -1,10 +1,13 @@
 import { once } from 'lodash'
 import { action, observable } from 'mobx'
+import { Subscription } from 'rxjs'
 import { sound_manager } from '../../util'
 import { Room, roomState } from '../rooms'
 import { Game } from './game'
 import { gameManagerService } from './game-manager.service'
 import { GameState } from './game-state.entity'
+
+let sub: Subscription | null = null
 
 class GameManagerState {
   @observable
@@ -13,11 +16,17 @@ class GameManagerState {
   @observable
   public menu_open = false
 
-  public has_responded: Record<number, boolean> = {}
+  @observable
+  public loading_game = false
+
+  @observable
+  public loading_move = false
+
+  public last_responded_count = 0
 
   private constructor() {
     setInterval(() => {
-      this.getGameState()
+      if (!sub || sub?.closed) this.getGameState()
     }, 5000)
   }
 
@@ -28,12 +37,12 @@ class GameManagerState {
       return
     }
 
-    if (this.has_responded[state.play_count]) {
+    if (this.last_responded_count >= state.play_count) {
       return
     }
 
     const pick_count = state.cards.length - game.cards.length
-    this.has_responded[state.play_count] = true
+    this.last_responded_count = state.play_count
 
     if (pick_count === 1) {
       sound_manager.pickCards()
@@ -65,7 +74,10 @@ class GameManagerState {
   public getGameState() {
     const room = roomState.room
     if (!room) return
-    return gameManagerService.getGameState(room.game_manager_id).subscribe({
+
+    sub?.unsubscribe()
+
+    sub = gameManagerService.getGameState(room.game_manager_id).subscribe({
       next: (response) => {
         if (response.data) {
           this.respond(response.data)
@@ -78,6 +90,8 @@ class GameManagerState {
         this.game = null
       },
     })
+
+    return sub
   }
 
   @action

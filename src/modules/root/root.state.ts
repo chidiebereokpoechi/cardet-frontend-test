@@ -23,8 +23,6 @@ class RootState {
       //   const { left, right } = this.center_card.current.getBoundingClientRect()
       //   console.log({ left, right })
       // }
-
-      console.log(this.loading)
     })
   }
 

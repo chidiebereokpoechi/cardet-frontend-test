@@ -1,3 +1,4 @@
+import { motion, MotionProps } from 'framer-motion'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -11,7 +12,7 @@ const Wrapper = styled.div`
   width: 100%;
 `
 
-const OverflowWrapper = styled(Wrapper)`
+const OverflowWrapper = styled(Wrapper)<MotionProps>`
   background: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   z-index: 9999;
@@ -32,9 +33,14 @@ export const Loader = () => {
 
 export const LoaderOverlay = () => {
   return (
-    <OverflowWrapper>
-      <div className="spinner-border spinner-border-sm" role="status">
-        <span className="sr-only">Loading...</span>
+    <OverflowWrapper
+      as={motion.div}
+      initial={{ opacity: 0 }}
+      transition={{ duration: 1.25, delay: 0.25 }}
+      animate={{ opacity: 1 }}
+    >
+      <div className="spinner-border spinner-border-xl" role="status">
+        <h1 className="sr-only">Loading...</h1>
       </div>
     </OverflowWrapper>
   )

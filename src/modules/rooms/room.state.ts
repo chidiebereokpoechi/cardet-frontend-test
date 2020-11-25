@@ -35,7 +35,7 @@ class RoomState {
     if (!userState.user?.room_id) return
     return roomsService.getCurrentRoom().subscribe({
       next: (response) => {
-        if (response.ok) {
+        if (response.data) {
           this.room = response.data
           return
         }
@@ -50,7 +50,7 @@ class RoomState {
     if (this.room) return
     return roomsService.createRoom().subscribe({
       next: (response) => {
-        if (response.ok) {
+        if (response.data) {
           this.room = response.data
           this.gateway.joinRoom(response.data.id)
         }
@@ -63,7 +63,7 @@ class RoomState {
     if (this.room) return
     return roomsService.joinRoom(room_id).subscribe({
       next: (response) => {
-        if (response.ok) {
+        if (response.data) {
           this.room = response.data
           this.gateway.joinRoom(response.data.id)
         }

@@ -9,11 +9,13 @@ import {
   PlayPage,
 } from '../../pages'
 import { app_history } from '../../util/app-history'
+import { PingMeter } from '../layout'
 import { LoaderOverlay } from './loader'
 
 export const GameRouter = observer(() => {
   return (
     <React.Fragment>
+      <PingMeter />
       {rootState.loading && <LoaderOverlay />}
       <Router history={app_history}>
         <Switch>

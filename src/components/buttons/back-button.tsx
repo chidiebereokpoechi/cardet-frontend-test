@@ -11,7 +11,8 @@ const Button = styled(Link)`
   border: none;
   outline: none;
   margin-right: 2rem;
-  color: black !important;
+  --color: black;
+  color: var(--color);
   border-radius: 1rem;
   align-items: center;
   justify-content: center;

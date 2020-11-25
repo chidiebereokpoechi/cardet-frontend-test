@@ -1,4 +1,4 @@
-import { Field, Formik } from 'formik'
+import { ErrorMessage, Field, Formik } from 'formik'
 import React from 'react'
 import { RiArrowRightCircleFill } from 'react-icons/ri'
 import styled from 'styled-components'
@@ -7,6 +7,12 @@ import { UpdateUserModel } from '../../../modules/user/models'
 interface Props {
   name: string
   changeName: (model: UpdateUserModel) => void
+}
+
+enum NameValidationErrors {
+  TOO_SHORT = 'Too short',
+  TOO_LONG = 'Too long',
+  IDENTICAL = 'Identical',
 }
 
 const StyledForm = styled.form`
@@ -39,19 +45,17 @@ const StyledForm = styled.form`
 export const ChangeNameBar: React.FC<Props> = ({ name, changeName }) => {
   const validate = React.useCallback(
     (model: UpdateUserModel) => {
+      let error: string | null = null
+
       if (name === model.name) {
-        return { name: 'Names are identical' }
+        error = NameValidationErrors.IDENTICAL
+      } else if (model.name.length < 2) {
+        error = NameValidationErrors.TOO_SHORT
+      } else if (model.name.length > 15) {
+        error = NameValidationErrors.TOO_LONG
       }
 
-      if (model.name.length < 3) {
-        return { name: 'Name is too short' }
-      }
-
-      if (model.name.length > 10) {
-        return { name: 'Name is too long' }
-      }
-
-      return {}
+      return error ? { name: error } : {}
     },
     [name],
   )
@@ -60,15 +64,24 @@ export const ChangeNameBar: React.FC<Props> = ({ name, changeName }) => {
     <React.Fragment>
       <Formik
         enableReinitialize
-        initialErrors={{ name: 'Names are identical' }}
+        initialErrors={{ name: NameValidationErrors.IDENTICAL }}
         validate={validate}
         validateOnChange
         validateOnMount
         initialValues={new UpdateUserModel(name)}
         onSubmit={changeName}
       >
-        {({ handleSubmit, isValid }) => (
+        {({ handleSubmit, isValid, values, errors }) => (
           <React.Fragment>
+            <b style={{ width: '100%', marginBottom: 10, fontSize: '.75rem' }}>
+              {!errors?.name || values.name === name ? (
+                <span>
+                  {values.name === name ? 'Your current name' : 'Perfect!'}
+                </span>
+              ) : (
+                <span className="danger">{errors.name}</span>
+              )}
+            </b>
             <StyledForm onSubmit={handleSubmit}>
               <Field className="name-input" name="name" />
               <button

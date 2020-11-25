@@ -25,7 +25,7 @@ export const MainMenuPage = observer(() => {
   return (
     <MenuPageWrapper>
       <header className="flex-column">
-        <span>Cardet Cards</span>
+        <span className="mb-2">Cardet Cards</span>
         <ChangeNameBar name={user.name} changeName={changeName} />
       </header>
       <main>

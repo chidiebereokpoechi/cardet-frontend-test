@@ -9,7 +9,8 @@ const Wrapper = styled(motion.button)`
   padding: 0 2rem;
   border: none;
   outline: none;
-  color: black;
+  --color: black;
+  color: var(--color);
   border-radius: 1.5rem;
   align-items: center;
   justify-content: center;

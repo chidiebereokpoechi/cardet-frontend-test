@@ -9,7 +9,7 @@ import { WsEventHandler } from './ws-event-handler'
 export const WsGateway = <
   T extends new (...args: any[]) => { handler: WsEventHandler } & any
 >(
-  namespace: string
+  namespace: string,
 ) => {
   return (target: T) => {
     return class extends target {
@@ -17,12 +17,13 @@ export const WsGateway = <
 
       constructor(...args: any[]) {
         super()
+        console.log(`New websocket handler being created for '${namespace}'`)
         const handler = new WsEventHandler(ApiUtil.getUrl(namespace))
         this.handler = handler
 
         const keys: WsEventSubscription[] = Reflect.getOwnMetadata(
           subscriptionsMetaKey,
-          target
+          target,
         )
 
         forEach(keys, ({ event, handlerProperty }) => {

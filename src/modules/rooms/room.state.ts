@@ -1,6 +1,7 @@
 import { find, once, remove } from 'lodash'
 import { action, observable } from 'mobx'
 import { User, userState } from '../user'
+import { Message } from './message'
 import { Room } from './room.entity'
 import { RoomsGateway } from './rooms.gateway'
 import { roomsService } from './rooms.service'
@@ -11,6 +12,9 @@ class RoomState {
   @observable
   public room: Room | null = null
 
+  @observable
+  public messages_pane_open?: boolean
+
   private constructor() {}
 
   public connectGateway() {
@@ -18,9 +22,26 @@ class RoomState {
   }
 
   @action
+  public setMessagesPaneOpen(open: boolean) {
+    this.messages_pane_open = open
+  }
+
+  @action
   public addUser(user: User) {
     if (!find(this.room?.members, { id: user.id }))
       this.room?.members.push(user)
+  }
+
+  @action
+  public addMessage(message: Message) {
+    this.room?.messages.push(message)
+  }
+
+  @action
+  public createMessage(message: string) {
+    const user = userState.user as User
+    this.addMessage({ user, message })
+    return this.gateway.createMessage(message)
   }
 
   @action
@@ -31,16 +52,22 @@ class RoomState {
   }
 
   @action
-  public getUserRoom() {
-    if (!userState.user?.room_id) return
+  public getUserRoom(callback?: () => void) {
+    if (!userState.user?.room_id) {
+      callback?.()
+      return
+    }
+
     return roomsService.getCurrentRoom().subscribe({
       next: (response) => {
         if (response.data) {
           this.room = response.data
-          return
+          this.room.messages = []
+        } else {
+          this.room = null
         }
 
-        this.room = null
+        callback?.()
       },
     })
   }
@@ -52,6 +79,7 @@ class RoomState {
       next: (response) => {
         if (response.data) {
           this.room = response.data
+          this.room.messages = []
           this.gateway.joinRoom(response.data.id)
         }
       },
@@ -65,6 +93,7 @@ class RoomState {
       next: (response) => {
         if (response.data) {
           this.room = response.data
+          this.room.messages = []
           this.gateway.joinRoom(response.data.id)
         }
       },

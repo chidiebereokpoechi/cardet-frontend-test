@@ -65,11 +65,13 @@ export const Stylesheet = createGlobalStyle`
   code {
     font-size: inherit;
     background: #dde0e2;
-    padding: .25rem .75rem;
+    padding: 1rem 2rem;
     border-radius: .25rem;
     color: black;
     cursor: default;
-    font-weight: inherit;
+    font-weight: bold;
+    font-family: inherit;
     user-select: text;
+    letter-spacing: .5rem;
   }
 `

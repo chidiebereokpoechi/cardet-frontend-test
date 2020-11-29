@@ -10,6 +10,7 @@ const Wrapper = styled.div`
   .name-section {
     display: flex;
     align-items: center;
+    font-weight: bold;
   }
 `
 

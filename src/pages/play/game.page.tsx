@@ -2,18 +2,29 @@ import { AnimateSharedLayout } from 'framer-motion'
 import { observer } from 'mobx-react'
 import React from 'react'
 import Confetti from 'react-confetti'
-import { Menu } from 'react-feather'
+import { Menu, MessageCircle } from 'react-feather'
 import { CircleButton, GamePageWrapper } from '../../components'
+import { roomState } from '../../modules/rooms'
 import { sound_manager, useGame } from '../../util'
 import { app_history } from '../../util/app-history'
-import { CenterCards, PlayerCards, PlayersArea, PlayMenu } from './components'
+import {
+  CenterCards,
+  MessagesPane,
+  PlayerCards,
+  PlayersArea,
+  PlayMenu,
+} from './components'
 
 export const GamePage = observer(() => {
   const { manager, game } = useGame()
 
+  const openMessagesPane = React.useCallback(() => {
+    return roomState.setMessagesPaneOpen(true)
+  }, [])
+
   React.useEffect(() => {
     const unblock = app_history.block(
-      'Are you sure you want to exit the current game'
+      'Are you sure you want to exit the current game',
     )
 
     return () => unblock()
@@ -37,9 +48,13 @@ export const GamePage = observer(() => {
 
   return (
     <GamePageWrapper>
+      {roomState.messages_pane_open && <MessagesPane />}
       {manager.menu_open && <PlayMenu />}
       {game.game_over && <Confetti />}
-      <header className="justify-content-end align-items-center">
+      <header className="justify-content-between align-items-center">
+        <CircleButton onClick={openMessagesPane}>
+          <MessageCircle />
+        </CircleButton>
         <CircleButton onClick={() => manager.openMenu()}>
           <Menu />
         </CircleButton>
@@ -51,7 +66,6 @@ export const GamePage = observer(() => {
           <PlayerCards />
         </AnimateSharedLayout>
       </main>
-      <footer></footer>
     </GamePageWrapper>
   )
 })

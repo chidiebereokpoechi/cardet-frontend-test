@@ -1,29 +1,12 @@
-import { motion } from 'framer-motion'
 import { observer } from 'mobx-react'
 import React from 'react'
 import { RefreshCcw, X } from 'react-feather'
 import { GoMute, GoUnmute, GoX } from 'react-icons/go'
-import styled from 'styled-components'
 import { CircleButton, MenuButton, MenuButtonList } from '../../../components'
 import { sound_manager, useGame } from '../../../util'
+import { MessagesPaneWrapper } from './messages-pane'
 
-const Wrapper = styled(motion.div)`
-  height: var(--vh);
-  width: var(--vw);
-  position: absolute;
-  background: black;
-  z-index: 999;
-
-  header {
-    padding: 1rem 2rem;
-    display: flex;
-    width: 100%;
-  }
-
-  main {
-    padding: 2rem;
-  }
-`
+const Wrapper = MessagesPaneWrapper
 
 export const PlayMenu: React.FC = observer(() => {
   const { manager, game } = useGame()
@@ -35,7 +18,7 @@ export const PlayMenu: React.FC = observer(() => {
         manager.closeMenu()
       }
     },
-    [manager]
+    [manager],
   )
 
   const toggleMute = React.useCallback(() => {
@@ -47,7 +30,7 @@ export const PlayMenu: React.FC = observer(() => {
   }, [])
 
   return (
-    <Wrapper layoutId="play-menu">
+    <Wrapper>
       <header className="justify-content-between align-items-center">
         <CircleButton onClick={menuAction(() => manager.getGameState())}>
           <RefreshCcw />

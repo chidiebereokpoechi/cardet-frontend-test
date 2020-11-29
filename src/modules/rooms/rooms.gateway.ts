@@ -1,6 +1,7 @@
 import { SubscribeMessage, WsEventHandler, WsGateway } from '../../util/api'
 import { gameManagerState } from '../game'
 import { User, userState } from '../user'
+import { Message } from './message'
 import { Room } from './room.entity'
 import { roomState } from './room.state'
 
@@ -11,6 +12,11 @@ export class RoomsGateway {
   @SubscribeMessage('joined-room')
   public joinedRoom(user: User) {
     roomState.addUser(user)
+  }
+
+  @SubscribeMessage('created-message')
+  public createdMessage(message: Message) {
+    roomState.addMessage(message)
   }
 
   @SubscribeMessage('left-room')
@@ -32,6 +38,12 @@ export class RoomsGateway {
   public joinRoom(room_id: string) {
     const user = userState.user as User
     this.handler.emit('join-room', { room_id, user })
+  }
+
+  public createMessage(message: string) {
+    const user = userState.user as User
+    const room = roomState.room as Room
+    this.handler.emit('create-message', { room_id: room.id, user, message })
   }
 
   public leaveRoom() {

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
+import { MenuPageWrapper } from './menu-page-wrapper'
 
-export const GamePageWrapper = styled.div`
+export const GamePageWrapper = styled(MenuPageWrapper)`
   background: #142025;
   height: 100%;
   width: 100%;
@@ -8,14 +9,14 @@ export const GamePageWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  header {
-    padding: 1rem 2rem;
+  > header {
+    /* padding: 1rem 2rem;
     display: flex;
-    width: 100%;
+    width: 100%; */
     /* position: absolute; */
   }
 
-  main {
+  > main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;

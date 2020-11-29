@@ -1,11 +1,17 @@
 import { map } from 'lodash'
 import { observer } from 'mobx-react'
 import React from 'react'
-import { BackButton, Button, MenuPageWrapper, UserPin } from '../../components'
+import { MessageCircle, X } from 'react-feather'
+import {
+  Button,
+  CircleButton,
+  MenuPageWrapper,
+  UserPin,
+} from '../../components'
 import { gameManagerState } from '../../modules/game'
 import { Room, roomState } from '../../modules/rooms'
 import { User, userState } from '../../modules/user'
-import { PlayerList } from './components'
+import { MessagesPane, PlayerList } from './components'
 
 export const RoomPage = observer(() => {
   const user = userState.user as User
@@ -20,25 +26,33 @@ export const RoomPage = observer(() => {
     return gameManagerState.startGame()
   }, [])
 
+  const openMessagesPane = React.useCallback(() => {
+    return roomState.setMessagesPaneOpen(true)
+  }, [])
+
   React.useEffect(() => {
     gameManagerState.getGameState()
   }, [game])
 
   return (
     <MenuPageWrapper>
-      <header>
-        <BackButton to="/" />
-        <span>
-          <code>{room.id}</code>
-        </span>
+      {roomState.messages_pane_open && <MessagesPane />}
+      <header className="justify-content-between align-items-center">
+        <CircleButton onClick={openMessagesPane}>
+          <MessageCircle />
+        </CircleButton>
+        <CircleButton onClick={leaveRoom}>
+          <X />
+        </CircleButton>
       </header>
       <main>
         <div className="w-100">
-          <h4>Currently in room</h4>
+          <h1>Code: {room.id}</h1>
+          <h6 style={{ color: '#c3c3c3' }}>Players in the room</h6>
           <PlayerList className="my-4">
             {map(room.members, (_user) => (
               <UserPin
-                name={_user.id === user.id ? 'You' : _user.name}
+                name={_user.name + (_user.id === user.id ? ' (you)' : '')}
                 key={_user.id}
               />
             ))}
@@ -47,7 +61,9 @@ export const RoomPage = observer(() => {
       </main>
       <footer>
         <Button onClick={leaveRoom}>Leave</Button>
-        <Button onClick={startGame}>Start</Button>
+        {room.members.length > 1 && room.members.length < 4 && (
+          <Button onClick={startGame}>Start</Button>
+        )}
       </footer>
     </MenuPageWrapper>
   )

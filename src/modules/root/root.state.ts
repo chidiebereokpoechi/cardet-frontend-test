@@ -1,6 +1,8 @@
 import { once, uniqueId } from 'lodash'
-import { action, autorun, computed, observable } from 'mobx'
+import { action, computed, observable } from 'mobx'
 import React from 'react'
+
+let loadingTask: () => any | undefined
 
 class RootState {
   @observable
@@ -18,17 +20,13 @@ class RootState {
   }
 
   private constructor() {
-    autorun(() => {
-      // if (this.center_card.current) {
-      //   const { left, right } = this.center_card.current.getBoundingClientRect()
-      //   console.log({ left, right })
-      // }
-    })
+    loadingTask = this.queueTask().unqueueTask
   }
 
   @action
   public setReadyState(ready: boolean) {
     this.ready = ready
+    loadingTask?.()
   }
 
   @action

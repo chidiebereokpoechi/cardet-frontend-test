@@ -77,7 +77,7 @@ export class Game implements GameState {
 
   @computed
   public get center_cards() {
-    return slice(this.played_cards, -1 * NUMBER_OF_CENTER_CARDS)
+    return slice(this.played_cards, -NUMBER_OF_CENTER_CARDS)
   }
 
   @computed
@@ -100,7 +100,7 @@ export class Game implements GameState {
   public get playable_cards(): Card[] {
     if (this.selected_indices.length > 0) {
       return filter(this.cards, (card) =>
-        Card.canStack([...this.selected_cards, card])
+        Card.canStack([...this.selected_cards, card]),
       )
     }
 
@@ -178,12 +178,12 @@ export class Game implements GameState {
       const extra_cards = differenceBy(
         all_indexed,
         this.indexed_cards,
-        'card.id'
+        'card.id',
       )
 
       const indexed_without_played = filter(
         this.indexed_cards,
-        ({ card }) => !!find(this.cards, card)
+        ({ card }) => !!find(this.cards, card),
       )
 
       this.indexed_cards = indexed_without_played.concat(extra_cards)

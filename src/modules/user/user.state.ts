@@ -28,7 +28,7 @@ class UserState {
       return
     }
 
-    const sub = roomState.getUserRoom()
+    const sub = roomState.getUserRoom(() => rootState.setReadyState(true))
     if (sub !== undefined) sub.add(this.fetchGameState)
   })
 

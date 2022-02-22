@@ -23,7 +23,7 @@ export const MainMenuPage = observer(() => {
         <MenuPageWrapper>
             <header className="flex-column">
                 <img src="/logo.png" alt="Cardet logo" className="logo" />
-                <span className="mb-2">Cardet</span>
+                <span className="mt-3">Cardet</span>
             </header>
             <main>
                 <span>Who are you?</span>

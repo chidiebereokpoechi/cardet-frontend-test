@@ -3,63 +3,75 @@ import { observer } from 'mobx-react'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import {
-  BackButton,
-  Button,
-  MenuPageWrapper,
-  RoomCodeInput,
+    BackButton,
+    Button,
+    MenuButton,
+    MenuButtonList,
+    MenuPageWrapper,
+    RoomCodeInput,
 } from '../../components'
 import { roomState } from '../../modules/rooms'
 
 interface JoinRoomModel {
-  room_id: string
+    room_id: string
 }
 
 export const JoinRoomPage = observer(() => {
-  const history = useHistory()
-  const room = roomState.room
+    const history = useHistory()
+    const room = roomState.room
 
-  const joinRoom = React.useCallback((values: JoinRoomModel) => {
-    roomState.joinRoom(values.room_id)
-  }, [])
+    const joinRoom = React.useCallback((values: JoinRoomModel) => {
+        roomState.joinRoom(values.room_id)
+    }, [])
 
-  const validate = React.useCallback((values: JoinRoomModel) => {
-    if (values.room_id.length !== 4) {
-      return { room_id: 'Room ID has format XXXX' }
-    }
+    const validate = React.useCallback((values: JoinRoomModel) => {
+        if (values.room_id.length !== 4) {
+            return { room_id: 'Room ID has format XXXX' }
+        }
 
-    return {}
-  }, [])
+        return {}
+    }, [])
 
-  React.useEffect(() => {
-    if (room) history.replace('/play')
-  }, [room, history])
+    React.useEffect(() => {
+        if (room) history.replace('/play')
+    }, [room, history])
 
-  return (
-    <MenuPageWrapper>
-      <header>
-        <BackButton to="/play" />
-        <span>Join room</span>
-      </header>
-      <main>
-        <div className="w-100">
-          <Formik
+    return (
+        <Formik
             initialValues={{ room_id: '' }}
+            isInitialValid={false}
             validate={validate}
             onSubmit={joinRoom}
-          >
-            {({ handleSubmit, isValid }) => (
-              <form onSubmit={handleSubmit}>
-                <RoomCodeInput />
-                <div className="d-flex justify-content-center mt-5">
-                  <Button type="submit" disabled={!isValid}>
-                    <span>Join room</span>
-                  </Button>
-                </div>
-              </form>
+        >
+            {({ values, isValid }) => (
+                <MenuPageWrapper>
+                    <header>
+                        <BackButton to="/play" />
+                        <span>Join room</span>
+                    </header>
+                    <main>
+                        <span>Enter room code</span>
+                        <div className="w-100 mt-3">
+                            <RoomCodeInput />
+                        </div>
+                    </main>
+                    {isValid && (
+                        <footer>
+                            <div className="w-100">
+                                <MenuButtonList>
+                                    <MenuButton
+                                        onClick={() => {
+                                            joinRoom(values)
+                                        }}
+                                    >
+                                        <span>Join room</span>
+                                    </MenuButton>
+                                </MenuButtonList>
+                            </div>
+                        </footer>
+                    )}
+                </MenuPageWrapper>
             )}
-          </Formik>
-        </div>
-      </main>
-    </MenuPageWrapper>
-  )
+        </Formik>
+    )
 })

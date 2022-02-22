@@ -5,6 +5,8 @@ import { MessageCircle, X } from 'react-feather'
 import {
     Button,
     CircleButton,
+    MenuButton,
+    MenuButtonList,
     MenuPageWrapper,
     UserPin,
 } from '../../components'
@@ -38,25 +40,29 @@ export const RoomPage = observer(() => {
     return (
         <MenuPageWrapper>
             {roomState.messages_pane_open && <MessagesPane />}
-            <header className="justify-content-between align-items-center">
-                <CircleButton onClick={openMessagesPane}>
-                    <MessageCircle />
-                </CircleButton>
-                <CircleButton onClick={leaveRoom}>
-                    <X />
-                </CircleButton>
+            <header>
+                <div
+                    className="w-100 align-items-center"
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'var(--button-height) 1fr',
+                        gap: '2rem',
+                    }}
+                >
+                    <CircleButton onClick={openMessagesPane}>
+                        <MessageCircle />
+                    </CircleButton>
+                    <span>{room.id}</span>
+                </div>
             </header>
             <main>
                 <div className="w-100">
-                    <h1>Code: {room.id}</h1>
-                    <h6 style={{ color: '#c3c3c3' }}>Players in the room</h6>
-                    <PlayerList className="my-4">
+                    <span>Players in the room</span>
+                    <PlayerList className="mt-3">
                         {map(room.members, (_user) => (
                             <UserPin
-                                name={
-                                    _user.name +
-                                    (_user.id === user.id ? ' (you)' : '')
-                                }
+                                name={_user.name}
+                                you={user.id === _user.id}
                                 key={_user.id}
                             />
                         ))}
@@ -64,10 +70,18 @@ export const RoomPage = observer(() => {
                 </div>
             </main>
             <footer>
-                <Button onClick={leaveRoom}>Leave</Button>
-                {room.members.length > 1 && room.members.length < 4 && (
-                    <Button onClick={startGame}>Start</Button>
-                )}
+                <div className="w-100">
+                    <MenuButtonList>
+                        {room.members.length > 1 && room.members.length < 4 && (
+                            <MenuButton color="#4D8275" onClick={startGame}>
+                                Start game
+                            </MenuButton>
+                        )}
+                        <MenuButton color="#c7243f" onClick={leaveRoom}>
+                            Leave room
+                        </MenuButton>
+                    </MenuButtonList>
+                </div>
             </footer>
         </MenuPageWrapper>
     )

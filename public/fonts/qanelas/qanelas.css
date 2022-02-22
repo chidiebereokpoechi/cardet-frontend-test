@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "Qanelas";
+  font-style: normal;
+  font-weight: 700;
+  src: url("./QanelasDEMO-Black.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Qanelas";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./QanelasDEMO-Thin.otf") format("opentype");
+}

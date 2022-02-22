@@ -1,32 +1,31 @@
 import { HttpClient } from '../../util/api'
 import { UpdateUserModel } from './models'
 import { User } from './user.entity'
-import { userState } from './user.state'
 
 class UserService {
-  public getProfile() {
-    return HttpClient.get<User>('auth')
-  }
+    public getProfile() {
+        return HttpClient.get<User>('auth')
+    }
 
-  public authenticate(user: User) {
-    return HttpClient.post<User, { access_token: string }>('auth', user)
-  }
+    public authenticate(user: User) {
+        return HttpClient.post<User, { access_token: string }>('auth', user)
+    }
 
-  public create() {
-    return HttpClient.post<never, User>('users', undefined, false)
-  }
+    public create() {
+        return HttpClient.post<never, User>('users', undefined, false)
+    }
 
-  public retrieve() {
-    return HttpClient.get<User>(`users/${userState.user?.id}`)
-  }
+    public retrieve(id: string) {
+        return HttpClient.get<User>(`users/${id}`)
+    }
 
-  public update(model: UpdateUserModel) {
-    return HttpClient.patch<UpdateUserModel, User>(
-      `users/${userState.user?.id}`,
-      model,
-      false,
-    )
-  }
+    public update(model: UpdateUserModel, id: string) {
+        return HttpClient.patch<UpdateUserModel, User>(
+            `users/${id}`,
+            model,
+            false,
+        )
+    }
 }
 
 export const userService = new UserService()

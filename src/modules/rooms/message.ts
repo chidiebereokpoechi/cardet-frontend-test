@@ -1,6 +1,6 @@
-import { User } from '../user'
+import { User } from '../user/user.entity'
 
 export interface Message {
-  user: User
-  message: string
+    user: User
+    message: string
 }

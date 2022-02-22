@@ -30,13 +30,13 @@ export const GamePage = observer(() => {
         return () => unblock()
     }, [])
 
-    React.useEffect(() => {
-        if (!game.game_over) {
-            sound_manager.startBackgroundMusic()
-        }
+    // React.useEffect(() => {
+    //     if (!game.game_over) {
+    //         sound_manager.startBackgroundMusic()
+    //     }
 
-        return () => sound_manager.stopBackgroundMusic()
-    }, [game.game_over])
+    //     return () => sound_manager.stopBackgroundMusic()
+    // }, [game.game_over])
 
     React.useEffect(() => {
         if (game.game_over) {

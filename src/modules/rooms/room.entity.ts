@@ -1,16 +1,16 @@
-import { User } from '../user'
+import { User } from '../user/user.entity'
 import { Message } from './message'
 
 export enum RoomState {
-  LOBBY,
-  PLAYING,
+    LOBBY,
+    PLAYING,
 }
 
 export interface Room {
-  id: string
-  members: User[]
-  creator: User
-  messages: Message[]
-  room_state: RoomState
-  game_manager_id: string
+    id: string
+    members: User[]
+    creator: User
+    messages: Message[]
+    room_state: RoomState
+    game_manager_id: string
 }

@@ -1,6 +1,6 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 const Wrapper = styled(Link)`
   background: transparent;
@@ -21,31 +21,31 @@ const Wrapper = styled(Link)`
     font-size: 1.25rem;
     font-weight: 600;
   }
-`
+`;
 
 const Circle = styled.div`
   height: 3rem;
   width: 3rem;
-  border-radius: 100%;
+  border-radius: 1rem;
   background: white;
-`
+`;
 
 type Props = {
-  to: string
-  color?: string
-}
+  to: string;
+  color?: string;
+};
 
 export const MenuLinkButton: React.FC<Props> = ({
   children,
   color: _color,
   ...props
 }) => {
-  const backgroundColor = _color ?? 'white'
+  const backgroundColor = _color ?? "white";
 
   return (
     <Wrapper {...props}>
       <Circle style={{ backgroundColor }} />
       <div className="body">{children}</div>
     </Wrapper>
-  )
-}
+  );
+};

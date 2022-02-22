@@ -1,16 +1,16 @@
-import { observer } from 'mobx-react'
-import React from 'react'
+import { observer } from "mobx-react";
+import React from "react";
 import {
   GameCanvas,
   GameRouter,
   Loader,
   LoaderOverlay,
   Stylesheet,
-} from './components'
-import { rootState } from './modules/root'
+} from "./components";
+import { rootState } from "./modules/root";
 
 export const App: React.FC = observer(() => {
-  const ready = rootState.ready
+  const ready = rootState.ready;
 
   return (
     <React.Fragment>
@@ -20,5 +20,5 @@ export const App: React.FC = observer(() => {
         {ready ? <GameRouter /> : <Loader />}
       </GameCanvas>
     </React.Fragment>
-  )
-})
+  );
+});

@@ -1,16 +1,19 @@
-import { motion, MotionProps } from 'framer-motion'
-import React from 'react'
-import styled from 'styled-components'
+import { motion, MotionProps } from "framer-motion";
+import React from "react";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
   text-align: center;
   padding: 2rem;
   width: 100%;
-`
+  font-size: 2rem;
+  font-weight: 700 !important;
+`;
 
 const OverflowWrapper = styled(Wrapper)<MotionProps>`
   background: rgba(0, 0, 0, 0.1);
@@ -18,18 +21,19 @@ const OverflowWrapper = styled(Wrapper)<MotionProps>`
   z-index: 9999;
   position: fixed;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   height: var(--vh);
   width: var(--vw);
-`
+`;
 
 export const Loader = () => {
   return (
     <Wrapper>
-      <h1>Preparing the game</h1>
+      <span>Tinkering...</span>
     </Wrapper>
-  )
-}
+  );
+};
 
 export const LoaderOverlay = () => {
   return (
@@ -40,8 +44,8 @@ export const LoaderOverlay = () => {
       animate={{ opacity: 1 }}
     >
       <div className="spinner-border spinner-border-xl" role="status">
-        <h1 className="sr-only">Loading...</h1>
+        <span className="sr-only">Loading...</span>
       </div>
     </OverflowWrapper>
-  )
-}
+  );
+};

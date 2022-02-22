@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { MenuPageWrapper } from './menu-page-wrapper'
+import styled from "styled-components";
+import { MenuPageWrapper } from "./menu-page-wrapper";
 
 export const GamePageWrapper = styled(MenuPageWrapper)`
   background: #142025;
@@ -8,13 +8,6 @@ export const GamePageWrapper = styled(MenuPageWrapper)`
   color: #fbffff;
   display: flex;
   flex-direction: column;
-
-  > header {
-    /* padding: 1rem 2rem;
-    display: flex;
-    width: 100%; */
-    /* position: absolute; */
-  }
 
   > main {
     display: flex;
@@ -48,4 +41,4 @@ export const GamePageWrapper = styled(MenuPageWrapper)`
     font-size: 1.5rem;
     font-weight: bold;
   }
-`
+`;

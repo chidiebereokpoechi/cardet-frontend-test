@@ -1,12 +1,8 @@
 import { observer } from 'mobx-react'
 import React from 'react'
 import { Subscription } from 'rxjs'
-import {
-  MenuButtonList,
-  MenuLinkButton,
-  MenuPageWrapper,
-} from '../../components'
-import { User } from '../../modules/user'
+import { MenuLinkButton, MenuPageWrapper } from '../../components'
+import { User } from '../../modules/user/user.entity'
 import { UpdateUserModel } from '../../modules/user/models'
 import { userState } from '../../modules/user/user.state'
 import { ChangeNameBar } from './components'
@@ -14,38 +10,32 @@ import { ChangeNameBar } from './components'
 let sub: Subscription | null = null
 
 export const MainMenuPage = observer(() => {
-  // eslint-disable-next-line
-  const user = userState.user as User
+    // eslint-disable-next-line
+    const user = userState.user as User
 
-  const changeName = React.useCallback(async (values: UpdateUserModel) => {
-    sub?.unsubscribe()
-    sub = userState.updateUser(values)
-  }, [])
+    const changeName = React.useCallback((values: UpdateUserModel) => {
+        sub?.unsubscribe()
+        sub = userState.updateUser(values)
+        return sub
+    }, [])
 
-  return (
-    <MenuPageWrapper>
-      <header className="flex-column">
-        <span className="mb-2">Cardet Cards</span>
-        <ChangeNameBar name={user.name} changeName={changeName} />
-      </header>
-      <main>
-        <div>
-          <MenuButtonList>
-            <MenuLinkButton color="#4D8275" to="/play">
-              Play
-            </MenuLinkButton>
-            {/* <MenuLinkButton color="#744D82" to="/change-name">
-              Change Name
-            </MenuLinkButton> */}
-            {/* <MenuLinkButton color="#744D82" to="/room">
-              Rules
-            </MenuLinkButton>
-            <MenuLinkButton color="#4D5F82" to="/profile">
-              Profile
-            </MenuLinkButton> */}
-          </MenuButtonList>
-        </div>
-      </main>
-    </MenuPageWrapper>
-  )
+    return (
+        <MenuPageWrapper>
+            <header className="flex-column">
+                <img src="/logo.png" alt="Cardet logo" className="logo" />
+                <span className="mb-2">Cardet</span>
+            </header>
+            <main>
+                <span>Who are you?</span>
+                <div className="mt-3 w-100">
+                    <ChangeNameBar name={user.name} changeName={changeName} />
+                </div>
+            </main>
+            <footer>
+                <MenuLinkButton color="#4D8275" to="/play">
+                    Play
+                </MenuLinkButton>
+            </footer>
+        </MenuPageWrapper>
+    )
 })

@@ -44,6 +44,8 @@ export const Stylesheet = createGlobalStyle`
     --vh: ${vh};
     --vw: ${vw};
     --button-height: 3rem;
+    --button-background: white;
+    --button-color: black;
     --card-height: 60px;
     --card-width: 45px;
     --color: white;

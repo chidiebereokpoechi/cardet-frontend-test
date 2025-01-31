@@ -1,7 +1,7 @@
 import { Field, Formik, FormikHelpers } from 'formik'
 import { observer } from 'mobx-react'
 import React from 'react'
-import { X } from 'react-feather'
+import { X, Send } from 'react-feather'
 import { RiArrowRightCircleFill } from 'react-icons/ri'
 import styled from 'styled-components'
 import { CircleButton, MenuPageWrapper } from '../../../components'
@@ -91,8 +91,8 @@ const StyledForm = styled.form`
 
     > * {
         background: transparent;
-        border: 2px solid white;
-        border-radius: 5px;
+        border: 3px solid white;
+        border-radius: 1rem;
         color: white;
     }
 
@@ -152,7 +152,7 @@ export const MessagesPane: React.FC = observer(() => {
                                 className="submit-button"
                                 type="submit"
                             >
-                                <RiArrowRightCircleFill />
+                                <Send />
                             </button>
                         </StyledForm>
                     )}

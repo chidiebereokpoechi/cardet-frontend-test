@@ -1,9 +1,9 @@
 import { map } from 'lodash'
 import { observer } from 'mobx-react'
 import React from 'react'
-import { MessageCircle, X } from 'react-feather'
+import { MessageCircle } from 'react-feather'
+import styled from 'styled-components'
 import {
-    Button,
     CircleButton,
     MenuButton,
     MenuButtonList,
@@ -15,6 +15,25 @@ import { Room, roomState } from '../../modules/rooms'
 import { User } from '../../modules/user/user.entity'
 import { userState } from '../../modules/user/user.state'
 import { MessagesPane, PlayerList } from './components'
+
+const Counter = styled.div`
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.5rem;
+    font-weight: bold;
+    background: #1fbf5f;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.35), 0 0 0 8px rgba(0, 0, 0, 0.05) inset,
+        0 0 0 6px rgba(255, 255, 255, 0.1) inset,
+        0 0 0 3px rgba(255, 255, 255, 0.45) inset;
+    color: white;
+    top: -0.75rem;
+    right: -0.75rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
 
 export const RoomPage = observer(() => {
     const user = userState.user as User
@@ -50,6 +69,11 @@ export const RoomPage = observer(() => {
                     }}
                 >
                     <CircleButton onClick={openMessagesPane}>
+                        {roomState.unreadMessages ? (
+                            <Counter>
+                                <span>{roomState.unreadMessages}</span>{' '}
+                            </Counter>
+                        ) : null}
                         <MessageCircle />
                     </CircleButton>
                     <span>{room.id}</span>

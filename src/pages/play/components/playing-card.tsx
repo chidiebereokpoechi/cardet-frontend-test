@@ -51,16 +51,15 @@ const Wrapper = styled(motion.div)`
     }
 `
 
-interface Props {
+interface Props extends HTMLMotionProps<'div'> {
     id?: Card['id']
     type?: Card['type']
     value?: Card['value']
-    onClick?: HTMLMotionProps<'div'>['onClick']
     selected?: number
 }
 
 export const PlayingCard = observer(
-    ({ id, type, value, onClick, selected }: Props) => {
+    ({ id, type, value, selected, ...props }: Props) => {
         const background = useMemo(() => {
             if (type === undefined) return ['#080808', '#363d44'] // Grey
 
@@ -133,7 +132,7 @@ export const PlayingCard = observer(
                 }}
                 layoutId={id}
                 transition={{ duration: 0.1 }}
-                onClick={onClick}
+                {...props}
             >
                 {selected !== undefined && (
                     <span className="order">{selected + 1}</span>

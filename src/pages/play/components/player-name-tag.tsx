@@ -46,15 +46,15 @@ interface Props {
 const TurnIndicator: React.FC = () => {
     return (
         <motion.div
-            layoutId="turn-indicator"
+            // Remove layoutId if it's not essential for your layout animations
             animate={{
-                x: [-5, 5], // Moves from -5px to 5px on x-axis
+                x: [-2, 4, -2], // Three keyframes for smooth ping-pong
             }}
             transition={{
-                duration: 1.5, // Duration for one full cycle (to and back)
-                repeat: Infinity, // Infinite loop
-                repeatType: 'reverse', // Reverse the animation each cycle
-                ease: 'easeInOut', // Smooth acceleration/deceleration
+                duration: 1.5,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                loop: Infinity,
             }}
             style={{ color: 'white', marginRight: 10 }}
         >

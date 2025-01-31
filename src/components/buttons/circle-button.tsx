@@ -11,6 +11,7 @@ export const CircleButton = styled(motion.button)`
     width: var(--button-height) !important;
     appearance: none;
     padding: 0;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;

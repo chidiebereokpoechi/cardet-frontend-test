@@ -1,5 +1,6 @@
 import { find, once, remove } from 'lodash'
 import { action, observable } from 'mobx'
+import { sound_manager } from '../../util'
 import { User } from '../user/user.entity'
 import { userState } from '../user/user.state'
 import { Message } from './message'
@@ -14,6 +15,9 @@ class RoomState {
     public room: Room | null = null
 
     @observable
+    public unreadMessages: number = 0
+
+    @observable
     public messages_pane_open?: boolean
 
     private constructor() {}
@@ -25,6 +29,10 @@ class RoomState {
     @action
     public setMessagesPaneOpen(open: boolean) {
         this.messages_pane_open = open
+
+        if (open) {
+            this.unreadMessages = 0
+        }
     }
 
     @action
@@ -36,6 +44,8 @@ class RoomState {
     @action
     public addMessage(message: Message) {
         this.room?.messages.push(message)
+        this.unreadMessages += 1
+        sound_manager.selectCard()
     }
 
     @action

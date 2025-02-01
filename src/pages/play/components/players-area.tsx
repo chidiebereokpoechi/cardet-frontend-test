@@ -5,21 +5,21 @@ import { useGame } from '../../../util'
 import { PlayerDeck } from './player-deck'
 
 const Wrapper = styled.div`
-  display: flex;
-  place-content: center;
-  place-items: center;
+    display: flex;
+    place-content: center;
+    place-items: center;
 `
 
 export const PlayersArea: React.FC = observer(() => {
-  const {
-    game: { other_players: players },
-  } = useGame()
+    const {
+        game: { other_players: players },
+    } = useGame()
 
-  return (
-    <Wrapper className="players-area">
-      {players.map((player) => (
-        <PlayerDeck key={player.id} player={player} />
-      ))}
-    </Wrapper>
-  )
+    return (
+        <Wrapper className="players-area">
+            {players.map((player) => (
+                <PlayerDeck key={player.id} player={player} />
+            ))}
+        </Wrapper>
+    )
 })

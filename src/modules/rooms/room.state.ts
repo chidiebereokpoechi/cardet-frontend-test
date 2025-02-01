@@ -43,7 +43,9 @@ class RoomState {
 
     @action
     public addMessage(message: Message) {
-        this.room?.messages.push(message)
+        if (!this.room) return
+
+        this.room.messages = [...(this.room?.messages ?? []), message]
 
         if (message.user.id !== userState.user?.id) {
             sound_manager.newMessage()

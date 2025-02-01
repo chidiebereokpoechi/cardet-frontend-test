@@ -1,6 +1,6 @@
 import { Field, Formik, FormikHelpers } from 'formik'
 import { observer } from 'mobx-react'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { X, Send } from 'react-feather'
 import { RiArrowRightCircleFill } from 'react-icons/ri'
 import styled from 'styled-components'
@@ -16,17 +16,25 @@ export const MessagesPaneWrapper = styled(MenuPageWrapper)`
     backdrop-filter: blur(0.5rem);
     position: absolute;
     z-index: 999;
+    display: flex;
+    flex-direction: column;
 
     > main {
-        overflow: auto;
+        flex: 1;
+        overflow-y: auto; // Enable vertical scrolling
+        padding: 1.75rem;
     }
 
     .message-bubble {
         display: flex;
         margin-bottom: 0.5rem;
+        max-width: 100%;
+        word-wrap: break-word;
+        word-break: break-word;
+        text-overflow: clip;
+        /* line-break: anywhere; */
 
         .text-section {
-            /* margin-left: 1rem; */
             display: flex;
             flex-direction: column;
             background: #2f2f37;
@@ -47,7 +55,6 @@ export const MessagesPaneWrapper = styled(MenuPageWrapper)`
         .text-section {
             background: #8e0f3c;
             margin: 0;
-            /* margin-right: 1rem; */
             justify-content: flex-end;
             text-align: right;
         }
@@ -68,16 +75,12 @@ const MessageBubble: React.FC<Message> = observer(({ user, message }) => {
     )
 
     return (
-        <React.Fragment>
-            <div
-                className={'message-bubble' + (is_current_user ? ' right' : '')}
-            >
-                <div className="text-section">
-                    <small className="message-author">{user.name}</small>
-                    <span className="message-text">{message}</span>
-                </div>
+        <div className={'message-bubble' + (is_current_user ? ' right' : '')}>
+            <div className="text-section">
+                <small className="message-author">{user.name}</small>
+                <span className="message-text">{message}</span>
             </div>
-        </React.Fragment>
+        </div>
     )
 })
 
@@ -137,6 +140,22 @@ export const MessagesPane: React.FC = observer(() => {
         [],
     )
 
+    // Ref to track the last message
+    const lastMessageRef = useRef<HTMLDivElement | null>(null)
+    // Ref to track the main container
+    const mainContainerRef = useRef<HTMLDivElement | null>(null)
+
+    // Scroll to the last message when messages update
+    useEffect(() => {
+        if (lastMessageRef.current && mainContainerRef.current) {
+            // Scroll the last message into view within the main container
+            lastMessageRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'end',
+            })
+        }
+    }, [roomState.room?.messages]) // Trigger effect when messages change
+
     return (
         <MessagesPaneWrapper>
             <header className="justify-content-between align-items-center">
@@ -144,12 +163,21 @@ export const MessagesPane: React.FC = observer(() => {
                     <X />
                 </CircleButton>
             </header>
-            <main>
-                <div className="w-100">
-                    {roomState.room?.messages.map((message, i) => (
-                        <MessageBubble key={i} {...message} />
-                    ))}
-                </div>
+            <main ref={mainContainerRef}>
+                {/* Attach ref to the main container */}
+                {roomState.room?.messages.map((message, i) => {
+                    const isLastMessage =
+                        i === roomState.room!.messages.length - 1
+                    return (
+                        <div
+                            key={i}
+                            className="w-100"
+                            ref={isLastMessage ? lastMessageRef : null} // Attach ref to the last message
+                        >
+                            <MessageBubble {...message} />
+                        </div>
+                    )
+                })}
             </main>
             <footer>
                 <Formik

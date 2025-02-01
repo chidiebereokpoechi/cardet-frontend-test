@@ -23,10 +23,10 @@ export const MessagesPaneWrapper = styled(MenuPageWrapper)`
 
     .message-bubble {
         display: flex;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
 
         .text-section {
-            margin-left: 1rem;
+            /* margin-left: 1rem; */
             display: flex;
             flex-direction: column;
             background: #2f2f37;
@@ -36,7 +36,7 @@ export const MessagesPaneWrapper = styled(MenuPageWrapper)`
 
         .message-author {
             font-weight: bold;
-            font-size: 60%;
+            font-size: 50%;
             color: #dadadc;
         }
     }
@@ -47,7 +47,7 @@ export const MessagesPaneWrapper = styled(MenuPageWrapper)`
         .text-section {
             background: #8e0f3c;
             margin: 0;
-            margin-right: 1rem;
+            /* margin-right: 1rem; */
             justify-content: flex-end;
             text-align: right;
         }
@@ -72,7 +72,6 @@ const MessageBubble: React.FC<Message> = observer(({ user, message }) => {
             <div
                 className={'message-bubble' + (is_current_user ? ' right' : '')}
             >
-                <PictureCircle />
                 <div className="text-section">
                     <small className="message-author">{user.name}</small>
                     <span className="message-text">{message}</span>
@@ -89,18 +88,32 @@ const StyledForm = styled.form`
     gap: 1rem;
     width: 100%;
 
-    > * {
+    .message-input {
         background: transparent;
         border: 3px solid white;
         border-radius: 1rem;
         color: white;
-    }
-
-    .message-input {
         padding: 0.5rem 1rem;
         color: white;
         font-weight: bold;
         user-select: text;
+    }
+
+    .submit-button {
+        background: white;
+        color: #2b2e33;
+        border-radius: 1rem;
+        border: none;
+        outline: none;
+        height: var(--button-height) !important;
+        width: var(--button-height) !important;
+        appearance: none;
+        padding: 0;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
     }
 
     .submit-button:not(:disabled) {

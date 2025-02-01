@@ -64,20 +64,20 @@ export const CenterCards: React.FC = observer(() => {
             <div className="market">
                 <PlayingCard
                     onClick={pick}
-                    animate={
-                        noMoves && {
-                            filter: [
-                                'drop-shadow(0 0 0px rgba(255, 255, 255, 0.3))',
-                                'drop-shadow(0 0 12px rgba(255, 255, 255, 0.9))',
-                                'drop-shadow(0 0 0px rgba(255, 255, 255, 0.3))',
-                            ],
-                            scale: [1, 1.1, 1],
-                        }
-                    }
+                    animate={{
+                        filter: noMoves
+                            ? [
+                                  'drop-shadow(0 0 0px rgba(255, 255, 255, 0.3))',
+                                  'drop-shadow(0 0 12px rgba(255, 255, 255, 0.9))',
+                                  'drop-shadow(0 0 0px rgba(255, 255, 255, 0.3))',
+                              ]
+                            : 'drop-shadow(0 0 0px rgba(255, 255, 255, 0))',
+                        scale: noMoves ? [1, 1.1, 1] : 1,
+                    }}
                     transition={{
                         duration: 2,
-                        repeat: Infinity,
-                        loop: Infinity,
+                        repeat: noMoves ? Infinity : 0,
+                        loop: noMoves ? Infinity : 0,
                         ease: 'easeInOut',
                     }}
                 />

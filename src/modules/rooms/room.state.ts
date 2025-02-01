@@ -44,8 +44,14 @@ class RoomState {
     @action
     public addMessage(message: Message) {
         this.room?.messages.push(message)
-        this.unreadMessages += 1
-        sound_manager.selectCard()
+
+        if (message.user.id !== userState.user?.id) {
+            sound_manager.newMessage()
+
+            if (!this.messages_pane_open) {
+                this.unreadMessages += 1
+            }
+        }
     }
 
     @action

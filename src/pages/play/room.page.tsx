@@ -97,11 +97,11 @@ export const RoomPage = observer(() => {
                 <div className="w-100">
                     <MenuButtonList>
                         {room.members.length > 1 && room.members.length < 4 && (
-                            <MenuButton color="#4D8275" onClick={startGame}>
+                            <MenuButton color="#1fbf5f" onClick={startGame}>
                                 Start game
                             </MenuButton>
                         )}
-                        <MenuButton color="#c7243f" onClick={leaveRoom}>
+                        <MenuButton color="#d13e44" onClick={leaveRoom}>
                             Leave room
                         </MenuButton>
                     </MenuButtonList>

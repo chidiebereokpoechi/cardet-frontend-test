@@ -1,17 +1,20 @@
-export const ping = (): Promise<number> => {
-  const start = Date.now()
-  const req = new XMLHttpRequest()
+export const ping = async (timeout = 5000): Promise<number> => {
+    const controller = new AbortController()
+    const start = performance.now() // More precise timing
 
-  return new Promise((resolve) => {
-    req.addEventListener('load', () => {
-      resolve(Date.now() - start)
-    })
+    try {
+        const timeoutId = setTimeout(() => controller.abort(), timeout)
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/ping`, {
+            method: 'HEAD', // Better for ping
+            cache: 'no-cache',
+            signal: controller.signal,
+        })
 
-    req.addEventListener('error', () => {
-      resolve(9999)
-    })
+        clearTimeout(timeoutId)
 
-    req.open('GET', `${process.env.REACT_APP_BASE_URL}/ping`)
-    req.send()
-  })
+        if (!response.ok) throw new Error('Invalid response')
+        return Math.round(performance.now() - start)
+    } catch (error) {
+        return Infinity // Better than magic number 9999
+    }
 }

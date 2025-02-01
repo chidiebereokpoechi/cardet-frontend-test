@@ -50,6 +50,10 @@ export const Stylesheet = createGlobalStyle`
     --card-width: 45px;
     --color: white;
     --primary: #f9b202;
+    --good: #00c853;    /* Green */
+    --medium: #ffd600;  /* Yellow */
+    --warning: #ff9100; /* Orange */
+    --critical: #d50000;/* Red */
   }
 
   * {

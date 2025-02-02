@@ -1,10 +1,9 @@
 import { Formik } from 'formik'
 import { observer } from 'mobx-react'
-import React from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 import {
     BackButton,
-    Button,
     MenuButton,
     MenuButtonList,
     MenuPageWrapper,
@@ -16,16 +15,27 @@ interface JoinRoomModel {
     room_id: string
 }
 
+const isValidCode = (code: string) => code.length === 4
+
 export const JoinRoomPage = observer(() => {
     const history = useHistory()
+    const location = useLocation()
     const room = roomState.room
 
-    const joinRoom = React.useCallback((values: JoinRoomModel) => {
-        roomState.joinRoom(values.room_id)
-    }, [])
+    // Extract room code from query string
+    const queryParams = new URLSearchParams(location.search)
+    const queryRoomId = queryParams.get('code') || ''
+
+    const [isJoining, setIsJoining] = useState(false)
+
+    const joinRoom = async (room_id: string) => {
+        setIsJoining(true) // Prevent multiple submissions
+        const sub = roomState.joinRoom(room_id)
+        setIsJoining(false)
+    }
 
     const validate = React.useCallback((values: JoinRoomModel) => {
-        if (values.room_id.length !== 4) {
+        if (isValidCode(values.room_id)) {
             return { room_id: 'Room ID has format XXXX' }
         }
 
@@ -36,22 +46,27 @@ export const JoinRoomPage = observer(() => {
         if (room) history.replace('/play')
     }, [room, history])
 
+    useEffect(() => {
+        if (!room && queryRoomId && isValidCode(queryRoomId) && !isJoining) {
+            joinRoom(queryRoomId) // Auto-join if valid room code is present
+        }
+    }, [room, joinRoom, queryRoomId])
+
     return (
         <Formik
-            initialValues={{ room_id: '' }}
-            isInitialValid={false}
+            initialValues={{ room_id: queryRoomId }}
             validate={validate}
-            onSubmit={joinRoom}
+            onSubmit={({ room_id }) => joinRoom(room_id)}
+            enableReinitialize // Ensures the form updates when query params change
         >
-            {({ values, isValid }) => (
+            {({ values, handleChange, handleBlur, isValid }) => (
                 <MenuPageWrapper>
                     <header>
                         <BackButton to="/play" />
                         <span>Join room</span>
                     </header>
                     <main>
-                        <span>Enter room code</span>
-                        <div className="w-100 mt-3">
+                        <div className="w-100">
                             <RoomCodeInput />
                         </div>
                     </main>
@@ -60,9 +75,7 @@ export const JoinRoomPage = observer(() => {
                             <div className="w-100">
                                 <MenuButtonList>
                                     <MenuButton
-                                        onClick={() => {
-                                            joinRoom(values)
-                                        }}
+                                        onClick={() => joinRoom(values.room_id)}
                                     >
                                         <span>Join room</span>
                                     </MenuButton>

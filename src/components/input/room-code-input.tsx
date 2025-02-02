@@ -70,7 +70,6 @@ const ROOM_CODE_FIELD_NAME = 'room_id'
 const ROOM_CODE_LENGTH = 4
 
 const InputWrapper = styled(motion.div)`
-    padding: 1rem;
     position: relative;
     display: grid;
     grid-template-columns: repeat(${ROOM_CODE_LENGTH}, 1fr);
@@ -109,12 +108,17 @@ export const RoomCodeInput = () => {
     const [field, meta, helpers] = useField({ name: ROOM_CODE_FIELD_NAME })
     return (
         <div>
+            <label htmlFor={ROOM_CODE_FIELD_NAME}>Enter Room Code</label>
             <InputWrapper>
                 <input
                     className="input"
+                    id={ROOM_CODE_FIELD_NAME}
                     maxLength={ROOM_CODE_LENGTH}
                     onInput={(e) => {
-                        const value = e.currentTarget.value.slice(0, 4)
+                        const value = e.currentTarget.value.slice(
+                            0,
+                            ROOM_CODE_LENGTH,
+                        )
                         helpers.setValue(value)
                     }}
                 />

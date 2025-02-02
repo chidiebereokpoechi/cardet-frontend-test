@@ -35,7 +35,7 @@ export const JoinRoomPage = observer(() => {
     }
 
     const validate = React.useCallback((values: JoinRoomModel) => {
-        if (isValidCode(values.room_id)) {
+        if (!isValidCode(values.room_id)) {
             return { room_id: 'Room ID has format XXXX' }
         }
 

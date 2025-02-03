@@ -30,7 +30,7 @@ export const JoinRoomPage = observer(() => {
 
     const joinRoom = async (room_id: string) => {
         setIsJoining(true) // Prevent multiple submissions
-        const sub = roomState.joinRoom(room_id)
+        roomState.joinRoom(room_id)
         setIsJoining(false)
     }
 
@@ -59,16 +59,16 @@ export const JoinRoomPage = observer(() => {
             onSubmit={({ room_id }) => joinRoom(room_id)}
             enableReinitialize // Ensures the form updates when query params change
         >
-            {({ values, handleChange, handleBlur, isValid }) => (
+            {({ values, handleSubmit, isValid }) => (
                 <MenuPageWrapper>
                     <header>
                         <BackButton to="/play" />
                         <span>Join room</span>
                     </header>
                     <main>
-                        <div className="w-100">
+                        <form className="w-100" onSubmit={handleSubmit}>
                             <RoomCodeInput />
-                        </div>
+                        </form>
                     </main>
                     {isValid && (
                         <footer>

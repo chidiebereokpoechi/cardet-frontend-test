@@ -81,7 +81,6 @@ class RoomState {
             next: (response) => {
                 if (response.data) {
                     this.room = response.data
-                    this.room.messages = []
                 } else {
                     this.room = null
                 }
@@ -112,7 +111,7 @@ class RoomState {
             next: (response) => {
                 if (response.data) {
                     this.room = response.data
-                    this.room.messages = []
+                    this.unreadMessages = this.room.messages.length
                     this.gateway.joinRoom(response.data.id)
                 }
             },

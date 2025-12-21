@@ -1,5 +1,6 @@
 import { CardetGameState } from './cardet'
-import { GameType } from './game-manager.state'
+import { GameType } from './game-manager'
+import { TickTenGameState } from './tick-ten'
 
 export type GameState =
     | {
@@ -8,5 +9,5 @@ export type GameState =
       }
     | {
           gameType: GameType.TICK_TEN
-          state: unknown
+          state: TickTenGameState
       }

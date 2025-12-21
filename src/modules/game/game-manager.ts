@@ -3,9 +3,9 @@ import { action, observable } from 'mobx'
 import { Subscription } from 'rxjs'
 import { sound_manager } from '../../util'
 import { Room, roomsService, roomState } from '../rooms'
-import { Game } from './cardet/game'
-import { gameManagerService } from './cardet/game-manager.service'
-import { CardetGameState } from './cardet/game-state.entity'
+import { CardetGame } from './cardet/game'
+import { cardetService } from './cardet/service'
+import { CardetGameState } from './cardet/types'
 
 let sub: Subscription | null = null
 
@@ -14,9 +14,9 @@ export enum GameType {
     TICK_TEN = 'TICK_TEN',
 }
 
-class GameManagerState {
+class GameManager {
     @observable
-    public cardetGame: Game | null = null
+    public cardetGame: CardetGame | null = null
 
     @observable
     public tickTenGame: unknown | null = null
@@ -94,7 +94,7 @@ class GameManagerState {
                         this.respond(response.data.state)
                         this.cardetGame = this.cardetGame
                             ? this.cardetGame.update(response.data.state)
-                            : Game.create(response.data.state)
+                            : CardetGame.create(response.data.state)
                         return
                     case GameType.TICK_TEN:
                         this.tickTenGame = response.data.state
@@ -109,21 +109,21 @@ class GameManagerState {
     @action
     public pick() {
         const room = roomState.room as Room
-        const game = this.cardetGame as Game
+        const game = this.cardetGame as CardetGame
 
         if (!game.is_my_turn) return
         if (game.selected_indices.length !== 0) {
             return game.clearSelection()
         }
 
-        return gameManagerService.pick(room.game_manager_id).subscribe({
+        return cardetService.pick(room.game_manager_id).subscribe({
             next: (response) => {
                 if (response.data) {
                     roomState.gateway.play()
                     this.respond(response.data)
                     this.cardetGame = this.cardetGame
                         ? this.cardetGame.update(response.data)
-                        : Game.create(response.data)
+                        : CardetGame.create(response.data)
                     return
                 }
 
@@ -135,12 +135,12 @@ class GameManagerState {
     @action
     public play() {
         const room = roomState.room as Room
-        const game = this.cardetGame as Game
+        const game = this.cardetGame as CardetGame
 
         if (!game.is_my_turn) return
         if (game.selected_indices.length === 0) return
 
-        return gameManagerService
+        return cardetService
             .play(room.game_manager_id, { indices: game.selected_indices })
             .subscribe({
                 next: (response) => {
@@ -149,7 +149,7 @@ class GameManagerState {
                         this.respond(response.data)
                         this.cardetGame = this.cardetGame
                             ? this.cardetGame.update(response.data)
-                            : Game.create(response.data)
+                            : CardetGame.create(response.data)
                         return
                     }
 
@@ -190,7 +190,7 @@ class GameManagerState {
         })
     }
 
-    public static create = once(() => new GameManagerState())
+    public static create = once(() => new GameManager())
 }
 
-export const gameManagerState = GameManagerState.create()
+export const gameManager = GameManager.create()

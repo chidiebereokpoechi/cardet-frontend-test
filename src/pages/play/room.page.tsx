@@ -10,7 +10,7 @@ import {
     MenuPageWrapper,
     UserPin,
 } from '../../components'
-import { gameManagerState, GameType } from '../../modules/game'
+import { gameManager, GameType } from '../../modules/game'
 import { Room, roomState } from '../../modules/rooms'
 import { User } from '../../modules/user/user.entity'
 import { userState } from '../../modules/user/user.state'
@@ -38,14 +38,14 @@ const Counter = styled.div`
 export const RoomPage = observer(() => {
     const user = userState.user as User
     const room = roomState.room as Room
-    const game = gameManagerState.cardetGame
+    const game = gameManager.cardetGame
 
     const leaveRoom = React.useCallback(() => {
         return roomState.leaveRoom()
     }, [])
 
     const startGame = React.useCallback((gameType: GameType) => {
-        return gameManagerState.startGame(gameType)
+        return gameManager.startGame(gameType)
     }, [])
 
     const openMessagesPane = React.useCallback(() => {
@@ -73,7 +73,7 @@ export const RoomPage = observer(() => {
     }
 
     React.useEffect(() => {
-        gameManagerState.getGameState()
+        gameManager.getGameState()
     }, [game])
 
     return (

@@ -1,12 +1,12 @@
-import { Game } from '../../modules/game/cardet'
-import { gameManagerState } from '../../modules/game/game-manager.state'
+import { CardetGame } from '../../modules/game/cardet'
+import { gameManager } from '../../modules/game/game-manager'
 
 export const useCardetGame = () => {
-    const game = gameManagerState.cardetGame as Game
-    return { manager: gameManagerState, game }
+    const game = gameManager.cardetGame as CardetGame
+    return { manager: gameManager, game }
 }
 
 export const useTickTenGame = () => {
-    const game = gameManagerState.tickTenGame
-    return { manager: gameManagerState, game }
+    const game = gameManager.tickTenGame
+    return { manager: gameManager, game }
 }

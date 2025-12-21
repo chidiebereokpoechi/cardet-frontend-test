@@ -1,8 +1,8 @@
 import { HttpClient } from '../../../util/api'
-import { CardetGameState } from './game-state.entity'
+import { CardetGameState } from './types'
 import { PlayModel } from './models'
 
-class GameManagerService {
+class CardetService {
     public play(id: string, model: PlayModel) {
         return HttpClient.post<PlayModel, CardetGameState>(
             `cardet/${id}/play`,
@@ -26,14 +26,6 @@ class GameManagerService {
             false,
         )
     }
-
-    public startGame(id: string) {
-        return HttpClient.post<never, unknown>(`rooms/${id}`, undefined, false)
-    }
-
-    public endGame(id: string) {
-        return HttpClient.delete<CardetGameState>(`game-managers/${id}`, false)
-    }
 }
 
-export const gameManagerService = new GameManagerService()
+export const cardetService = new CardetService()

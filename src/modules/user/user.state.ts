@@ -2,7 +2,7 @@ import { once } from 'lodash'
 import { action, observable } from 'mobx'
 import { switchMap, tap } from 'rxjs/operators'
 import { ApiUtil } from '../../util/api'
-import { gameManagerState } from '../game'
+import { gameManager } from '../game'
 import { roomState } from '../rooms'
 import { rootState } from '../root'
 import { UpdateUserModel } from './models'
@@ -32,9 +32,7 @@ class UserState {
 
     @action
     public fetchGameState = once(() => {
-        gameManagerState
-            .getGameState()
-            ?.add(() => rootState.setReadyState(true))
+        gameManager.getGameState()?.add(() => rootState.setReadyState(true))
     })
 
     @action

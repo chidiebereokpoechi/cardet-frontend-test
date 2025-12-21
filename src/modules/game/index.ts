@@ -1,1 +1,1 @@
-export * from './game-manager.state'
+export * from './game-manager'

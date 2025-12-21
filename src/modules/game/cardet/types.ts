@@ -1,5 +1,5 @@
-import { Card } from './card'
-import { Player } from './player.entity'
+import { User } from '../../user'
+import { Card, SerializedCard } from './card'
 
 export interface CardetGameState {
     play_count: number
@@ -12,4 +12,8 @@ export interface CardetGameState {
     market_count: number
     game_over: boolean
     game_winner: Player | null
+}
+
+export interface Player extends User {
+    cards: SerializedCard[]
 }

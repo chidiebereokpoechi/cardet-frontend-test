@@ -14,15 +14,13 @@ import {
     without,
 } from 'lodash'
 import { action, computed, observable } from 'mobx'
-import { User } from '../../user/user.entity'
-import { userState } from '../../user/user.state'
+import { User, userState } from '../../user'
 import { Card, IndexedCard } from './card'
-import { CardetGameState } from './game-state.entity'
-import { Player } from './player.entity'
+import { CardetGameState, Player } from './types'
 
 const NUMBER_OF_CENTER_CARDS = 5
 
-export class Game implements CardetGameState {
+export class CardetGame implements CardetGameState {
     @observable
     public play_count: number
 
@@ -127,7 +125,7 @@ export class Game implements CardetGameState {
         this.current_player_index = state.current_player_index
         this.played_cards = state.played_cards
         this.cards = state.cards
-        this.indexed_cards = Game.getIndexedCards(this.cards)
+        this.indexed_cards = CardetGame.getIndexedCards(this.cards)
         this.playable_cards_indices = state.playable_cards_indices
         this.selected_indices = []
         this.market_count = state.market_count
@@ -178,7 +176,7 @@ export class Game implements CardetGameState {
                 return find(this.cards, card) ?? card
             })
 
-            const all_indexed = Game.getIndexedCards(this.cards)
+            const all_indexed = CardetGame.getIndexedCards(this.cards)
             const extra_cards = differenceBy(
                 all_indexed,
                 this.indexed_cards,
@@ -216,6 +214,6 @@ export class Game implements CardetGameState {
     }
 
     public static create(state: CardetGameState) {
-        return new Game(state)
+        return new CardetGame(state)
     }
 }

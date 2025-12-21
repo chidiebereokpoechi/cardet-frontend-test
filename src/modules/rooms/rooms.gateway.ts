@@ -1,5 +1,5 @@
 import { SubscribeMessage, WsEventHandler, WsGateway } from '../../util/api'
-import { gameManagerState } from '../game'
+import { gameManager } from '../game'
 import { User } from '../user/user.entity'
 import { userState } from '../user/user.state'
 import { Message } from './message'
@@ -28,12 +28,12 @@ export class RoomsGateway {
     @SubscribeMessage('started-game')
     @SubscribeMessage('ended-game')
     public refreshGame() {
-        gameManagerState.getGameState()
+        gameManager.getGameState()
     }
 
     @SubscribeMessage('played')
     public played(user: User) {
-        gameManagerState.getGameState()
+        gameManager.getGameState()
     }
 
     public joinRoom(room_id: string) {

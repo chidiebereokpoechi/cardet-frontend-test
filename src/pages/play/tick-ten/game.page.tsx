@@ -15,6 +15,8 @@ import {
     PlayMenu,
 } from '../components'
 import styled from 'styled-components'
+import { GameStatus } from '../../../modules/game/tick-ten'
+import { RecordAnswerField } from './components/record-answer-field'
 
 const Counter = styled.div`
     position: absolute;
@@ -34,6 +36,29 @@ const Counter = styled.div`
     justify-content: center;
     align-items: center;
 `
+
+export const Turn = observer(() => {
+    const { manager, game } = useTickTenGame()
+
+    return (
+        <div className="w-100 display-flex">
+            <h1>{game.turn.letter}</h1>
+            <div></div>
+            {game.categories.map((category) => (
+                <RecordAnswerField
+                    key={category}
+                    category={category}
+                    answer={
+                        game.playerSheet.submissions[game.turn.letter].answers[
+                            category
+                        ].word
+                    }
+                    recordAnswer={game.recordAnswer.bind(game)}
+                />
+            ))}
+        </div>
+    )
+})
 
 export const TickTenGamePage = observer(() => {
     const { manager, game } = useTickTenGame()
@@ -69,9 +94,7 @@ export const TickTenGamePage = observer(() => {
             </header>
             <main>
                 <AnimateSharedLayout type="crossfade">
-                    <div>
-                        <span>Hello</span>
-                    </div>
+                    {game.status === GameStatus.TURN_STARTED && <Turn />}
                 </AnimateSharedLayout>
             </main>
         </GamePageWrapper>

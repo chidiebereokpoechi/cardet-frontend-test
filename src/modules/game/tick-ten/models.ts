@@ -4,11 +4,16 @@ import { Category, Verdict } from './types'
 export class RecordAnswerModel {
     @IsString()
     @Length(2)
-    public category!: string
+    public category: string
 
     @IsString()
     @Length(2)
-    public answer!: string
+    public answer: string
+
+    constructor(category: string, answer: string) {
+        this.category = category
+        this.answer = answer
+    }
 }
 
 export class GradeSubmissionModel {

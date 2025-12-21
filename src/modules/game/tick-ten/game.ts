@@ -61,6 +61,8 @@ export class TickTenGame implements TickTenGameState {
         this.status = state.status
         this.playerSheet = state.playerSheet
         this.leaderboard = state.leaderboard
+
+        return this
     }
 
     @action

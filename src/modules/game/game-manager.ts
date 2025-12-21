@@ -6,6 +6,7 @@ import { Room, roomsService, roomState } from '../rooms'
 import { CardetGame } from './cardet/game'
 import { cardetService } from './cardet/service'
 import { CardetGameState } from './cardet/types'
+import { TickTenGame } from './tick-ten/game'
 
 let sub: Subscription | null = null
 
@@ -19,7 +20,7 @@ class GameManager {
     public cardetGame: CardetGame | null = null
 
     @observable
-    public tickTenGame: unknown | null = null
+    public tickTenGame: TickTenGame | null = null
 
     @observable
     public menu_open = false
@@ -97,7 +98,9 @@ class GameManager {
                             : CardetGame.create(response.data.state)
                         return
                     case GameType.TICK_TEN:
-                        this.tickTenGame = response.data.state
+                        this.tickTenGame = this.tickTenGame
+                            ? this.tickTenGame.update(response.data.state)
+                            : TickTenGame.create(response.data.state)
                         return
                 }
             },

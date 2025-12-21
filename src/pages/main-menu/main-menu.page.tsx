@@ -10,7 +10,6 @@ import { ChangeNameBar } from './components'
 let sub: Subscription | null = null
 
 export const MainMenuPage = observer(() => {
-    // eslint-disable-next-line
     const user = userState.user as User
 
     const changeName = React.useCallback((values: UpdateUserModel) => {
@@ -22,8 +21,8 @@ export const MainMenuPage = observer(() => {
     return (
         <MenuPageWrapper>
             <header className="flex-column">
-                <img src="/logo.png" alt="Cardet logo" className="logo" />
-                <span className="mt-3">Cardet</span>
+                <img src="/logo.png" alt="GameHub logo" className="logo" />
+                <span className="mt-3">GameHub</span>
             </header>
             <main>
                 <span>Who are you?</span>

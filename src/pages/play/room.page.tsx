@@ -123,7 +123,7 @@ export const RoomPage = observer(() => {
             <footer>
                 <div className="w-100">
                     <MenuButtonList>
-                        {room.members.length > 1 && room.members.length < 4 && (
+                        {room.members.length > 0 && room.members.length < 4 && (
                             <>
                                 <MenuButton
                                     color="#1fbf5f"

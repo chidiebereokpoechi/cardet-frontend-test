@@ -14,7 +14,8 @@ import {
     without,
 } from 'lodash'
 import { action, computed, observable } from 'mobx'
-import { User, userState } from '../../user'
+import { User } from '../../user/user.entity'
+import { userState } from '../../user/user.state'
 import { Card, IndexedCard } from './card'
 import { CardetGameState, Player } from './types'
 

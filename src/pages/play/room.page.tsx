@@ -10,7 +10,7 @@ import {
     MenuPageWrapper,
     UserPin,
 } from '../../components'
-import { gameManagerState } from '../../modules/game'
+import { gameManagerState, GameType } from '../../modules/game'
 import { Room, roomState } from '../../modules/rooms'
 import { User } from '../../modules/user/user.entity'
 import { userState } from '../../modules/user/user.state'
@@ -38,14 +38,14 @@ const Counter = styled.div`
 export const RoomPage = observer(() => {
     const user = userState.user as User
     const room = roomState.room as Room
-    const game = gameManagerState.game
+    const game = gameManagerState.cardetGame
 
     const leaveRoom = React.useCallback(() => {
         return roomState.leaveRoom()
     }, [])
 
-    const startGame = React.useCallback(() => {
-        return gameManagerState.startGame()
+    const startGame = React.useCallback((gameType: GameType) => {
+        return gameManagerState.startGame(gameType)
     }, [])
 
     const openMessagesPane = React.useCallback(() => {
@@ -100,7 +100,14 @@ export const RoomPage = observer(() => {
                 </div>
             </header>
             <main>
-                <div className="w-100">
+                <div
+                    className="w-100"
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flex: 1,
+                    }}
+                >
                     <span>Players in the room</span>
                     <PlayerList className="mt-3">
                         {map(room.members, (_user) => (
@@ -117,13 +124,24 @@ export const RoomPage = observer(() => {
                 <div className="w-100">
                     <MenuButtonList>
                         {room.members.length > 1 && room.members.length < 4 && (
-                            <MenuButton color="#1fbf5f" onClick={startGame}>
-                                Start game
-                            </MenuButton>
+                            <>
+                                <MenuButton
+                                    color="#1fbf5f"
+                                    onClick={() => startGame(GameType.CARDET)}
+                                >
+                                    Play Cardet™
+                                </MenuButton>
+                                <MenuButton
+                                    color="#3e8cd1"
+                                    onClick={() => startGame(GameType.TICK_TEN)}
+                                >
+                                    Play Tick Ten™
+                                </MenuButton>
+                            </>
                         )}
-                        <MenuButton color="#d1a33e" onClick={shareRoomLink}>
+                        {/* <MenuButton color="#d1a33e" onClick={shareRoomLink}>
                             Share link to join
-                        </MenuButton>
+                        </MenuButton> */}
                         <MenuButton color="#d13e44" onClick={leaveRoom}>
                             {room.members.length === 1
                                 ? 'Close room'

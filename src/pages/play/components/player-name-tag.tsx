@@ -4,8 +4,8 @@ import React from 'react'
 import { GiQueenCrown } from 'react-icons/gi'
 import { ImArrowRight2 } from 'react-icons/im'
 import styled from 'styled-components'
-import { Player } from '../../../modules/game'
-import { useGame } from '../../../util'
+import { Player } from '../../../modules/game/cardet'
+import { useCardetGame } from '../../../util'
 
 const Wrapper = styled(motion.div)`
     transition: 0.2s;
@@ -64,7 +64,7 @@ const TurnIndicator: React.FC = () => {
 }
 
 export const PlayerNameTag: React.FC<Props> = observer(({ id, name }) => {
-    const { game } = useGame()
+    const { game } = useCardetGame()
     const active = !game.game_over && game.current_player.id === id
     const winner = game.game_winner?.id === id
 

@@ -4,9 +4,9 @@ import { observer } from 'mobx-react'
 import React from 'react'
 import styled from 'styled-components'
 import { PlayingCard } from '.'
-import { IndexedCard, Player } from '../../../modules/game'
+import { IndexedCard, Player } from '../../../modules/game/cardet'
 import { userState } from '../../../modules/user/user.state'
-import { sound_manager, useGame } from '../../../util'
+import { sound_manager, useCardetGame } from '../../../util'
 import { PlayerNameTag } from './player-name-tag'
 
 const Wrapper = styled.div`
@@ -40,7 +40,7 @@ const Wrapper = styled.div`
 `
 
 const CardWrapper: React.FC<IndexedCard> = observer(({ card, index }) => {
-    const { game } = useGame()
+    const { game } = useCardetGame()
 
     const selected = React.useMemo(
         () =>
@@ -124,7 +124,7 @@ const CardWrapper: React.FC<IndexedCard> = observer(({ card, index }) => {
 })
 
 export const PlayerCards: React.FC = observer(() => {
-    const { game } = useGame()
+    const { game } = useCardetGame()
     const active = game.is_my_turn && !game.game_over
 
     return (

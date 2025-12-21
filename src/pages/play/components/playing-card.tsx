@@ -2,7 +2,7 @@ import { HTMLMotionProps, motion } from 'framer-motion'
 import { observer } from 'mobx-react'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { Card, CardType, CardValue } from '../../../modules/game'
+import { Card, CardType, CardValue } from '../../../modules/game/cardet'
 
 const Wrapper = styled(motion.div)`
     width: var(--card-width);

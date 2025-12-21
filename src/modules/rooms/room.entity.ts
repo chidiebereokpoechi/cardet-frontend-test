@@ -2,8 +2,8 @@ import { User } from '../user/user.entity'
 import { Message } from './message'
 
 export enum RoomState {
-    LOBBY,
-    PLAYING,
+    LOBBY = 'LOBBY',
+    PLAYING = 'PLAYING',
 }
 
 export interface Room {
@@ -13,4 +13,5 @@ export interface Room {
     messages: Message[]
     room_state: RoomState
     game_manager_id: string
+    game_config: object
 }

@@ -14,15 +14,15 @@ import {
     without,
 } from 'lodash'
 import { action, computed, observable } from 'mobx'
-import { User } from '../user/user.entity'
-import { userState } from '../user/user.state'
+import { User } from '../../user/user.entity'
+import { userState } from '../../user/user.state'
 import { Card, IndexedCard } from './card'
-import { GameState } from './game-state.entity'
+import { CardetGameState } from './game-state.entity'
 import { Player } from './player.entity'
 
 const NUMBER_OF_CENTER_CARDS = 5
 
-export class Game implements GameState {
+export class Game implements CardetGameState {
     @observable
     public play_count: number
 
@@ -120,7 +120,7 @@ export class Game implements GameState {
         )
     }
 
-    private constructor(state: GameState) {
+    private constructor(state: CardetGameState) {
         this.play_count = state.play_count
         this.id = state.id
         this.players = state.players
@@ -166,7 +166,7 @@ export class Game implements GameState {
     }
 
     @action
-    public update(state: GameState) {
+    public update(state: CardetGameState) {
         if (this.play_count === state.play_count) {
             return this
         }
@@ -215,7 +215,7 @@ export class Game implements GameState {
         return map(cards, (card, index) => ({ card, index }))
     }
 
-    public static create(state: GameState) {
+    public static create(state: CardetGameState) {
         return new Game(state)
     }
 }

@@ -2,13 +2,14 @@ import { observer } from 'mobx-react'
 import React from 'react'
 import { RefreshCcw, Volume2, VolumeX, X } from 'react-feather'
 import { CircleButton, MenuButton, MenuButtonList } from '../../../components'
-import { sound_manager, useGame } from '../../../util'
+import { sound_manager, useCardetGame } from '../../../util'
 import { MessagesPaneWrapper } from './messages-pane'
+import { RoomState, roomState } from '../../../modules/rooms'
 
 const Wrapper = MessagesPaneWrapper
 
 export const PlayMenu: React.FC = observer(() => {
-    const { manager, game } = useGame()
+    const { manager, game } = useCardetGame()
 
     const menuAction = React.useCallback(
         (handler: () => void) => {
@@ -61,7 +62,10 @@ export const PlayMenu: React.FC = observer(() => {
                             icon={X}
                         >
                             <span>
-                                {game.game_over ? 'Back to lobby' : 'End game'}
+                                {roomState.room!.room_state ===
+                                RoomState.PLAYING
+                                    ? 'Back to lobby'
+                                    : 'End game'}
                             </span>
                         </MenuButton>
                     </MenuButtonList>

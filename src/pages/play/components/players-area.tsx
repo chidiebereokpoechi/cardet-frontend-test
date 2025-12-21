@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react'
 import React from 'react'
 import styled from 'styled-components'
-import { useGame } from '../../../util'
+import { useCardetGame } from '../../../util'
 import { PlayerDeck } from './player-deck'
 
 const Wrapper = styled.div`
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 export const PlayersArea: React.FC = observer(() => {
     const {
         game: { other_players: players },
-    } = useGame()
+    } = useCardetGame()
 
     return (
         <Wrapper className="players-area">

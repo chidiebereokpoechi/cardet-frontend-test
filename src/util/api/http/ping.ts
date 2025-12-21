@@ -1,11 +1,11 @@
 export const ping = async (timeout = 5000): Promise<number> => {
     const controller = new AbortController()
-    const start = performance.now() // More precise timing
+    const start = performance.now()
 
     try {
         const timeoutId = setTimeout(() => controller.abort(), timeout)
         const response = await fetch(`${process.env.REACT_APP_BASE_URL}/ping`, {
-            method: 'HEAD', // Better for ping
+            method: 'HEAD',
             cache: 'no-cache',
             signal: controller.signal,
         })
@@ -15,6 +15,6 @@ export const ping = async (timeout = 5000): Promise<number> => {
         if (!response.ok) throw new Error('Invalid response')
         return Math.round(performance.now() - start)
     } catch (error) {
-        return Infinity // Better than magic number 9999
+        return Infinity
     }
 }

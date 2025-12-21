@@ -50,7 +50,7 @@ export const PingMeter = () => {
             if (!mountedRef.current) return
 
             // Debounce check: only ping if 2 seconds have passed since last update
-            if (timestamp - lastUpdateRef.current >= 2000) {
+            if (timestamp - lastUpdateRef.current >= 2000000000) {
                 checkPing()
             }
 

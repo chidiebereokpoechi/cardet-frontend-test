@@ -3,9 +3,9 @@ import { random } from 'lodash'
 import { observer } from 'mobx-react'
 import React from 'react'
 import styled from 'styled-components'
-import { Card } from '../../../modules/game'
+import { Card } from '../../../modules/game/cardet'
 import { rootState } from '../../../modules/root'
-import { useGame } from '../../../util'
+import { useCardetGame } from '../../../util'
 import { PlayingCard } from './playing-card'
 
 const Wrapper = styled.div`
@@ -31,7 +31,7 @@ const Wrapper = styled.div`
 `
 
 const CardWrapper: React.FC<Card> = observer((card) => {
-    const { manager, game } = useGame()
+    const { manager, game } = useCardetGame()
 
     const play = React.useCallback(() => {
         if (!game.game_over) manager.play()
@@ -50,7 +50,7 @@ const CardWrapper: React.FC<Card> = observer((card) => {
 })
 
 export const CenterCards: React.FC = observer(() => {
-    const { game, manager } = useGame()
+    const { game, manager } = useCardetGame()
 
     const noMoves =
         !game.game_over && game.is_my_turn && game.playable_cards.length === 0

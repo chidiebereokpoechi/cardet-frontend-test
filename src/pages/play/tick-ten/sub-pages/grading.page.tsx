@@ -7,11 +7,10 @@ import {
     MenuButton,
     MenuButtonList,
 } from '../../../../components'
+import { Category } from '../../../../modules/game/tick-ten'
 import { GradeSubmissionModel } from '../../../../modules/game/tick-ten/models'
 import { useTickTenGame } from '../../../../util'
 import { GradingField } from '../components/grading-field'
-import { Category } from '../../../../modules/game/tick-ten'
-import { trim } from 'lodash'
 
 let subscription: Subscription | undefined
 

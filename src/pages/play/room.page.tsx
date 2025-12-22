@@ -119,13 +119,13 @@ export const RoomPage = observer(() => {
                         {room.members.length > 0 && room.members.length < 4 && (
                             <>
                                 <MenuButton
-                                    color="#1fbf5f"
+                                    color="var(--green)"
                                     onClick={() => startGame(GameType.CARDET)}
                                 >
                                     Play Cardet™
                                 </MenuButton>
                                 <MenuButton
-                                    color="#3e8cd1"
+                                    color="var(--blue)"
                                     onClick={() => startGame(GameType.TICK_TEN)}
                                 >
                                     Play Tick Ten™
@@ -135,7 +135,7 @@ export const RoomPage = observer(() => {
                         {/* <MenuButton color="#d1a33e" onClick={shareRoomLink}>
                             Share link to join
                         </MenuButton> */}
-                        <MenuButton color="#d13e44" onClick={leaveRoom}>
+                        <MenuButton color="var(--red)" onClick={leaveRoom}>
                             {room.members.length === 1
                                 ? 'Close room'
                                 : 'Leave room'}

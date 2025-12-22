@@ -31,7 +31,6 @@ const Wrapper = styled(motion.div)`
     }
 
     &.active main {
-        --green: #3b9e2a;
         background: rgba(0, 0, 0, 0.45);
         color: var(--green);
         text-shadow: 0 0 5px var(--green);

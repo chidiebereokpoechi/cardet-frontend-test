@@ -49,11 +49,20 @@ export const Stylesheet = createGlobalStyle`
     --card-height: 60px;
     --card-width: 45px;
     --color: white;
-    --primary: #f9b202;
-    --good: #00c853;    /* Green */
-    --medium: var(--primary);  /* Yellow */
-    --warning: #ff9100; /* Orange */
-    --critical: #d50000;/* Red */
+
+    --green: #1ff467;
+    --blue: #3e8cd1;
+    --yellow: #f9b202;
+    --red: #d13e44;
+    --orange: #ff9100;
+
+    --primary: var(--yellow);
+    --good: var(--green);
+    --medium: var(--primary);
+    --warning: var(--orange);
+    --critical: var(--red);
+
+    --understated-grey: #97979b;
   }
 
   * {

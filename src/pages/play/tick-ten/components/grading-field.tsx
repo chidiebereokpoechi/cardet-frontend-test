@@ -74,7 +74,7 @@ export const GradingField: React.FC<Props> = observer(
             <div className="grid grid-cols-1 gap-2 bg-[#121518] px-[1.75rem] py-3">
                 <div className="flex flex-row justify-between">
                     <div>
-                        <span className="text-[.5rem] text-[#97979b] block">
+                        <span className="text-[.5rem] text-[var(--understated-grey)] block">
                             {category}
                         </span>
                         <span className="flex font-bold">{answer.word}</span>

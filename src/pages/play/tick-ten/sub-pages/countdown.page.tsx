@@ -20,7 +20,7 @@ export const CountdownPage = observer(() => {
     return (
         <>
             <main className="">
-                <div className="w-full grid gap-2">
+                <div className="w-full grid gap-3">
                     {game.categories.map((category) => {
                         const letter = game.turn.letter
                         const submission = game.playerSheet.submissions[letter]

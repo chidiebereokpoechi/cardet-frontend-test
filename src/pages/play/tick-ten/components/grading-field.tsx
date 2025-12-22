@@ -32,12 +32,13 @@ const VerdictButton: React.FC<{
     return (
         <button
             type="button"
-            className={classNames(
-                'flex items-center justify-center font-light w-8 h-8 rounded-xl',
-                verdict === formik.values.verdicts[category]
-                    ? `bg-[${color}]`
-                    : 'bg-[#222628]',
-            )}
+            className="flex items-center justify-center font-light w-8 h-8 rounded-xl"
+            style={{
+                backgroundColor:
+                    verdict === formik.values.verdicts[category]
+                        ? color
+                        : '#222628',
+            }}
             onClick={onClick}
         >
             <Icon size={18} />
@@ -97,7 +98,7 @@ export const GradingField: React.FC<Props> = observer(
                             <VerdictButton
                                 verdict="duplicate"
                                 category={category}
-                                color="var(--yellow)"
+                                color="var(--blue)"
                                 icon={Copy}
                             />
                             <VerdictButton

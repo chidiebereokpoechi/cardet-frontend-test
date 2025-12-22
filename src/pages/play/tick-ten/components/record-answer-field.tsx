@@ -167,7 +167,8 @@ export const RecordAnswerField: React.FC<Props> = ({
                                         }
                                         name="answer"
                                         autoCapitalize="off"
-                                        spellCheck="false"
+                                        autoComplete="off"
+                                        spellCheck={false}
                                         autoCorrect="off"
                                         disabled={disabled}
                                     />

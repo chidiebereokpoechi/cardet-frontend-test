@@ -2,23 +2,20 @@ import { map } from 'lodash'
 import { observer } from 'mobx-react'
 import React from 'react'
 import { Subscription } from 'rxjs'
-import { HelpCircle, SkipForward } from 'react-feather'
-import {
-    CircleButton,
-    MenuButton,
-    MenuButtonList,
-    UserPin,
-} from '../../../../components'
-import { useTickTenGame } from '../../../../util'
-import { PlayerList } from '../../components'
+import { MenuButton, MenuButtonList, UserPin } from '../../../../components'
+import { Room, roomState } from '../../../../modules/rooms'
 import { User } from '../../../../modules/user'
 import { userState } from '../../../../modules/user/user.state'
+import { useTickTenGame } from '../../../../util'
+import { PlayerList } from '../../components'
 
 let subscription: Subscription | undefined
 
 export const LeaderboardPage = observer(() => {
     const user = userState.user as User
-    const { game } = useTickTenGame()
+
+    const { game, manager } = useTickTenGame()
+    const isGameOver = game.isGameOver
 
     const playerScores = game.players
         .map((player) => ({
@@ -30,6 +27,11 @@ export const LeaderboardPage = observer(() => {
     const startNextTurn = () => {
         subscription?.unsubscribe()
         subscription = game.startNextTurn()
+    }
+
+    const goBackToLobby = () => {
+        subscription?.unsubscribe()
+        subscription = manager.endGame()
     }
 
     return (
@@ -50,12 +52,21 @@ export const LeaderboardPage = observer(() => {
             <footer>
                 <div className="w-full">
                     <MenuButtonList>
-                        <MenuButton
-                            color="var(--green)"
-                            onClick={startNextTurn}
-                        >
-                            <span>Next letter</span>
-                        </MenuButton>
+                        {isGameOver ? (
+                            <MenuButton
+                                color="var(--blue)"
+                                onClick={goBackToLobby}
+                            >
+                                <span>Go back to lobby</span>
+                            </MenuButton>
+                        ) : (
+                            <MenuButton
+                                color="var(--green)"
+                                onClick={startNextTurn}
+                            >
+                                <span>Next letter</span>
+                            </MenuButton>
+                        )}
                     </MenuButtonList>
                 </div>
             </footer>

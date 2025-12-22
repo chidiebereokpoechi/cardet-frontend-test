@@ -50,6 +50,11 @@ export class TickTenGame implements TickTenGameState {
     countdownTimeLeftInSeconds?: number
 
     @computed
+    public get isGameOver(): boolean {
+        return this.status === GameStatus.GAME_OVER
+    }
+
+    @computed
     public get haveISubmitted(): boolean {
         return this.turn.submissions.some((s) => s.player.id === this.me.id)
     }

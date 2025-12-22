@@ -140,6 +140,7 @@ export const RecordAnswerField: React.FC<Props> = ({
                                         handleChange('answer')(e)
                                         submitForm()
                                     }}
+                                    type="text"
                                     className={
                                         'name-input' +
                                         (values.answer === answer &&

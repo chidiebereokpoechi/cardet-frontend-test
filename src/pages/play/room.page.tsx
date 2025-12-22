@@ -99,17 +99,31 @@ export const RoomPage = observer(() => {
                     <span>{room.id}</span>
                 </div>
             </header>
-            <main>
-                <div
-                    className="w-100"
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        flex: 1,
-                    }}
-                >
+            <main className="flex-1 overflow-hidden">
+                <div className="w-100 flex flex-col h-full">
                     <span>Players in the room</span>
-                    <PlayerList className="mt-3">
+                    <PlayerList className="mt-3 flex flex-1 overflow-y-auto">
+                        {map(room.members, (_user) => (
+                            <UserPin
+                                name={_user.name}
+                                you={user.id === _user.id}
+                                key={_user.id}
+                            />
+                        ))}
+                        {map(room.members, (_user) => (
+                            <UserPin
+                                name={_user.name}
+                                you={user.id === _user.id}
+                                key={_user.id}
+                            />
+                        ))}
+                        {map(room.members, (_user) => (
+                            <UserPin
+                                name={_user.name}
+                                you={user.id === _user.id}
+                                key={_user.id}
+                            />
+                        ))}
                         {map(room.members, (_user) => (
                             <UserPin
                                 name={_user.name}

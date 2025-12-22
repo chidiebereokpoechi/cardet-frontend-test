@@ -1,22 +1,16 @@
 import { AnimateSharedLayout } from 'framer-motion'
 import { observer } from 'mobx-react'
 import React from 'react'
-import Confetti from 'react-confetti'
 import { Menu, MessageCircle } from 'react-feather'
-import { CircleButton, GamePageWrapper } from '../../../components'
-import { roomState } from '../../../modules/rooms'
-import { sound_manager, useCardetGame, useTickTenGame } from '../../../util'
-import { app_history } from '../../../util/app-history'
-import {
-    CenterCards,
-    MessagesPane,
-    PlayerCards,
-    PlayersArea,
-    PlayMenu,
-} from '../components'
 import styled from 'styled-components'
+import { CircleButton, GamePageWrapper } from '../../../components'
 import { GameStatus } from '../../../modules/game/tick-ten'
-import { RecordAnswerField } from './components/record-answer-field'
+import { roomState } from '../../../modules/rooms'
+import { useTickTenGame } from '../../../util'
+import { app_history } from '../../../util/app-history'
+import { MessagesPane, PlayMenu } from '../components'
+import { TurnPage } from './sub-pages'
+import { CountdownPage } from './sub-pages/countdown.page'
 
 const Counter = styled.div`
     position: absolute;
@@ -36,29 +30,6 @@ const Counter = styled.div`
     justify-content: center;
     align-items: center;
 `
-
-export const Turn = observer(() => {
-    const { manager, game } = useTickTenGame()
-
-    return (
-        <div className="w-100 display-flex">
-            <h1>{game.turn.letter}</h1>
-            <div></div>
-            {game.categories.map((category) => (
-                <RecordAnswerField
-                    key={category}
-                    category={category}
-                    answer={
-                        game.playerSheet.submissions[game.turn.letter].answers[
-                            category
-                        ].word
-                    }
-                    recordAnswer={game.recordAnswer.bind(game)}
-                />
-            ))}
-        </div>
-    )
-})
 
 export const TickTenGamePage = observer(() => {
     const { manager, game } = useTickTenGame()
@@ -88,15 +59,15 @@ export const TickTenGamePage = observer(() => {
                     ) : null}
                     <MessageCircle />
                 </CircleButton>
+                <span>{game.turn.letter}</span>
                 <CircleButton onClick={() => manager.openMenu()}>
                     <Menu />
                 </CircleButton>
             </header>
-            <main>
-                <AnimateSharedLayout type="crossfade">
-                    {game.status === GameStatus.TURN_STARTED && <Turn />}
-                </AnimateSharedLayout>
-            </main>
+            <AnimateSharedLayout type="crossfade">
+                {game.status === GameStatus.TURN_STARTED && <TurnPage />}
+                {game.status === GameStatus.COUNTDOWN && <CountdownPage />}
+            </AnimateSharedLayout>
         </GamePageWrapper>
     )
 })

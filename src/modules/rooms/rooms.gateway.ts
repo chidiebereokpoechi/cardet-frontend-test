@@ -36,6 +36,12 @@ export class RoomsGateway {
         gameManager.getGameState()
     }
 
+    @SubscribeMessage('submitted-answers')
+    public submittedAnswers(response: any) {
+        console.log('submitted answers response', response)
+        gameManager.getGameState()
+    }
+
     public joinRoom(room_id: string) {
         const user = userState.user as User
         this.handler.emit('join-room', { room_id, user })
@@ -69,5 +75,15 @@ export class RoomsGateway {
         const user = userState.user as User
         const room = roomState.room as Room
         this.handler.emit('play', { room_id: room.id, user })
+    }
+
+    public submitAnswers(submittedAt: number) {
+        const user = userState.user as User
+        const room = roomState.room as Room
+        this.handler.emit('submit-answers', {
+            room_id: room.id,
+            user,
+            submittedAt,
+        })
     }
 }

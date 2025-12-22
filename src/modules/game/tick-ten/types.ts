@@ -19,6 +19,11 @@ export interface Submission {
     readonly gradedBy?: Player
 }
 
+interface PlayerTurnSubmission {
+    player: Player
+    timestamp: number
+}
+
 export interface SubmissionToGrade {
     submissionToGrade: Submission
     player: Player
@@ -31,6 +36,8 @@ export interface PlayerSheet {
 
 export interface Turn {
     readonly letter: Letter
+    readonly submissions: PlayerTurnSubmission[]
+    readonly gradedSubmissions: Player[]
 }
 
 export type Verdict = 'correct' | 'incorrect' | 'duplicate'
@@ -42,6 +49,7 @@ export interface Answer {
 
 export interface TickTenGameState {
     readonly id: string
+    readonly me: Player
     readonly players: Player[]
     readonly letters: Letter[]
     readonly categories: Category[]

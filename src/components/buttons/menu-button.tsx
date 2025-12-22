@@ -35,12 +35,15 @@ const Wrapper = styled(motion.button)`
 type Props = HTMLMotionProps<'button'> & {
     color?: string
     icon?: React.ComponentType
+    innerText?: string
+    innerTextColor?: string
 }
 
 export const MenuButton: React.FC<Props> = ({
     children,
     color: _color,
     icon: Icon,
+    innerText,
     ...props
 }) => {
     const backgroundColor = _color
@@ -49,6 +52,14 @@ export const MenuButton: React.FC<Props> = ({
         <Wrapper {...props}>
             <CircleButton style={{ backgroundColor }} as={motion.div}>
                 {Icon && <Icon />}
+                {innerText && (
+                    <span
+                        className="text-lg font-bold"
+                        style={{ color: props.innerTextColor }}
+                    >
+                        {innerText}
+                    </span>
+                )}
             </CircleButton>
             <div className="body">{children}</div>
         </Wrapper>

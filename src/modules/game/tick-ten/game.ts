@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx'
+import { action, computed, observable } from 'mobx'
 import {
     Category,
     GameStatus,
@@ -11,10 +11,14 @@ import {
 } from './types'
 import { GradeSubmissionModel, RecordAnswerModel } from './models'
 import { tickTenService } from './service'
+import { roomState } from '../../rooms'
 
 export class TickTenGame implements TickTenGameState {
     @observable
     id: string
+
+    @observable
+    me: Player
 
     @observable
     players: Player[]
@@ -40,8 +44,45 @@ export class TickTenGame implements TickTenGameState {
     @observable
     submissionToGrade?: SubmissionToGrade
 
+    countdownTimeout?: number
+
+    @observable
+    countdownTimeLeftInSeconds?: number
+
+    @computed
+    public get haveISubmitted(): boolean {
+        return this.turn.submissions.some((s) => s.player.id === this.me.id)
+    }
+
+    @computed
+    public get countdownStartTime(): number | undefined {
+        if (this.turn.submissions.length === 0) return undefined
+
+        return this.turn.submissions[0]?.timestamp
+    }
+
+    @computed
+    public get countdownEndTime(): number | undefined {
+        if (!this.countdownStartTime) return undefined
+
+        return (
+            this.countdownStartTime +
+            roomState.room!.game_config.tickTenGameConfig.countdownInSeconds *
+                1000
+        )
+    }
+
+    @computed
+    public get timeLeftInSeconds(): number {
+        if (!this.countdownEndTime) return 0
+
+        const diffInMs = this.countdownEndTime - Date.now()
+        return Math.max(0, Math.trunc(diffInMs / 1000))
+    }
+
     private constructor(state: TickTenGameState) {
         this.id = state.id
+        this.me = state.me
         this.players = state.players
         this.letters = state.letters
         this.categories = state.categories
@@ -49,11 +90,14 @@ export class TickTenGame implements TickTenGameState {
         this.status = state.status
         this.playerSheet = state.playerSheet
         this.leaderboard = state.leaderboard
+
+        this.evaluateCountdown()
     }
 
     @action
     public update(state: TickTenGameState) {
         this.id = state.id
+        this.me = state.me
         this.players = state.players
         this.letters = state.letters
         this.categories = state.categories
@@ -62,7 +106,32 @@ export class TickTenGame implements TickTenGameState {
         this.playerSheet = state.playerSheet
         this.leaderboard = state.leaderboard
 
+        this.evaluateCountdown()
         return this
+    }
+
+    @action
+    private evaluateCountdown() {
+        if (this.status !== GameStatus.COUNTDOWN && this.countdownTimeout) {
+            clearTimeout(this.countdownTimeout)
+            this.countdownTimeout = undefined
+            return
+        }
+
+        const now = Date.now()
+
+        if (now >= this.countdownEndTime!) {
+            this.status = GameStatus.GRADING
+            return
+        }
+
+        const diffInMs = this.countdownEndTime! - Date.now()
+
+        if (this.status === GameStatus.COUNTDOWN) {
+            this.countdownTimeout = setTimeout(() => {
+                this.status = GameStatus.GRADING
+            }, diffInMs)
+        }
     }
 
     @action
@@ -71,6 +140,7 @@ export class TickTenGame implements TickTenGameState {
             next: (response) => {
                 if (response.data) {
                     this.update(response.data)
+                    roomState.gateway.play()
                 }
             },
         })
@@ -82,6 +152,7 @@ export class TickTenGame implements TickTenGameState {
             next: (response) => {
                 if (response.data) {
                     this.update(response.data)
+                    roomState.gateway.play()
                 }
             },
         })
@@ -104,6 +175,7 @@ export class TickTenGame implements TickTenGameState {
             next: (response) => {
                 if (response.data) {
                     this.update(response.data)
+                    roomState.gateway.play()
                 }
             },
         })

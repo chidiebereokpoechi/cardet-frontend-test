@@ -13,5 +13,12 @@ export interface Room {
     messages: Message[]
     room_state: RoomState
     game_manager_id: string
-    game_config: object
+    game_config: {
+        tickTenGameConfig: {
+            categories: string[]
+            letters: string[]
+            countdownInSeconds: number
+        }
+        cardetGameConfig: {}
+    }
 }

@@ -4,11 +4,12 @@ import { Subscription } from 'rxjs'
 import styled from 'styled-components'
 import { Button } from '../../../../components'
 import { RecordAnswerModel } from '../../../../modules/game/tick-ten/models'
-import { debounce } from 'lodash'
+import { debounce, trim } from 'lodash'
 
 interface Props {
     category: string
     answer?: string
+    disabled?: boolean
     recordAnswer: (model: RecordAnswerModel) => Subscription
 }
 
@@ -40,6 +41,13 @@ const StyledForm = styled.form`
         color: #00ffb2;
     }
 
+    input:disabled {
+        background: #222222;
+        border-color: #444444;
+        color: #888888;
+        cursor: not-allowed;
+    }
+
     .submit-button {
         width: 3rem;
     }
@@ -50,15 +58,16 @@ const StyledForm = styled.form`
     }
 `
 
+let subscription: Subscription | undefined
+
 export const RecordAnswerField: React.FC<Props> = ({
     category,
     answer,
     recordAnswer,
+    disabled,
 }) => {
-    let subscription: Subscription | undefined
-
     const validate = (values: RecordAnswerModel) => {
-        if (values.answer.length < 2) {
+        if (trim(values.answer).length <= 1) {
             return { answer: AnswerValidationErrors.TOO_SHORT }
         }
         return {}
@@ -67,19 +76,20 @@ export const RecordAnswerField: React.FC<Props> = ({
     const debouncedSubmit = React.useMemo(
         () =>
             debounce((model: RecordAnswerModel) => {
-                if (model.answer.length < 2) {
+                if (trim(model.answer).length <= 1) {
                     return
                 }
 
                 subscription = recordAnswer(model)
                 return subscription
-            }, 1000),
+            }, 500),
         [],
     )
 
     React.useEffect(() => {
         return () => {
             debouncedSubmit.cancel()
+            subscription?.unsubscribe()
         }
     }, [])
 
@@ -107,7 +117,14 @@ export const RecordAnswerField: React.FC<Props> = ({
                     return (
                         <React.Fragment>
                             <StyledForm onSubmit={handleSubmit}>
-                                <span>{category}</span>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-xs">{category}</span>
+                                    {errors.answer && (
+                                        <span className="text-red-500 text-xs">
+                                            {errors.answer}
+                                        </span>
+                                    )}
+                                </div>
                                 <Field
                                     onChange={(e: any) => {
                                         handleChange('answer')(e)
@@ -120,6 +137,7 @@ export const RecordAnswerField: React.FC<Props> = ({
                                             : '')
                                     }
                                     name="answer"
+                                    disabled={disabled}
                                 />
                             </StyledForm>
                         </React.Fragment>

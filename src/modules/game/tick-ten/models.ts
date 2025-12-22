@@ -18,8 +18,25 @@ export class RecordAnswerModel {
 
 export class GradeSubmissionModel {
     @IsString()
-    public gradedForId!: string
+    public gradedForId: string
 
     @IsObject()
-    public verdicts!: Record<Category, Verdict>
+    public verdicts: Record<Category, Verdict>
+
+    constructor(gradedForId: string, verdicts: Record<Category, Verdict>) {
+        this.gradedForId = gradedForId
+        this.verdicts = verdicts
+    }
+
+    public get score(): number {
+        let total = 0
+        for (const verdict of Object.values(this.verdicts)) {
+            if (verdict === 'correct') {
+                total += 10
+            } else if (verdict === 'duplicate') {
+                total += 5
+            }
+        }
+        return total
+    }
 }

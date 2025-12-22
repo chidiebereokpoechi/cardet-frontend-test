@@ -35,7 +35,7 @@ const Wrapper = styled(motion.button)`
 type Props = HTMLMotionProps<'button'> & {
     color?: string
     icon?: React.ComponentType
-    innerText?: string
+    innerText?: string | number
     innerTextColor?: string
 }
 

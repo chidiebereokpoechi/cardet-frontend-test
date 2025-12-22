@@ -5,16 +5,13 @@ import styled from 'styled-components'
 import { Button } from '../../../../components'
 import { RecordAnswerModel } from '../../../../modules/game/tick-ten/models'
 import { debounce, trim } from 'lodash'
+import { useTickTenGame } from '../../../../util'
 
 interface Props {
     category: string
     answer?: string
     disabled?: boolean
     recordAnswer: (model: RecordAnswerModel) => Subscription
-}
-
-enum AnswerValidationErrors {
-    TOO_SHORT = 'Too short',
 }
 
 const StyledForm = styled.form`
@@ -66,10 +63,24 @@ export const RecordAnswerField: React.FC<Props> = ({
     recordAnswer,
     disabled,
 }) => {
+    const { game } = useTickTenGame()
+
     const validate = (values: RecordAnswerModel) => {
-        if (trim(values.answer).length <= 1) {
-            return { answer: AnswerValidationErrors.TOO_SHORT }
+        const trimmedAnswer = trim(values.answer)
+
+        if (
+            game.turn.letter.toUpperCase() !==
+            trimmedAnswer.charAt(0)?.toUpperCase()
+        ) {
+            return {
+                answer: `Answer must start with ${game.turn.letter.toUpperCase()}`,
+            }
         }
+
+        if (trimmedAnswer.length <= 1) {
+            return { answer: 'Too short' }
+        }
+
         return {}
     }
 
@@ -132,7 +143,8 @@ export const RecordAnswerField: React.FC<Props> = ({
                                     }}
                                     className={
                                         'name-input' +
-                                        (values.answer === answer
+                                        (values.answer === answer &&
+                                        values.answer.length > 2
                                             ? ' identical'
                                             : '')
                                     }

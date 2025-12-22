@@ -12,6 +12,7 @@ import { MessagesPane, PlayMenu } from '../components'
 import { TurnPage } from './sub-pages'
 import { CountdownPage } from './sub-pages/countdown.page'
 import { GradingPage } from './sub-pages/grading.page'
+import { LeaderboardPage } from './sub-pages/leaderboard.page'
 
 const Counter = styled.div`
     position: absolute;
@@ -69,6 +70,7 @@ export const TickTenGamePage = observer(() => {
                 {game.status === GameStatus.TURN_STARTED && <TurnPage />}
                 {game.status === GameStatus.COUNTDOWN && <CountdownPage />}
                 {game.status === GameStatus.GRADING && <GradingPage />}
+                {game.status === GameStatus.LEADERBOARD && <LeaderboardPage />}
             </AnimateSharedLayout>
         </GamePageWrapper>
     )

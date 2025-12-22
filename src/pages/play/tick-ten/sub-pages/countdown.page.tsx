@@ -1,11 +1,10 @@
 import { observer } from 'mobx-react'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Subscription } from 'rxjs'
 import { MenuButton, MenuButtonList } from '../../../../components'
 import { useTickTenGame } from '../../../../util'
-import { RecordAnswerField } from '../components/record-answer-field'
-import { roomState } from '../../../../modules/rooms'
 import { useTickTenCountdown } from '../../../../util/misc/use-countdown'
+import { RecordAnswerField } from '../components/record-answer-field'
 
 let subscription: Subscription | undefined
 

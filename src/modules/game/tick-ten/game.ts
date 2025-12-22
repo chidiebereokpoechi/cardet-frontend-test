@@ -55,6 +55,13 @@ export class TickTenGame implements TickTenGameState {
     }
 
     @computed
+    public get haveIGraded(): boolean {
+        return this.turn.gradedSubmissions.some(
+            (player) => player.id === this.submissionToGrade?.player.id,
+        )
+    }
+
+    @computed
     public get countdownStartTime(): number | undefined {
         if (this.turn.submissions.length === 0) return undefined
 
@@ -160,6 +167,8 @@ export class TickTenGame implements TickTenGameState {
 
     @action
     public getSubmissionToGrade() {
+        this.submissionToGrade = undefined
+
         return tickTenService.getSubmissionToGrade().subscribe({
             next: (response) => {
                 if (response.data) {
@@ -172,6 +181,18 @@ export class TickTenGame implements TickTenGameState {
     @action
     public gradeSubmission(model: GradeSubmissionModel) {
         return tickTenService.gradeSubmission(model).subscribe({
+            next: (response) => {
+                if (response.data) {
+                    this.update(response.data)
+                    roomState.gateway.play()
+                }
+            },
+        })
+    }
+
+    @action
+    public startNextTurn() {
+        return tickTenService.startNextTurn().subscribe({
             next: (response) => {
                 if (response.data) {
                     this.update(response.data)

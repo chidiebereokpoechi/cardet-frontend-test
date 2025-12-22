@@ -37,7 +37,15 @@ export const GradingPage = observer(() => {
     }
 
     const answers = submissionToGrade.submissionToGrade.answers
-    const grading = new GradeSubmissionModel(submissionToGrade.player.id, {})
+    const grading = new GradeSubmissionModel(
+        submissionToGrade.player.id,
+        Object.fromEntries(
+            Object.entries(answers).map(([category, answer]) => [
+                category,
+                answer.verdict!,
+            ]),
+        ),
+    )
 
     const submitGrading = (values: GradeSubmissionModel) => {
         subscription?.unsubscribe()
@@ -107,7 +115,7 @@ export const GradingPage = observer(() => {
                                 <LoaderOverlay />
                             )}
                         </main>
-                        {isValid && (
+                        {isValid && !game.haveIGraded && (
                             <footer>
                                 <form
                                     className="w-full"

@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs'
 import { Answer, Category, Verdict } from '../../../../modules/game/tick-ten'
 import { GradeSubmissionModel } from '../../../../modules/game/tick-ten/models'
 import { classNames, useTickTenGame } from '../../../../util'
+import { CircleButton } from '../../../../components'
 
 interface Props {
     category: Category
@@ -55,6 +56,19 @@ export const GradingField: React.FC<Props> = observer(
             (o) => o.answers[category],
         )
 
+        const score = (() => {
+            switch (answer.verdict) {
+                case 'correct':
+                    return 10
+                case 'duplicate':
+                    return 5
+                case 'incorrect':
+                    return 0
+                default:
+                    return 0
+            }
+        })()
+
         return (
             <div className="grid grid-cols-1 gap-2 bg-[#121518] px-[1.75rem] py-3">
                 <div className="flex flex-row justify-between">
@@ -64,26 +78,35 @@ export const GradingField: React.FC<Props> = observer(
                         </span>
                         <span className="flex font-bold">{answer.word}</span>
                     </div>
-                    <div className="grid grid-cols-3 gap-2">
-                        <VerdictButton
-                            verdict="correct"
-                            category={category}
-                            color="var(--green)"
-                            icon={Check}
-                        />
-                        <VerdictButton
-                            verdict="duplicate"
-                            category={category}
-                            color="var(--yellow)"
-                            icon={Copy}
-                        />
-                        <VerdictButton
-                            verdict="incorrect"
-                            category={category}
-                            color="var(--red)"
-                            icon={X}
-                        />
-                    </div>
+                    {game.haveIGraded && (
+                        <div>
+                            <>
+                                <span>{score}</span>
+                            </>
+                        </div>
+                    )}
+                    {!game.haveIGraded && (
+                        <div className="grid grid-cols-3 gap-2">
+                            <VerdictButton
+                                verdict="correct"
+                                category={category}
+                                color="var(--green)"
+                                icon={Check}
+                            />
+                            <VerdictButton
+                                verdict="duplicate"
+                                category={category}
+                                color="var(--yellow)"
+                                icon={Copy}
+                            />
+                            <VerdictButton
+                                verdict="incorrect"
+                                category={category}
+                                color="var(--red)"
+                                icon={X}
+                            />
+                        </div>
+                    )}
                 </div>
                 <div className="-mb-1">
                     <details className="text-[.65rem]">

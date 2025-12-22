@@ -7,7 +7,7 @@ class TickTenService {
         return HttpClient.post<RecordAnswerModel, TickTenGameState>(
             `tick-ten/record-answer`,
             model,
-            false,
+            true,
         )
     }
 
@@ -27,6 +27,14 @@ class TickTenService {
         return HttpClient.post<GradeSubmissionModel, TickTenGameState>(
             `tick-ten/grade`,
             model,
+            false,
+        )
+    }
+
+    public startNextTurn() {
+        return HttpClient.post<never, TickTenGameState>(
+            `tick-ten/start-next-turn`,
+            undefined,
             false,
         )
     }

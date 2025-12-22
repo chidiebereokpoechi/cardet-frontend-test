@@ -55,14 +55,13 @@ const StyledForm = styled.form`
     }
 `
 
-let subscription: Subscription | undefined
-
 export const RecordAnswerField: React.FC<Props> = ({
     category,
     answer,
     recordAnswer,
     disabled,
 }) => {
+    let subscription: Subscription | undefined
     const { game } = useTickTenGame()
 
     const validate = (values: RecordAnswerModel) => {
@@ -93,7 +92,7 @@ export const RecordAnswerField: React.FC<Props> = ({
 
                 subscription = recordAnswer(model)
                 return subscription
-            }, 500),
+            }, 2000),
         [],
     )
 

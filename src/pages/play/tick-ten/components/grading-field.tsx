@@ -7,6 +7,7 @@ import { Answer, Category, Verdict } from '../../../../modules/game/tick-ten'
 import { GradeSubmissionModel } from '../../../../modules/game/tick-ten/models'
 import { classNames, useTickTenGame } from '../../../../util'
 import { CircleButton } from '../../../../components'
+import { trim } from 'lodash'
 
 interface Props {
     category: Category
@@ -52,9 +53,9 @@ export const GradingField: React.FC<Props> = observer(
             return null
         }
 
-        const otherAnswers = game.submissionToGrade.others.map(
-            (o) => o.answers[category],
-        )
+        const otherAnswers = game.submissionToGrade.others
+            .map((o) => o.answers[category])
+            .filter(({ word }) => trim(word).length > 0)
 
         const score = (() => {
             switch (answer.verdict) {
@@ -109,21 +110,23 @@ export const GradingField: React.FC<Props> = observer(
                     )}
                 </div>
                 <div className="-mb-1">
-                    <details className="text-[.65rem]">
-                        <summary className="text-[#97979b]">
-                            Other answers
-                        </summary>
-                        <div className="mt-3">
-                            {otherAnswers.map((a, i) => (
-                                <span
-                                    key={i}
-                                    className="text-[.5rem] mr-1 mb-0.5 inline-flex py-0.5 px-1.5 bg-slate-100 text-black rounded-md"
-                                >
-                                    {a.word}
-                                </span>
-                            ))}
-                        </div>
-                    </details>
+                    {otherAnswers.length ? (
+                        <details className="text-[.65rem]">
+                            <summary className="text-[#97979b]">
+                                Other answers
+                            </summary>
+                            <div className="mt-3">
+                                {otherAnswers.map((a, i) => (
+                                    <span
+                                        key={i}
+                                        className="text-[.5rem] mr-1 mb-0.5 inline-flex py-0.5 px-1.5 bg-slate-100 text-black rounded-md"
+                                    >
+                                        {a.word}
+                                    </span>
+                                ))}
+                            </div>
+                        </details>
+                    ) : null}
                 </div>
             </div>
         )

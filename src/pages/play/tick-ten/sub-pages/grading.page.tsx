@@ -11,12 +11,14 @@ import { GradeSubmissionModel } from '../../../../modules/game/tick-ten/models'
 import { useTickTenGame } from '../../../../util'
 import { GradingField } from '../components/grading-field'
 import { Category } from '../../../../modules/game/tick-ten'
+import { trim } from 'lodash'
 
 let subscription: Subscription | undefined
 
 export const GradingPage = observer(() => {
     const { game } = useTickTenGame()
 
+    const haveIGraded = game.haveIGraded
     const getSubmissionToGrade = () => {
         subscription?.unsubscribe()
         subscription = game.getSubmissionToGrade()
@@ -37,7 +39,7 @@ export const GradingPage = observer(() => {
     }
 
     const answers = submissionToGrade.submissionToGrade.answers
-    const grading = new GradeSubmissionModel(
+    let grading = new GradeSubmissionModel(
         submissionToGrade.player.id,
         Object.fromEntries(
             Object.entries(answers).map(([category, answer]) => [
@@ -49,7 +51,9 @@ export const GradingPage = observer(() => {
 
     const submitGrading = (values: GradeSubmissionModel) => {
         subscription?.unsubscribe()
-        subscription = game.gradeSubmission(values)
+        subscription = game.gradeSubmission(values).add(() => {
+            grading = values
+        })
     }
 
     const validate = (values: GradeSubmissionModel) => {
@@ -115,7 +119,7 @@ export const GradingPage = observer(() => {
                                 <LoaderOverlay />
                             )}
                         </main>
-                        {isValid && !game.haveIGraded && (
+                        {isValid && !haveIGraded && (
                             <footer>
                                 <form
                                     className="w-full"

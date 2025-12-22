@@ -11,7 +11,7 @@ import {
     UserPin,
 } from '../../components'
 import { gameManager, GameType } from '../../modules/game'
-import { Room, roomState } from '../../modules/rooms'
+import { Room, RoomState, roomState } from '../../modules/rooms'
 import { User } from '../../modules/user/user.entity'
 import { userState } from '../../modules/user/user.state'
 import { MessagesPane, PlayerList } from './components'
@@ -76,6 +76,13 @@ export const RoomPage = observer(() => {
         gameManager.getGameState()
     }, [game])
 
+    const disableCardetGame =
+        room.room_state !== RoomState.LOBBY ||
+        room.members.length < 2 ||
+        room.members.length > 4
+    const disableTickTenGame =
+        room.room_state !== RoomState.LOBBY || room.members.length < 2
+
     return (
         <MenuPageWrapper>
             {roomState.messages_pane_open && <MessagesPane />}
@@ -116,22 +123,20 @@ export const RoomPage = observer(() => {
             <footer>
                 <div className="w-100">
                     <MenuButtonList>
-                        {room.members.length > 0 && room.members.length < 4 && (
-                            <>
-                                <MenuButton
-                                    color="var(--green)"
-                                    onClick={() => startGame(GameType.CARDET)}
-                                >
-                                    Play Cardet™
-                                </MenuButton>
-                                <MenuButton
-                                    color="var(--blue)"
-                                    onClick={() => startGame(GameType.TICK_TEN)}
-                                >
-                                    Play Tick Ten™
-                                </MenuButton>
-                            </>
-                        )}
+                        <MenuButton
+                            color="var(--green)"
+                            onClick={() => startGame(GameType.CARDET)}
+                            disabled={disableCardetGame}
+                        >
+                            Play Cardet™
+                        </MenuButton>
+                        <MenuButton
+                            color="var(--blue)"
+                            onClick={() => startGame(GameType.TICK_TEN)}
+                            disabled={disableTickTenGame}
+                        >
+                            Play Tick Ten™
+                        </MenuButton>
                         {/* <MenuButton color="#d1a33e" onClick={shareRoomLink}>
                             Share link to join
                         </MenuButton> */}

@@ -2,6 +2,7 @@ import { HTMLMotionProps, motion } from 'framer-motion'
 import React from 'react'
 import styled from 'styled-components'
 import { CircleButton } from './circle-button'
+import { classNames } from '../../util'
 
 const Wrapper = styled(motion.button)`
     background: transparent;
@@ -29,6 +30,19 @@ const Wrapper = styled(motion.button)`
     svg {
         color: white;
         size: 24px;
+    }
+
+    :disabled {
+        cursor: not-allowed;
+
+        ${CircleButton} {
+            background: var(--understated-grey) !important;
+            color: var(--dark-grey) !important;
+        }
+
+        .body {
+            color: var(--understated-grey) !important;
+        }
     }
 `
 

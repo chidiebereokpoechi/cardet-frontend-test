@@ -110,27 +110,6 @@ export const RoomPage = observer(() => {
                                 key={_user.id}
                             />
                         ))}
-                        {map(room.members, (_user) => (
-                            <UserPin
-                                name={_user.name}
-                                you={user.id === _user.id}
-                                key={_user.id}
-                            />
-                        ))}
-                        {map(room.members, (_user) => (
-                            <UserPin
-                                name={_user.name}
-                                you={user.id === _user.id}
-                                key={_user.id}
-                            />
-                        ))}
-                        {map(room.members, (_user) => (
-                            <UserPin
-                                name={_user.name}
-                                you={user.id === _user.id}
-                                key={_user.id}
-                            />
-                        ))}
                     </PlayerList>
                 </div>
             </main>

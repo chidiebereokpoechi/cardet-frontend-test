@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs'
 import { Answer, Category, Verdict } from '../../../../modules/game/tick-ten'
 import { GradeSubmissionModel } from '../../../../modules/game/tick-ten/models'
 import { classNames, useTickTenGame } from '../../../../util'
+import { MatchConfidence } from '../../../../util/misc/string-operations'
 
 interface Props {
     category: Category
@@ -61,6 +62,10 @@ export const GradingField: React.FC<Props> = observer(
         const verdict = values.verdicts[category]
         const score =
             verdict === 'correct' ? '+10' : verdict === 'duplicate' ? '+5' : '0'
+        const isExactDuplicate = answer.confidence === MatchConfidence.EXACT
+        const isCloseDuplicate =
+            answer.confidence === MatchConfidence.HIGH ||
+            answer.confidence === MatchConfidence.MEDIUM
 
         return (
             <div className="grid grid-cols-1 gap-2 bg-[#1a2a31] px-[1.75rem] py-3">
@@ -77,7 +82,9 @@ export const GradingField: React.FC<Props> = observer(
                             <></>
                         )}
                     </div>
-                    {(game.haveIGraded || isEmptyAnswer) && (
+                    {(game.haveIGraded ||
+                        isEmptyAnswer ||
+                        isExactDuplicate) && (
                         <div className="absolute right-0 top-0 flex items-center gap-2">
                             <span
                                 className={classNames(
@@ -93,32 +100,37 @@ export const GradingField: React.FC<Props> = observer(
                             </span>
                         </div>
                     )}
-                    {!game.haveIGraded && !isEmptyAnswer && (
-                        <div className="grid grid-cols-3 gap-1">
-                            <VerdictButton
-                                verdict="correct"
-                                category={category}
-                                color="var(--green)"
-                                icon={Check}
-                            />
-                            <VerdictButton
-                                verdict="duplicate"
-                                category={category}
-                                color="var(--blue)"
-                                icon={Copy}
-                            />
-                            <VerdictButton
-                                verdict="incorrect"
-                                category={category}
-                                color="var(--red)"
-                                icon={X}
-                            />
-                        </div>
-                    )}
+                    {!game.haveIGraded &&
+                        !isEmptyAnswer &&
+                        !isExactDuplicate && (
+                            <div className="grid grid-cols-3 gap-1">
+                                <VerdictButton
+                                    verdict="correct"
+                                    category={category}
+                                    color="var(--green)"
+                                    icon={Check}
+                                />
+                                <VerdictButton
+                                    verdict="duplicate"
+                                    category={category}
+                                    color="var(--blue)"
+                                    icon={Copy}
+                                />
+                                <VerdictButton
+                                    verdict="incorrect"
+                                    category={category}
+                                    color="var(--red)"
+                                    icon={X}
+                                />
+                            </div>
+                        )}
                 </div>
                 <div className="-mb-1">
                     {otherAnswers.length ? (
-                        <details className="text-[.65rem]">
+                        <details
+                            className="text-[.65rem]"
+                            open={isCloseDuplicate}
+                        >
                             <summary className="text-[#97979b]">
                                 Other answers
                             </summary>
@@ -126,7 +138,12 @@ export const GradingField: React.FC<Props> = observer(
                                 {otherAnswers.map((a, i) => (
                                     <span
                                         key={i}
-                                        className="text-[.5rem] mr-1 mb-0.5 inline-flex py-0.5 px-1.5 bg-slate-100 text-black rounded-md"
+                                        className={classNames(
+                                            'text-[.5rem] mr-1 mb-0.5 inline-flex py-0.5 px-1.5 bg-slate-100 text-black rounded-md',
+                                            isCloseDuplicate || isExactDuplicate
+                                                ? 'bg-[var(--blue)] text-white'
+                                                : '',
+                                        )}
                                     >
                                         {a.word}
                                     </span>

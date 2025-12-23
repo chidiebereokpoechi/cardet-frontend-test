@@ -1,3 +1,5 @@
+import { MatchConfidence } from '../../../util/misc/string-operations'
+
 export interface Player {
     readonly id: string
     readonly name: string
@@ -45,6 +47,7 @@ export type Verdict = 'correct' | 'incorrect' | 'duplicate'
 export interface Answer {
     readonly word: string
     verdict?: Verdict
+    confidence?: MatchConfidence
 }
 
 export interface TickTenGameState {

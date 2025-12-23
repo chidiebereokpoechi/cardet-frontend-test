@@ -44,7 +44,7 @@ export class TickTenGame implements TickTenGameState {
     @observable
     submissionToGrade?: SubmissionToGrade
 
-    countdownTimeout?: NodeJS.Timeout
+    countdownTimeout?: any
 
     @observable
     countdownTimeLeftInSeconds?: number

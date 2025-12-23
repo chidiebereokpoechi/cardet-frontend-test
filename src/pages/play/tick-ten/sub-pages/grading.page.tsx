@@ -82,7 +82,7 @@ export const GradingPage = observer(() => {
             {({ handleSubmit, isValid, values }) => {
                 return (
                     <>
-                        <main className="flex-1 overflow-y-auto mb-4">
+                        <main className="flex-1 overflow-x-hidden overflow-y-auto mb-4">
                             {game.submissionToGrade ? (
                                 <div className="m-[-1.75rem] w-[calc(100%+3.5rem)] flex flex-col">
                                     <div className="flex justify-center">

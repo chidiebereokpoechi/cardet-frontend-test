@@ -117,7 +117,6 @@ export class TickTenGame implements TickTenGameState {
         switch (state.status) {
             case GameStatus.TURN_STARTED:
                 if (this.status !== GameStatus.TURN_STARTED) {
-                    navigator.vibrate(200)
                     sound_manager.playStateChange()
                 }
                 break

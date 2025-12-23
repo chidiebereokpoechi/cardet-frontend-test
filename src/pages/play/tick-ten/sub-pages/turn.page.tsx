@@ -1,14 +1,22 @@
+import { motion } from 'framer-motion'
 import { observer } from 'mobx-react'
 import React from 'react'
+import { Clock } from 'react-feather'
 import { Subscription } from 'rxjs'
 import { MenuButton, MenuButtonList } from '../../../../components'
-import { useTickTenCountdown, useTickTenGame } from '../../../../util'
-import { RecordAnswerField } from '../components/record-answer-field'
 import { GameStatus } from '../../../../modules/game/tick-ten'
+import { roomState } from '../../../../modules/rooms'
+import {
+    classNames,
+    useTickTenCountdown,
+    useTickTenGame,
+} from '../../../../util'
+import { RecordAnswerField } from '../components/record-answer-field'
 
 export const TurnPage = observer(() => {
     let subscription: Subscription | undefined
 
+    const room = roomState.room
     const { game } = useTickTenGame()
     const [countdown] = useTickTenCountdown()
     const isCountingDown = game.status === GameStatus.COUNTDOWN
@@ -30,23 +38,61 @@ export const TurnPage = observer(() => {
 
     return (
         <>
-            <main className="">
-                <div className="w-full grid gap-3">
-                    {game.categories.map((category) => {
-                        const letter = game.turn.letter
-                        const submission = game.playerSheet.submissions[letter]
-                        const answer = submission.answers[category].word
+            <main className="flex-1 overflow-x-hidden overflow-y-auto mb-4">
+                <div className="grid grid-cols-1 gap-2 w-full">
+                    <div className="flex justify-center items-center">
+                        {/* Alarm clock dancing animation */}
+                        <motion.div
+                            className={classNames(
+                                'flex bg-[#121518] text-[var(--understated-grey)] rounded-2xl text-[1.25rem] w-[4rem] h-[4rem] justify-center items-center',
+                                isCountingDown ? 'bg-[var(--red)]' : '',
+                                isCountingDown ? 'text-white' : '',
+                            )}
+                            animate={
+                                isCountingDown
+                                    ? {
+                                          rotate: [
+                                              0, -18, 18, -14, 14, -8, 8, 0,
+                                          ],
+                                          x: [0, -6, 6, -5, 5, -3, 3, 0],
+                                      }
+                                    : { rotate: 0, x: 0 }
+                            }
+                            transition={
+                                isCountingDown
+                                    ? {
+                                          duration: 0.25, // violent burst
+                                          repeat: Infinity,
+                                          repeatDelay: 0.75, // long pause (1s total cycle)
+                                          ease: 'easeInOut',
+                                      }
+                                    : { duration: 0.15 }
+                            }
+                        >
+                            <span>
+                                {isCountingDown ? countdown : <Clock />}
+                            </span>
+                        </motion.div>
+                    </div>
+                    <div className="w-full grid gap-3">
+                        {game.categories.map((category) => {
+                            const letter = game.turn.letter
+                            const submission =
+                                game.playerSheet.submissions[letter]
 
-                        return (
-                            <RecordAnswerField
-                                key={category}
-                                category={category}
-                                answer={answer}
-                                recordAnswer={game.recordAnswer.bind(game)}
-                                disabled={game.haveISubmitted}
-                            />
-                        )
-                    })}
+                            const answer = submission.answers[category].word
+
+                            return (
+                                <RecordAnswerField
+                                    key={category}
+                                    category={category}
+                                    answer={answer}
+                                    recordAnswer={game.recordAnswer.bind(game)}
+                                    disabled={game.haveISubmitted}
+                                />
+                            )
+                        })}
+                    </div>
                 </div>
             </main>
             <footer>
@@ -55,11 +101,6 @@ export const TurnPage = observer(() => {
                         <MenuButton
                             color="var(--green)"
                             onClick={submitAnswers}
-                            innerText={
-                                isCountingDown
-                                    ? countdown.toString()
-                                    : undefined
-                            }
                             disabled={
                                 haveISubmitted ||
                                 hasWrittenAllAnswers() === false

@@ -30,7 +30,7 @@ export const LeaderboardPage = observer(() => {
 
     return (
         <>
-            <main className="flex-1 overflow-y-auto mb-4">
+            <main className="flex-1 overflow-x-hidden overflow-y-auto mb-4">
                 <div className="m-[-1.75rem] w-[calc(100%+3.5rem)] flex flex-col">
                     <div className="flex justify-center">
                         <span className="text-xs p-4">

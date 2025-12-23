@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTickTenGame } from './use-game'
+import { sound_manager } from '../sound'
 
 let interval: number | undefined
 
@@ -16,6 +17,7 @@ export const useTickTenCountdown = () => {
     useEffect(() => {
         interval = window.setInterval(() => {
             setCountdown((prev) => prev! - 1)
+            // sound_manager.punch()
 
             if (countdown <= 0) {
                 clearIntervalIfExists()

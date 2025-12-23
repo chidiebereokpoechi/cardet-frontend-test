@@ -2,13 +2,17 @@ import { observer } from 'mobx-react'
 import React from 'react'
 import { Subscription } from 'rxjs'
 import { MenuButton, MenuButtonList } from '../../../../components'
-import { useTickTenGame } from '../../../../util'
+import { useTickTenCountdown, useTickTenGame } from '../../../../util'
 import { RecordAnswerField } from '../components/record-answer-field'
+import { GameStatus } from '../../../../modules/game/tick-ten'
 
 export const TurnPage = observer(() => {
     let subscription: Subscription | undefined
 
     const { game } = useTickTenGame()
+    const [countdown] = useTickTenCountdown()
+    const isCountingDown = game.status === GameStatus.COUNTDOWN
+    const haveISubmitted = game.haveISubmitted
 
     const hasWrittenAllAnswers = () => {
         const letter = game.turn.letter
@@ -39,6 +43,7 @@ export const TurnPage = observer(() => {
                                 category={category}
                                 answer={answer}
                                 recordAnswer={game.recordAnswer.bind(game)}
+                                disabled={game.haveISubmitted}
                             />
                         )
                     })}
@@ -50,7 +55,15 @@ export const TurnPage = observer(() => {
                         <MenuButton
                             color="var(--green)"
                             onClick={submitAnswers}
-                            disabled={hasWrittenAllAnswers() === false}
+                            innerText={
+                                isCountingDown
+                                    ? countdown.toString()
+                                    : undefined
+                            }
+                            disabled={
+                                haveISubmitted ||
+                                hasWrittenAllAnswers() === false
+                            }
                         >
                             <span>Submit answers</span>
                         </MenuButton>

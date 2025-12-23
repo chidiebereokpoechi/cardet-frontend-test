@@ -1,13 +1,12 @@
 import { Field, Formik } from 'formik'
+import { motion } from 'framer-motion'
+import { trim } from 'lodash'
 import React from 'react'
+import { Check, Loader } from 'react-feather'
 import { Subscription } from 'rxjs'
 import styled from 'styled-components'
-import { Button } from '../../../../components'
 import { RecordAnswerModel } from '../../../../modules/game/tick-ten/models'
-import { debounce, initial, trim } from 'lodash'
 import { classNames, useTickTenGame } from '../../../../util'
-import { Check, Loader, Save } from 'react-feather'
-import { motion } from 'framer-motion'
 
 interface Props {
     category: string
@@ -128,7 +127,6 @@ export const RecordAnswerField: React.FC<Props> = ({
                 initialErrors={{}}
                 validate={validate}
                 validateOnChange
-                validateOnMount
                 initialValues={new RecordAnswerModel(category, answer ?? '')}
                 onSubmit={(values, actions) => {
                     actions.setSubmitting(true)
@@ -149,7 +147,11 @@ export const RecordAnswerField: React.FC<Props> = ({
                         values.answer === answer && values.answer.length > 2
 
                     const disableButton =
-                        !isValid || isSubmitting || values === initialValues
+                        disabled ||
+                        !isValid ||
+                        isSubmitting ||
+                        values === initialValues ||
+                        isIdentical
 
                     return (
                         <React.Fragment>
@@ -183,7 +185,6 @@ export const RecordAnswerField: React.FC<Props> = ({
                                         disabled={disableButton}
                                         className={classNames(
                                             'submit-button ml-3',
-                                            isIdentical && 'identical',
                                             disableButton
                                                 ? 'cursor-not-allowed'
                                                 : 'hover:scale-105 transition-transform',

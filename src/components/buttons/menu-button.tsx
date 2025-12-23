@@ -6,6 +6,7 @@ import { classNames } from '../../util'
 
 const Wrapper = styled(motion.button)`
     background: transparent;
+    color: white;
     appearance: none;
     border: none;
     outline: none;

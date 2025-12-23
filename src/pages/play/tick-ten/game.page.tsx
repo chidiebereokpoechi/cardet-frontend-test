@@ -59,7 +59,7 @@ export const TickTenGamePage = observer(() => {
             </header>
             {/* <AnimateSharedLayout> */}
             {game.status === GameStatus.TURN_STARTED && <TurnPage />}
-            {game.status === GameStatus.COUNTDOWN && <CountdownPage />}
+            {game.status === GameStatus.COUNTDOWN && <TurnPage />}
             {game.status === GameStatus.GRADING && <GradingPage />}
             {game.status === GameStatus.LEADERBOARD && <LeaderboardPage />}
             {game.status === GameStatus.GAME_OVER && <LeaderboardPage />}

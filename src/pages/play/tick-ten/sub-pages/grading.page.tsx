@@ -119,7 +119,7 @@ export const GradingPage = observer(() => {
                                 <LoaderOverlay />
                             )}
                         </main>
-                        {isValid && !haveIGraded && (
+                        {!haveIGraded && (
                             <footer>
                                 <form
                                     className="w-full"
@@ -131,6 +131,7 @@ export const GradingPage = observer(() => {
                                             type="submit"
                                             innerText={values.score}
                                             innerTextColor="white"
+                                            disabled={!isValid}
                                         >
                                             <span>Submit grading</span>
                                         </MenuButton>

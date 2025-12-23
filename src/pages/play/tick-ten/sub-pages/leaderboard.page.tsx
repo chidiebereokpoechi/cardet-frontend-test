@@ -2,18 +2,12 @@ import { map } from 'lodash'
 import { observer } from 'mobx-react'
 import React from 'react'
 import { Subscription } from 'rxjs'
-import { MenuButton, MenuButtonList, UserPin } from '../../../../components'
-import { Room, roomState } from '../../../../modules/rooms'
-import { User } from '../../../../modules/user'
-import { userState } from '../../../../modules/user/user.state'
+import { MenuButton, MenuButtonList } from '../../../../components'
 import { useTickTenGame } from '../../../../util'
-import { PlayerList } from '../../components'
 
 let subscription: Subscription | undefined
 
 export const LeaderboardPage = observer(() => {
-    const user = userState.user as User
-
     const { game, manager } = useTickTenGame()
     const isGameOver = game.isGameOver
 
@@ -36,17 +30,44 @@ export const LeaderboardPage = observer(() => {
 
     return (
         <>
-            <main className="grid grid-cols-1 gap-1 overflow-hidden">
-                <span>Leaderboard</span>
-                <div className="w-100 flex flex-col h-full">
-                    <PlayerList className="mt-3 flex flex-1 overflow-y-auto">
-                        {map(playerScores, ({ name, id, score }) => (
-                            <div className="flex flex-row" key={id}>
-                                <UserPin name={name} you={user.id === id} />
-                                <span>{score}</span>
-                            </div>
-                        ))}
-                    </PlayerList>
+            <main className="flex-1 overflow-y-auto mb-4">
+                <div className="m-[-1.75rem] w-[calc(100%+3.5rem)] flex flex-col">
+                    <div className="flex justify-center">
+                        <span className="text-xs p-4">
+                            <span className="text-[var(--primary)]">
+                                Leaderboard
+                            </span>
+                        </span>
+                    </div>
+                    <div className="grid gap-2">
+                        {map(playerScores, ({ name, id, score }, i) => {
+                            const position =
+                                i === 0
+                                    ? '🏆'
+                                    : i === 1
+                                    ? '🥈'
+                                    : i === 2
+                                    ? '🥉'
+                                    : i + 1
+
+                            return (
+                                <div
+                                    className="flex justify-between bg-[#1a2a31] px-[1.75rem] py-3"
+                                    key={id}
+                                >
+                                    <div className="flex justify-between">
+                                        <div className="flex justify-center w-6 mr-2">
+                                            <span className=" inline-block">
+                                                {position}
+                                            </span>
+                                        </div>
+                                        <span>{name}</span>
+                                    </div>
+                                    <span>{score}</span>
+                                </div>
+                            )
+                        })}
+                    </div>
                 </div>
             </main>
             <footer>
@@ -64,7 +85,7 @@ export const LeaderboardPage = observer(() => {
                                 color="var(--green)"
                                 onClick={startNextTurn}
                             >
-                                <span>Next letter</span>
+                                <span>Start next round</span>
                             </MenuButton>
                         )}
                     </MenuButtonList>

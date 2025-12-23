@@ -70,7 +70,15 @@ export const GradingField: React.FC<Props> = observer(
                         <span className="text-[.5rem] text-[var(--understated-grey)] block">
                             {category}
                         </span>
-                        <span className="flex font-bold">{answer.word}</span>
+                        {answer.word ? (
+                            <span className="flex font-bold">
+                                {answer.word}
+                            </span>
+                        ) : (
+                            <span className="flex text-[var(--understated-grey)]">
+                                ___
+                            </span>
+                        )}
                     </div>
                     {game.haveIGraded && (
                         <div className="absolute right-0 top-0 flex items-center gap-2">

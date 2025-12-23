@@ -76,7 +76,7 @@ export const GradingPage = observer(() => {
             validateOnMount
             validate={validate}
             initialValues={grading}
-            initialErrors={{ error: '' }}
+            initialErrors={{}}
             onSubmit={submitGrading}
         >
             {({ handleSubmit, isValid, values }) => {

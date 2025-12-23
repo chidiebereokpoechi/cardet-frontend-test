@@ -141,7 +141,7 @@ export const GradingField: React.FC<Props> = observer(
                             <summary className="text-[#97979b]">
                                 Other answers
                             </summary>
-                            <div className="mt-3">
+                            <div className="mt-2">
                                 {otherAnswers.map((a, i) => (
                                     <span
                                         key={i}

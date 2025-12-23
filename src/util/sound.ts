@@ -11,6 +11,11 @@ class SoundManager {
     private background_music: Howl
     private new_message: Howl
 
+    private stateChange: Howl
+    private tickNormal: Howl
+    private tickMed: Howl
+    private tickFast: Howl
+
     @observable
     public muted: boolean
 
@@ -52,6 +57,30 @@ class SoundManager {
             format: ['wav'],
             preload: true,
             html5: true,
+        })
+
+        this.stateChange = new Howl({
+            src: '/audio/tick-ten/tick-ten-state-change.mp3',
+            format: ['mp3'],
+            preload: true,
+        })
+
+        this.tickNormal = new Howl({
+            src: '/audio/tick-ten/tick-ten-tick-normal.mp3',
+            format: ['mp3'],
+            preload: true,
+        })
+
+        this.tickMed = new Howl({
+            src: '/audio/tick-ten/tick-ten-tick-med.mp3',
+            format: ['mp3'],
+            preload: true,
+        })
+
+        this.tickFast = new Howl({
+            src: '/audio/tick-ten/tick-ten-tick-fast.mp3',
+            format: ['mp3'],
+            preload: true,
         })
     }
 
@@ -103,60 +132,36 @@ class SoundManager {
         punch.play()
     }
 
-    public stateChange() {
-        const tick = new Howl({
-            src: '/audio/tick-ten/tick-ten-state-change.mp3',
-            format: ['mp3'],
-            preload: true,
-        })
-
+    public playStateChange() {
         if (this.muted) {
             return
         }
 
-        tick.play()
+        this.stateChange.play()
     }
 
-    public tickNormal() {
-        const tick = new Howl({
-            src: '/audio/tick-ten/tick-ten-tick-normal.mp3',
-            format: ['mp3'],
-            preload: true,
-        })
-
+    public playTickNormal() {
         if (this.muted) {
             return
         }
 
-        tick.play()
+        this.tickNormal.play()
     }
 
-    public tickMed() {
-        const tick = new Howl({
-            src: '/audio/tick-ten/tick-ten-tick-med.mp3',
-            format: ['mp3'],
-            preload: true,
-        })
-
+    public playTickMed() {
         if (this.muted) {
             return
         }
 
-        tick.play()
+        this.tickMed.play()
     }
 
-    public tickFast() {
-        const tick = new Howl({
-            src: '/audio/tick-ten/tick-ten-tick-fast.mp3',
-            format: ['mp3'],
-            preload: true,
-        })
-
+    public playTickFast() {
         if (this.muted) {
             return
         }
 
-        tick.play()
+        this.tickFast.play()
     }
 }
 

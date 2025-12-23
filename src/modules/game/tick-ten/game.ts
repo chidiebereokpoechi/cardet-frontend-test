@@ -114,17 +114,16 @@ export class TickTenGame implements TickTenGameState {
     }
 
     private handleStateChange(state: TickTenGameState) {
-        console.log({ current: this.status, next: state.status })
         switch (state.status) {
             case GameStatus.TURN_STARTED:
                 if (this.status !== GameStatus.TURN_STARTED) {
                     navigator.vibrate(200)
-                    sound_manager.stateChange()
+                    sound_manager.playStateChange()
                 }
                 break
             case GameStatus.GRADING:
                 if (this.status !== GameStatus.GRADING) {
-                    sound_manager.stateChange()
+                    sound_manager.playStateChange()
                 }
                 break
             default:
@@ -133,9 +132,7 @@ export class TickTenGame implements TickTenGameState {
     }
 
     private moveTo(status: GameStatus) {
-        runInAction(() => {
-            this.update({ ...this, status })
-        })
+        this.update({ ...this, status })
     }
 
     public update(state: TickTenGameState) {
@@ -184,7 +181,6 @@ export class TickTenGame implements TickTenGameState {
                 if (response.data) {
                     this.update(response.data)
                     roomState.gateway.play()
-                    sound_manager.selectCard()
                 }
             },
         })
@@ -196,7 +192,6 @@ export class TickTenGame implements TickTenGameState {
                 if (response.data) {
                     this.update(response.data)
                     roomState.gateway.play()
-                    sound_manager.selectCard()
                 }
             },
         })
@@ -265,7 +260,6 @@ export class TickTenGame implements TickTenGameState {
                 if (response.data) {
                     this.update(response.data)
                     roomState.gateway.play()
-                    sound_manager.selectCard()
                 }
             },
         })
@@ -277,7 +271,6 @@ export class TickTenGame implements TickTenGameState {
                 if (response.data) {
                     this.update(response.data)
                     roomState.gateway.play()
-                    sound_manager.selectCard()
                 }
             },
         })

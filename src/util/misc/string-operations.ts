@@ -42,8 +42,8 @@ const getLevenshteinDistance = (stringA: string, stringB: string): number => {
 
 export enum MatchConfidence {
     EXACT = 1,
-    HIGH = 0.6,
-    MEDIUM = 0.3,
+    HIGH = 0.9,
+    MEDIUM = 0.6,
     LOW = 0,
 }
 

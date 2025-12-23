@@ -14,6 +14,7 @@ const clearIntervalIfExists = () => {
 
 export const useTickTenCountdown = () => {
     const { game } = useTickTenGame()
+    const isCountingDown = game.status === GameStatus.COUNTDOWN
     const [countdown, setCountdown] = useState<number>(game.timeLeftInSeconds)
 
     useEffect(() => {
@@ -23,11 +24,11 @@ export const useTickTenCountdown = () => {
 
                 if (game.status === GameStatus.COUNTDOWN) {
                     if (newCount < 4) {
-                        sound_manager.tickFast()
+                        sound_manager.playTickFast()
                     } else if (newCount < 10) {
-                        sound_manager.tickMed()
+                        sound_manager.playTickMed()
                     } else {
-                        sound_manager.tickNormal()
+                        sound_manager.playTickNormal()
                     }
                 }
 
@@ -42,7 +43,7 @@ export const useTickTenCountdown = () => {
         return () => {
             clearIntervalIfExists()
         }
-    }, [])
+    }, [isCountingDown])
 
     return [countdown]
 }

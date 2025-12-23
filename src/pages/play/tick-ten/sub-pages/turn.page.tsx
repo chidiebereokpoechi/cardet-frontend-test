@@ -13,12 +13,34 @@ import {
 } from '../../../../util'
 import { RecordAnswerField } from '../components/record-answer-field'
 
+const Counter = observer(() => {
+    const [countdown] = useTickTenCountdown()
+
+    return (
+        <motion.div
+            className={classNames(
+                'flex bg-[var(--red)] text-white rounded-2xl text-[1.25rem] w-[4rem] h-[4rem] justify-center items-center',
+            )}
+            animate={{
+                rotate: [0, -18, 18, -14, 14, -8, 8, 0],
+                x: [0, -6, 6, -5, 5, -3, 3, 0],
+            }}
+            transition={{
+                duration: 0.25, // violent burst
+                repeat: Infinity,
+                repeatDelay: 0.75, // long pause (1s total cycle)
+                ease: 'easeInOut',
+            }}
+        >
+            <span>{countdown}</span>
+        </motion.div>
+    )
+})
+
 export const TurnPage = observer(() => {
     let subscription: Subscription | undefined
 
-    const room = roomState.room
     const { game } = useTickTenGame()
-    const [countdown] = useTickTenCountdown()
     const isCountingDown = game.status === GameStatus.COUNTDOWN
     const haveISubmitted = game.haveISubmitted
 
@@ -41,38 +63,15 @@ export const TurnPage = observer(() => {
             <main className="flex-1 overflow-x-hidden overflow-y-auto mb-4">
                 <div className="grid grid-cols-1 gap-2 w-full">
                     <div className="flex justify-center items-center">
-                        {/* Alarm clock dancing animation */}
-                        <motion.div
-                            className={classNames(
-                                'flex bg-[#121518] text-[var(--understated-grey)] rounded-2xl text-[1.25rem] w-[4rem] h-[4rem] justify-center items-center',
-                                isCountingDown ? 'bg-[var(--red)]' : '',
-                                isCountingDown ? 'text-white' : '',
-                            )}
-                            animate={
-                                isCountingDown
-                                    ? {
-                                          rotate: [
-                                              0, -18, 18, -14, 14, -8, 8, 0,
-                                          ],
-                                          x: [0, -6, 6, -5, 5, -3, 3, 0],
-                                      }
-                                    : { rotate: 0, x: 0 }
-                            }
-                            transition={
-                                isCountingDown
-                                    ? {
-                                          duration: 0.25, // violent burst
-                                          repeat: Infinity,
-                                          repeatDelay: 0.75, // long pause (1s total cycle)
-                                          ease: 'easeInOut',
-                                      }
-                                    : { duration: 0.15 }
-                            }
-                        >
-                            <span>
-                                {isCountingDown ? countdown : <Clock />}
-                            </span>
-                        </motion.div>
+                        {isCountingDown ? (
+                            <Counter />
+                        ) : (
+                            <div className="flex bg-[#121518] text-[var(--understated-grey)] rounded-2xl text-[1.25rem] w-[4rem] h-[4rem] justify-center items-center">
+                                <span>
+                                    <Clock />
+                                </span>
+                            </div>
+                        )}
                     </div>
                     <div className="w-full grid gap-3">
                         {game.categories.map((category) => {

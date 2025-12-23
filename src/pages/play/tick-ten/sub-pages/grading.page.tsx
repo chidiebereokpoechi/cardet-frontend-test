@@ -82,28 +82,29 @@ export const GradingPage = observer(() => {
             {({ handleSubmit, isValid, values }) => {
                 return (
                     <>
-                        <main className="">
+                        <main className="flex-1 overflow-y-auto mb-4">
                             {game.submissionToGrade ? (
                                 <div className="m-[-1.75rem] w-[calc(100%+3.5rem)] flex flex-col">
                                     <div className="flex justify-center">
                                         <span className="text-xs p-4">
-                                            Grading submission of{' '}
+                                            You are grading{' '}
                                             <span className="text-[var(--primary)]">
                                                 {
                                                     game.submissionToGrade
                                                         .player.name
                                                 }
                                             </span>
+                                            's answers
                                         </span>
                                     </div>
-                                    <div className="grid gap-1">
+                                    <div className="grid gap-2">
                                         {Object.entries(answers).map(
                                             ([category, answer]) => (
                                                 <GradingField
                                                     key={category}
                                                     category={category}
                                                     answer={answer}
-                                                    values={grading}
+                                                    values={values}
                                                 >
                                                     <span className="text-sm mb-2 block">
                                                         {category}

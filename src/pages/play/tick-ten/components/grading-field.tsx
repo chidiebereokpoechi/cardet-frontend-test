@@ -37,7 +37,7 @@ const VerdictButton: React.FC<{
                 backgroundColor:
                     verdict === formik.values.verdicts[category]
                         ? color
-                        : '#222628',
+                        : '#132026',
             }}
             onClick={onClick}
         >
@@ -47,8 +47,9 @@ const VerdictButton: React.FC<{
 }
 
 export const GradingField: React.FC<Props> = observer(
-    ({ category, answer }) => {
+    ({ category, answer, values }) => {
         const { game } = useTickTenGame()
+        console.log(values.verdicts)
 
         if (!game.submissionToGrade) {
             return null
@@ -58,22 +59,13 @@ export const GradingField: React.FC<Props> = observer(
             .map((o) => o.answers[category])
             .filter(({ word }) => trim(word).length > 0)
 
-        const score = (() => {
-            switch (answer.verdict) {
-                case 'correct':
-                    return 10
-                case 'duplicate':
-                    return 5
-                case 'incorrect':
-                    return 0
-                default:
-                    return 0
-            }
-        })()
+        const verdict = values.verdicts[category]
+        const score =
+            verdict === 'correct' ? '+10' : verdict === 'duplicate' ? '+5' : '0'
 
         return (
-            <div className="grid grid-cols-1 gap-2 bg-[#121518] px-[1.75rem] py-3">
-                <div className="flex flex-row justify-between">
+            <div className="grid grid-cols-1 gap-2 bg-[#1a2a31] px-[1.75rem] py-3">
+                <div className="flex flex-row justify-between relative">
                     <div>
                         <span className="text-[.5rem] text-[var(--understated-grey)] block">
                             {category}
@@ -81,10 +73,19 @@ export const GradingField: React.FC<Props> = observer(
                         <span className="flex font-bold">{answer.word}</span>
                     </div>
                     {game.haveIGraded && (
-                        <div>
-                            <>
-                                <span>{score}</span>
-                            </>
+                        <div className="absolute right-0 top-0 flex items-center gap-2">
+                            <span
+                                className={classNames(
+                                    'inline-block font-bold text-[1.5rem]',
+                                    verdict === 'correct'
+                                        ? 'text-[var(--green)]'
+                                        : verdict === 'duplicate'
+                                        ? 'text-[var(--blue)]'
+                                        : 'text-[var(--red)]',
+                                )}
+                            >
+                                {score}
+                            </span>
                         </div>
                     )}
                     {!game.haveIGraded && (

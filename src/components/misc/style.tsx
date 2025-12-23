@@ -50,7 +50,7 @@ export const Stylesheet = createGlobalStyle`
     --card-width: 45px;
     --color: white;
 
-    --green: #1ff467;
+    --green: #36ca4c;
     --blue: #3e8cd1;
     --yellow: #f9b202;
     --red: #d13e44;

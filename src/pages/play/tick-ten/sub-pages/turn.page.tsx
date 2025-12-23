@@ -10,6 +10,15 @@ export const TurnPage = observer(() => {
 
     const { game } = useTickTenGame()
 
+    const hasWrittenAllAnswers = () => {
+        const letter = game.turn.letter
+        const submission = game.playerSheet.submissions[letter]
+
+        return game.categories.every(
+            (category) => submission.answers[category].word.length > 0,
+        )
+    }
+
     const submitAnswers = () => {
         subscription?.unsubscribe()
         subscription = game.submit()
@@ -41,6 +50,7 @@ export const TurnPage = observer(() => {
                         <MenuButton
                             color="var(--green)"
                             onClick={submitAnswers}
+                            disabled={hasWrittenAllAnswers() === false}
                         >
                             <span>Submit answers</span>
                         </MenuButton>

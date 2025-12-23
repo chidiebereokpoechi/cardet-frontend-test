@@ -25,15 +25,15 @@ const StyledForm = styled.form`
 
     .name-input {
         padding: 0.5rem 1rem;
-        background: transparent;
+        background: #121518;
         border-radius: 1rem;
         color: white;
         font-weight: bold;
         user-select: text;
         height: 3rem;
-        border: 3px solid white;
-        border-color: var(--primary);
-        color: var(--primary);
+        border: 3px solid #121518;
+        border-color: white;
+        color: white;
     }
 
     .name-input.identical {
@@ -65,6 +65,10 @@ const StyledForm = styled.form`
         cursor: pointer;
     }
 
+    .submit-button.identical {
+        color: var(--green);
+    }
+
     .submit-button:disabled {
         background: #121518;
         color: var(--understated-grey);
@@ -88,12 +92,12 @@ export const RecordAnswerField: React.FC<Props> = ({
             trimmedAnswer.charAt(0)?.toUpperCase()
         ) {
             return {
-                answer: `Answer must start with ${game.turn.letter.toUpperCase()}`,
+                answer: `must start with ${game.turn.letter.toUpperCase()}`,
             }
         }
 
         if (trimmedAnswer.length <= 1) {
-            return { answer: 'Too short' }
+            return { answer: 'is too short' }
         }
 
         return {}
@@ -141,16 +145,19 @@ export const RecordAnswerField: React.FC<Props> = ({
                     errors,
                     isSubmitting,
                 }) => {
+                    const isIdentical =
+                        values.answer === answer && values.answer.length > 2
+
                     const disableButton =
                         !isValid || isSubmitting || values === initialValues
 
                     return (
                         <React.Fragment>
                             <StyledForm onSubmit={handleSubmit}>
-                                <div className="flex justify-between items-center">
+                                <div className="flex items-center">
                                     <span className="text-xs">{category}</span>
                                     {errors.answer && (
-                                        <span className="text-red-500 text-xs">
+                                        <span className="text-[var(--red)] text-xs ml-1">
                                             {errors.answer}
                                         </span>
                                     )}
@@ -158,26 +165,27 @@ export const RecordAnswerField: React.FC<Props> = ({
                                 <div className="flex">
                                     <Field
                                         type="text"
-                                        className={
-                                            'flex-1 name-input' +
-                                            (values.answer === answer &&
-                                            values.answer.length > 2
-                                                ? ' identical'
-                                                : '')
-                                        }
+                                        className={classNames(
+                                            'flex-1 name-input',
+                                            isIdentical && 'identical',
+                                        )}
                                         name="answer"
                                         autoCapitalize="off"
                                         autoComplete="off"
                                         spellCheck={false}
                                         autoCorrect="off"
                                         disabled={disabled}
+                                        onBlur={() => {
+                                            if (!disabled) handleSubmit()
+                                        }}
                                     />
                                     <button
                                         disabled={disableButton}
                                         className={classNames(
                                             'submit-button ml-3',
+                                            isIdentical && 'identical',
                                             disableButton
-                                                ? 'bg-[#555555] text-[#888888] cursor-not-allowed'
+                                                ? 'cursor-not-allowed'
                                                 : 'hover:scale-105 transition-transform',
                                         )}
                                         type="submit"

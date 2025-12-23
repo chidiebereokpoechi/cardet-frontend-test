@@ -1,49 +1,52 @@
 import { once, uniqueId } from 'lodash'
-import { action, computed, observable } from 'mobx'
+import {
+    action,
+    autorun,
+    computed,
+    makeAutoObservable,
+    observable,
+    runInAction,
+} from 'mobx'
 import React from 'react'
 
 let loadingTask: () => any | undefined
 
 class RootState {
-  @observable
-  public ready: boolean = false
+    public ready: boolean = false
 
-  @observable
-  public center_card = React.createRef<HTMLDivElement>()
+    public center_card = React.createRef<HTMLDivElement>()
 
-  @observable
-  public queue: Record<string, boolean> = {}
+    public queue: Record<string, boolean> = {}
 
-  @computed
-  public get loading(): boolean {
-    return Object.keys(this.queue).length > 0
-  }
-
-  private constructor() {
-    loadingTask = this.queueTask().unqueueTask
-  }
-
-  @action
-  public setReadyState(ready: boolean) {
-    this.ready = ready
-    loadingTask?.()
-  }
-
-  @action
-  public queueTask() {
-    const task_id = uniqueId()
-    this.queue[task_id] = true
-
-    return {
-      unqueueTask: () => {
-        delete this.queue[task_id]
-      },
+    public get loading(): boolean {
+        return Object.keys(this.queue).length > 0
     }
-  }
 
-  public static create() {
-    return once(() => new RootState())()
-  }
+    private constructor() {
+        loadingTask = this.queueTask().unqueueTask
+        makeAutoObservable(this)
+    }
+
+    public setReadyState(ready: boolean) {
+        this.ready = ready
+        loadingTask?.()
+    }
+
+    public queueTask() {
+        const task_id = uniqueId()
+        this.queue[task_id] = true
+
+        return {
+            unqueueTask: () =>
+                runInAction(() => {
+                    delete this.queue[task_id]
+                }),
+        }
+    }
+
+    public static create() {
+        return once(() => new RootState())()
+    }
 }
 
 export const rootState = RootState.create()

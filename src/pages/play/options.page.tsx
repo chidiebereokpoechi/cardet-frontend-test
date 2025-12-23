@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react'
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {
     BackButton,
     MenuButton,
@@ -12,15 +12,15 @@ import { roomState } from '../../modules/rooms'
 
 export const PlayOptionsPage = observer(() => {
     const room = roomState.room
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const createRoom = React.useCallback(() => {
         return roomState.createRoom()
     }, [])
 
     React.useEffect(() => {
-        if (room) history.push('/play/room')
-    }, [room, history])
+        if (room) navigate('/play/room')
+    }, [room, navigate])
 
     return (
         <MenuPageWrapper>

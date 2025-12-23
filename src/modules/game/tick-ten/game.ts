@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx'
+import { action, computed, makeAutoObservable, observable } from 'mobx'
 import {
     Category,
     GameStatus,
@@ -44,7 +44,7 @@ export class TickTenGame implements TickTenGameState {
     @observable
     submissionToGrade?: SubmissionToGrade
 
-    countdownTimeout?: number
+    countdownTimeout?: NodeJS.Timeout
 
     @observable
     countdownTimeLeftInSeconds?: number
@@ -93,6 +93,8 @@ export class TickTenGame implements TickTenGameState {
     }
 
     private constructor(state: TickTenGameState) {
+        makeAutoObservable(this)
+
         this.id = state.id
         this.me = state.me
         this.players = state.players
@@ -106,7 +108,6 @@ export class TickTenGame implements TickTenGameState {
         this.evaluateCountdown()
     }
 
-    @action
     public update(state: TickTenGameState) {
         this.id = state.id
         this.me = state.me
@@ -122,7 +123,6 @@ export class TickTenGame implements TickTenGameState {
         return this
     }
 
-    @action
     private evaluateCountdown() {
         if (this.status !== GameStatus.COUNTDOWN && this.countdownTimeout) {
             clearTimeout(this.countdownTimeout)
@@ -146,7 +146,6 @@ export class TickTenGame implements TickTenGameState {
         }
     }
 
-    @action
     public recordAnswer(model: RecordAnswerModel) {
         return tickTenService.recordAnswer(model).subscribe({
             next: (response) => {
@@ -158,7 +157,6 @@ export class TickTenGame implements TickTenGameState {
         })
     }
 
-    @action
     public submit() {
         return tickTenService.submitAnswers().subscribe({
             next: (response) => {
@@ -170,20 +168,22 @@ export class TickTenGame implements TickTenGameState {
         })
     }
 
-    @action
+    public setSubmissionToGrade(submission: SubmissionToGrade | undefined) {
+        this.submissionToGrade = submission
+    }
+
     public getSubmissionToGrade() {
-        this.submissionToGrade = undefined
+        this.setSubmissionToGrade(undefined)
 
         return tickTenService.getSubmissionToGrade().subscribe({
             next: (response) => {
                 if (response.data) {
-                    this.submissionToGrade = response.data
+                    this.setSubmissionToGrade(response.data)
                 }
             },
         })
     }
 
-    @action
     public gradeSubmission(model: GradeSubmissionModel) {
         return tickTenService.gradeSubmission(model).subscribe({
             next: (response) => {
@@ -195,7 +195,6 @@ export class TickTenGame implements TickTenGameState {
         })
     }
 
-    @action
     public startNextTurn() {
         return tickTenService.startNextTurn().subscribe({
             next: (response) => {

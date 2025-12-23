@@ -6,7 +6,6 @@ import { Menu, MessageCircle } from 'react-feather'
 import { CircleButton, GamePageWrapper } from '../../../components'
 import { roomState } from '../../../modules/rooms'
 import { sound_manager, useCardetGame } from '../../../util'
-import { app_history } from '../../../util/app-history'
 import {
     CenterCards,
     MessagesPane,
@@ -43,22 +42,6 @@ export const CardetGamePage = observer(() => {
     }, [])
 
     React.useEffect(() => {
-        const unblock = app_history.block(
-            'Are you sure you want to exit the current game',
-        )
-
-        return () => unblock()
-    }, [])
-
-    // React.useEffect(() => {
-    //     if (!game.game_over) {
-    //         sound_manager.startBackgroundMusic()
-    //     }
-
-    //     return () => sound_manager.stopBackgroundMusic()
-    // }, [game.game_over])
-
-    React.useEffect(() => {
         if (game.game_over) {
             sound_manager.startGameOver()
         }
@@ -85,11 +68,11 @@ export const CardetGamePage = observer(() => {
                 </CircleButton>
             </header>
             <main>
-                <AnimateSharedLayout type="crossfade">
-                    <PlayersArea />
-                    <CenterCards />
-                    <PlayerCards />
-                </AnimateSharedLayout>
+                {/* <AnimateSharedLayout> */}
+                <PlayersArea />
+                <CenterCards />
+                <PlayerCards />
+                {/* </AnimateSharedLayout> */}
             </main>
         </GamePageWrapper>
     )

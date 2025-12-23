@@ -7,7 +7,6 @@ import { CircleButton, GamePageWrapper } from '../../../components'
 import { GameStatus } from '../../../modules/game/tick-ten'
 import { roomState } from '../../../modules/rooms'
 import { useTickTenGame } from '../../../util'
-import { app_history } from '../../../util/app-history'
 import { MessagesPane, PlayMenu } from '../components'
 import { TurnPage } from './sub-pages'
 import { CountdownPage } from './sub-pages/countdown.page'
@@ -40,14 +39,6 @@ export const TickTenGamePage = observer(() => {
         return roomState.setMessagesPaneOpen(true)
     }, [])
 
-    React.useEffect(() => {
-        const unblock = app_history.block(
-            'Are you sure you want to exit the current game',
-        )
-
-        return () => unblock()
-    }, [])
-
     return (
         <GamePageWrapper>
             {roomState.messages_pane_open && <MessagesPane />}
@@ -66,13 +57,13 @@ export const TickTenGamePage = observer(() => {
                     <Menu />
                 </CircleButton>
             </header>
-            <AnimateSharedLayout type="crossfade">
-                {game.status === GameStatus.TURN_STARTED && <TurnPage />}
-                {game.status === GameStatus.COUNTDOWN && <CountdownPage />}
-                {game.status === GameStatus.GRADING && <GradingPage />}
-                {game.status === GameStatus.LEADERBOARD && <LeaderboardPage />}
-                {game.status === GameStatus.GAME_OVER && <LeaderboardPage />}
-            </AnimateSharedLayout>
+            {/* <AnimateSharedLayout> */}
+            {game.status === GameStatus.TURN_STARTED && <TurnPage />}
+            {game.status === GameStatus.COUNTDOWN && <CountdownPage />}
+            {game.status === GameStatus.GRADING && <GradingPage />}
+            {game.status === GameStatus.LEADERBOARD && <LeaderboardPage />}
+            {game.status === GameStatus.GAME_OVER && <LeaderboardPage />}
+            {/* </AnimateSharedLayout> */}
         </GamePageWrapper>
     )
 })

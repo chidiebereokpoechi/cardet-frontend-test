@@ -58,6 +58,7 @@ export const MenuButton: React.FC<Props> = ({
     color: _color,
     icon: Icon,
     innerText,
+    innerTextColor,
     ...props
 }) => {
     const backgroundColor = _color
@@ -69,7 +70,7 @@ export const MenuButton: React.FC<Props> = ({
                 {innerText && (
                     <span
                         className="text-lg font-bold"
-                        style={{ color: props.innerTextColor }}
+                        style={{ color: innerTextColor }}
                     >
                         {innerText}
                     </span>

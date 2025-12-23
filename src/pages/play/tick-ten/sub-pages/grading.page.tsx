@@ -109,7 +109,7 @@ export const GradingPage = observer(() => {
                                                     <span className="text-sm mb-2 block">
                                                         {category}
                                                     </span>
-                                                    <span>{answer}</span>
+                                                    <span>{answer.word}</span>
                                                 </GradingField>
                                             ),
                                         )}

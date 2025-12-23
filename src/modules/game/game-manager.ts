@@ -1,5 +1,5 @@
 import { once } from 'lodash'
-import { action, observable } from 'mobx'
+import { action, makeAutoObservable, observable, runInAction } from 'mobx'
 import { Subscription } from 'rxjs'
 import { sound_manager } from '../../util'
 import { Room, roomsService, roomState } from '../rooms'
@@ -16,24 +16,21 @@ export enum GameType {
 }
 
 class GameManager {
-    @observable
     public cardetGame: CardetGame | null = null
 
-    @observable
     public tickTenGame: TickTenGame | null = null
 
-    @observable
     public menu_open = false
 
-    @observable
     public loading_game = false
 
-    @observable
     public loading_move = false
 
     public last_responded_count = 0
 
-    private constructor() {}
+    private constructor() {
+        makeAutoObservable(this)
+    }
 
     public respond(state: CardetGameState) {
         const game = this.cardetGame
@@ -65,17 +62,14 @@ class GameManager {
         }
     }
 
-    @action
     public openMenu() {
         this.menu_open = true
     }
 
-    @action
     public closeMenu() {
         this.menu_open = false
     }
 
-    @action
     public getGameState() {
         const room = roomState.room
         if (!room) return
@@ -84,32 +78,33 @@ class GameManager {
 
         sub = roomsService.getGameState().subscribe({
             next: (response) => {
-                if (!response.data.state) {
-                    this.cardetGame = null
-                    this.tickTenGame = null
-                    return
-                }
+                runInAction(() => {
+                    if (!response.data.state) {
+                        this.cardetGame = null
+                        this.tickTenGame = null
+                        return
+                    }
 
-                switch (response.data.gameType) {
-                    case GameType.CARDET:
-                        this.respond(response.data.state)
-                        this.cardetGame = this.cardetGame
-                            ? this.cardetGame.update(response.data.state)
-                            : CardetGame.create(response.data.state)
-                        return
-                    case GameType.TICK_TEN:
-                        this.tickTenGame = this.tickTenGame
-                            ? this.tickTenGame.update(response.data.state)
-                            : TickTenGame.create(response.data.state)
-                        return
-                }
+                    switch (response.data.gameType) {
+                        case GameType.CARDET:
+                            this.respond(response.data.state)
+                            this.cardetGame = this.cardetGame
+                                ? this.cardetGame.update(response.data.state)
+                                : CardetGame.create(response.data.state)
+                            return
+                        case GameType.TICK_TEN:
+                            this.tickTenGame = this.tickTenGame
+                                ? this.tickTenGame.update(response.data.state)
+                                : TickTenGame.create(response.data.state)
+                            return
+                    }
+                })
             },
         })
 
         return sub
     }
 
-    @action
     public pick() {
         const room = roomState.room as Room
         const game = this.cardetGame as CardetGame
@@ -135,7 +130,6 @@ class GameManager {
         })
     }
 
-    @action
     public play() {
         const room = roomState.room as Room
         const game = this.cardetGame as CardetGame
@@ -161,7 +155,6 @@ class GameManager {
             })
     }
 
-    @action
     public startGame(game_type: GameType) {
         if (this.cardetGame) return
         const room = roomState.room as Room
@@ -176,7 +169,6 @@ class GameManager {
         })
     }
 
-    @action
     public endGame() {
         if (!this.cardetGame && !this.tickTenGame) return
         const room = roomState.room as Room

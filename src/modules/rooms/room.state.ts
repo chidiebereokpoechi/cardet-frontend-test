@@ -1,5 +1,5 @@
 import { find, once, remove } from 'lodash'
-import { action, observable } from 'mobx'
+import { action, makeAutoObservable, observable } from 'mobx'
 import { sound_manager } from '../../util'
 import { User } from '../user/user.entity'
 import { userState } from '../user/user.state'
@@ -20,13 +20,18 @@ class RoomState {
     @observable
     public messages_pane_open?: boolean
 
-    private constructor() {}
+    private constructor() {
+        makeAutoObservable(this)
+    }
 
     public connectGateway() {
         this.gateway = new RoomsGateway()
     }
 
-    @action
+    public setRoom(room: Room | null) {
+        this.room = room
+    }
+
     public setMessagesPaneOpen(open: boolean) {
         this.messages_pane_open = open
 
@@ -35,13 +40,11 @@ class RoomState {
         }
     }
 
-    @action
     public addUser(user: User) {
         if (!find(this.room?.members, { id: user.id }))
             this.room?.members.push(user)
     }
 
-    @action
     public addMessage(message: Message) {
         if (!this.room) return
 
@@ -56,21 +59,18 @@ class RoomState {
         }
     }
 
-    @action
     public createMessage(message: string) {
         const user = userState.user as User
         this.addMessage({ user, message })
         return this.gateway.createMessage(message)
     }
 
-    @action
     public removeUser(user: User) {
         if (this.room) {
             remove(this.room.members, (_) => _.id === user.id)
         }
     }
 
-    @action
     public getUserRoom(callback?: () => void) {
         if (!userState.user?.room_id) {
             callback?.()
@@ -79,53 +79,44 @@ class RoomState {
 
         return roomsService.getCurrentRoom().subscribe({
             next: (response) => {
-                if (response.data) {
-                    this.room = response.data
-                } else {
-                    this.room = null
-                }
+                this.setRoom(response.data ?? null)
 
                 callback?.()
             },
         })
     }
 
-    @action
     public createRoom() {
         if (this.room) return
         return roomsService.createRoom().subscribe({
             next: (response) => {
                 if (response.data) {
-                    this.room = response.data
-                    this.room.messages = []
+                    this.setRoom({ ...response.data, messages: [] })
                     this.gateway.joinRoom(response.data.id)
                 }
             },
         })
     }
 
-    @action
     public joinRoom(room_id: string) {
         if (this.room) return
         return roomsService.joinRoom(room_id).subscribe({
             next: (response) => {
                 if (response.data) {
-                    this.room = response.data
-                    this.unreadMessages = this.room.messages.length
+                    this.setRoom(response.data)
                     this.gateway.joinRoom(response.data.id)
                 }
             },
         })
     }
 
-    @action
     public leaveRoom() {
         if (!this.room) return
         return roomsService.leaveRoom().subscribe({
             next: (response) => {
                 if (response.ok) {
                     this.gateway.leaveRoom()
-                    this.room = null
+                    this.setRoom(null)
                 }
             },
         })

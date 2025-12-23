@@ -77,14 +77,12 @@ export const RoomPage = observer(() => {
     }, [game])
 
     const disableCardetGame =
-        process.env.NODE_ENV !== 'development' &&
-        (room.room_state !== RoomState.LOBBY ||
-            room.members.length < 2 ||
-            room.members.length > 4)
+        room.room_state !== RoomState.LOBBY ||
+        room.members.length < 2 ||
+        room.members.length > 4
 
     const disableTickTenGame =
-        process.env.NODE_ENV !== 'development' &&
-        (room.room_state !== RoomState.LOBBY || room.members.length < 2)
+        room.room_state !== RoomState.LOBBY || room.members.length < 2
 
     return (
         <MenuPageWrapper>

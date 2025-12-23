@@ -1,5 +1,5 @@
 import { once } from 'lodash'
-import { action, observable } from 'mobx'
+import { action, makeAutoObservable, observable } from 'mobx'
 import { switchMap, tap } from 'rxjs/operators'
 import { ApiUtil } from '../../util/api'
 import { gameManager } from '../game'
@@ -10,14 +10,13 @@ import { User } from './user.entity'
 import { userService } from './user.service'
 
 class UserState {
-    @observable
     public user: User | null = null
 
     private constructor() {
+        makeAutoObservable(this)
         this.start()
     }
 
-    @action
     public initialFetch = once(() => {
         roomState.connectGateway()
 
@@ -26,16 +25,17 @@ class UserState {
             return
         }
 
-        const sub = roomState.getUserRoom(() => rootState.setReadyState(true))
+        const sub = roomState.getUserRoom(() => {
+            rootState.setReadyState(true)
+        })
+
         if (sub !== undefined) sub.add(this.fetchGameState)
     })
 
-    @action
     public fetchGameState = once(() => {
         gameManager.getGameState()?.add(() => rootState.setReadyState(true))
     })
 
-    @action
     public createUser() {
         userService
             .create()
@@ -52,7 +52,6 @@ class UserState {
         return
     }
 
-    @action
     public fetchUser() {
         return userService.getProfile().subscribe({
             next: ({ data: user }) => {
@@ -70,7 +69,6 @@ class UserState {
         })
     }
 
-    @action
     public updateUser(model: UpdateUserModel) {
         return userService.update(model, this.user!.id).subscribe({
             next: (response) => {

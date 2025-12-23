@@ -13,7 +13,7 @@ import {
     sortBy,
     without,
 } from 'lodash'
-import { action, computed, observable } from 'mobx'
+import { action, computed, makeAutoObservable, observable } from 'mobx'
 import { User } from '../../user/user.entity'
 import { userState } from '../../user/user.state'
 import { Card, IndexedCard } from './card'
@@ -120,6 +120,8 @@ export class CardetGame implements CardetGameState {
     }
 
     private constructor(state: CardetGameState) {
+        makeAutoObservable(this)
+
         this.play_count = state.play_count
         this.id = state.id
         this.players = state.players

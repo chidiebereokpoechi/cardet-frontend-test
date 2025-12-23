@@ -1,7 +1,7 @@
 import { Formik } from 'formik'
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
     BackButton,
     MenuButton,
@@ -18,7 +18,7 @@ interface JoinRoomModel {
 const isValidCode = (code: string) => code.length === 4
 
 export const JoinRoomPage = observer(() => {
-    const history = useHistory()
+    const navigate = useNavigate()
     const location = useLocation()
     const room = roomState.room
 
@@ -43,8 +43,8 @@ export const JoinRoomPage = observer(() => {
     }, [])
 
     React.useEffect(() => {
-        if (room) history.replace('/play')
-    }, [room, history])
+        if (room) navigate('/play', { replace: true })
+    }, [room, navigate])
 
     useEffect(() => {
         if (!room && queryRoomId && isValidCode(queryRoomId) && !isJoining) {

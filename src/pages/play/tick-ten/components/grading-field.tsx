@@ -16,14 +16,13 @@ interface Props {
     children?: React.ReactNode
 }
 
-let subscription: Subscription | undefined
-
 const VerdictButton: React.FC<{
     verdict: Verdict
     category: Category
     color: string
     icon: React.ComponentType<any>
-}> = ({ verdict, color, icon: Icon, category }) => {
+    disabled?: boolean
+}> = ({ verdict, color, icon: Icon, category, disabled }) => {
     const formik = useFormikContext<GradeSubmissionModel>()
     const isSelected = formik.values.verdicts[category] === verdict
 
@@ -34,11 +33,20 @@ const VerdictButton: React.FC<{
     return (
         <button
             type="button"
+            disabled={disabled}
             className="flex bg-[#132026] items-center justify-center font-light w-10 h-10 rounded-xl border-2 hover:border-white transition-colors"
-            style={{
-                color: isSelected ? color : '',
-                borderColor: isSelected ? color : '#132026',
-            }}
+            style={
+                disabled
+                    ? {
+                          color: '#1e3037',
+                          borderColor: '#1e3037',
+                          cursor: 'not-allowed',
+                      }
+                    : {
+                          color: isSelected ? color : '',
+                          borderColor: isSelected ? color : '#132026',
+                      }
+            }
             onClick={onClick}
         >
             <Icon size={16} />
@@ -62,6 +70,7 @@ export const GradingField: React.FC<Props> = observer(
         const verdict = values.verdicts[category]
         const score =
             verdict === 'correct' ? '+10' : verdict === 'duplicate' ? '+5' : '0'
+
         const isExactDuplicate = answer.confidence === MatchConfidence.EXACT
         const isCloseDuplicate =
             answer.confidence === MatchConfidence.HIGH ||
@@ -71,7 +80,7 @@ export const GradingField: React.FC<Props> = observer(
             <div className="grid grid-cols-1 gap-2 bg-[#1a2a31] px-[1.75rem] py-3">
                 <div className="flex flex-row justify-between relative">
                     <div>
-                        <span className="text-[.5rem] text-[var(--understated-grey)] block">
+                        <span className="text-[.5rem] text-[var(--understated-grey)] block mb-1">
                             {category}
                         </span>
                         {answer.word ? (
@@ -82,9 +91,7 @@ export const GradingField: React.FC<Props> = observer(
                             <></>
                         )}
                     </div>
-                    {(game.haveIGraded ||
-                        isEmptyAnswer ||
-                        isExactDuplicate) && (
+                    {(game.haveIGraded || isEmptyAnswer) && (
                         <div className="absolute right-0 top-0 flex items-center gap-2">
                             <span
                                 className={classNames(
@@ -100,36 +107,35 @@ export const GradingField: React.FC<Props> = observer(
                             </span>
                         </div>
                     )}
-                    {!game.haveIGraded &&
-                        !isEmptyAnswer &&
-                        !isExactDuplicate && (
-                            <div className="grid grid-cols-3 gap-1">
-                                <VerdictButton
-                                    verdict="correct"
-                                    category={category}
-                                    color="var(--green)"
-                                    icon={Check}
-                                />
-                                <VerdictButton
-                                    verdict="duplicate"
-                                    category={category}
-                                    color="var(--blue)"
-                                    icon={Copy}
-                                />
-                                <VerdictButton
-                                    verdict="incorrect"
-                                    category={category}
-                                    color="var(--red)"
-                                    icon={X}
-                                />
-                            </div>
-                        )}
+                    {!game.haveIGraded && (
+                        <div className="grid grid-cols-3 gap-1 items-end">
+                            <VerdictButton
+                                verdict="correct"
+                                category={category}
+                                color="var(--green)"
+                                icon={Check}
+                                disabled={isExactDuplicate}
+                            />
+                            <VerdictButton
+                                verdict="duplicate"
+                                category={category}
+                                color="var(--blue)"
+                                icon={Copy}
+                            />
+                            <VerdictButton
+                                verdict="incorrect"
+                                category={category}
+                                color="var(--red)"
+                                icon={X}
+                            />
+                        </div>
+                    )}
                 </div>
                 <div className="-mb-1">
                     {otherAnswers.length ? (
                         <details
                             className="text-[.65rem]"
-                            open={isCloseDuplicate}
+                            open={isExactDuplicate || isCloseDuplicate}
                         >
                             <summary className="text-[#97979b]">
                                 Other answers
@@ -139,10 +145,11 @@ export const GradingField: React.FC<Props> = observer(
                                     <span
                                         key={i}
                                         className={classNames(
-                                            'text-[.5rem] mr-1 mb-0.5 inline-flex py-0.5 px-1.5 bg-slate-100 text-black rounded-md',
-                                            isCloseDuplicate || isExactDuplicate
-                                                ? 'bg-[var(--blue)] text-white'
-                                                : '',
+                                            'text-[.75rem] border-[2px] border-white mr-1 mb-0.5 inline-flex py-1 px-2 rounded-[10px]',
+                                            isCloseDuplicate &&
+                                                '!border-[#3e8cd1] !text-[#3e8cd1]',
+                                            isExactDuplicate &&
+                                                '!border-[#3e8cd1] !bg-[#3e8cd1] !text-white',
                                         )}
                                     >
                                         {a.word}

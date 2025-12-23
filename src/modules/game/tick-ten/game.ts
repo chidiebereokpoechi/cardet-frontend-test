@@ -209,13 +209,14 @@ export class TickTenGame implements TickTenGameState {
                                 ),
                             MatchConfidence.LOW,
                         )
+
                         answer.confidence = confidence
 
                         const isDuplicateAnswer =
                             [
                                 MatchConfidence.EXACT,
                                 MatchConfidence.HIGH,
-                            ].includes(confidence) && answer.word.length > 2
+                            ].includes(confidence) && answer.word.length >= 2
 
                         if (isDuplicateAnswer) {
                             answer.verdict = 'duplicate'

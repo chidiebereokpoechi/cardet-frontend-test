@@ -42,8 +42,8 @@ const getLevenshteinDistance = (stringA: string, stringB: string): number => {
 
 export enum MatchConfidence {
     EXACT = 1,
-    HIGH = 0.9,
-    MEDIUM = 0.6,
+    HIGH = 0.6,
+    MEDIUM = 0.3,
     LOW = 0,
 }
 
@@ -53,7 +53,6 @@ export const getLevenshteinMatchConfidence = (
 ): MatchConfidence => {
     const confidence =
         1 - getLevenshteinDistance(a, b) / Math.max(a.length, b.length)
-    console.log(getLevenshteinDistance(a, b), confidence)
     if (confidence === MatchConfidence.EXACT) return MatchConfidence.EXACT
     if (confidence >= MatchConfidence.HIGH) return MatchConfidence.HIGH
     if (confidence >= MatchConfidence.MEDIUM) return MatchConfidence.MEDIUM

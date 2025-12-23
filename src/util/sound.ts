@@ -102,6 +102,62 @@ class SoundManager {
 
         punch.play()
     }
+
+    public stateChange() {
+        const tick = new Howl({
+            src: '/audio/tick-ten/tick-ten-state-change.mp3',
+            format: ['mp3'],
+            preload: true,
+        })
+
+        if (this.muted) {
+            return
+        }
+
+        tick.play()
+    }
+
+    public tickNormal() {
+        const tick = new Howl({
+            src: '/audio/tick-ten/tick-ten-tick-normal.mp3',
+            format: ['mp3'],
+            preload: true,
+        })
+
+        if (this.muted) {
+            return
+        }
+
+        tick.play()
+    }
+
+    public tickMed() {
+        const tick = new Howl({
+            src: '/audio/tick-ten/tick-ten-tick-med.mp3',
+            format: ['mp3'],
+            preload: true,
+        })
+
+        if (this.muted) {
+            return
+        }
+
+        tick.play()
+    }
+
+    public tickFast() {
+        const tick = new Howl({
+            src: '/audio/tick-ten/tick-ten-tick-fast.mp3',
+            format: ['mp3'],
+            preload: true,
+        })
+
+        if (this.muted) {
+            return
+        }
+
+        tick.play()
+    }
 }
 
 export const sound_manager = new SoundManager()

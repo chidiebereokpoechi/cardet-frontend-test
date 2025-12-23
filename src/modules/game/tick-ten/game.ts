@@ -1,4 +1,4 @@
-import { computed, makeAutoObservable, observable } from 'mobx'
+import { computed, makeAutoObservable, observable, runInAction } from 'mobx'
 import {
     Category,
     GameStatus,
@@ -16,6 +16,7 @@ import {
     getLevenshteinMatchConfidence,
     MatchConfidence,
 } from '../../../util/misc/string-operations'
+import { sound_manager } from '../../../util'
 
 export class TickTenGame implements TickTenGameState {
     @observable
@@ -112,7 +113,34 @@ export class TickTenGame implements TickTenGameState {
         this.evaluateCountdown()
     }
 
+    private handleStateChange(state: TickTenGameState) {
+        console.log({ current: this.status, next: state.status })
+        switch (state.status) {
+            case GameStatus.TURN_STARTED:
+                if (this.status !== GameStatus.TURN_STARTED) {
+                    navigator.vibrate(200)
+                    sound_manager.stateChange()
+                }
+                break
+            case GameStatus.GRADING:
+                if (this.status !== GameStatus.GRADING) {
+                    sound_manager.stateChange()
+                }
+                break
+            default:
+                break
+        }
+    }
+
+    private moveTo(status: GameStatus) {
+        runInAction(() => {
+            this.update({ ...this, status })
+        })
+    }
+
     public update(state: TickTenGameState) {
+        this.handleStateChange(state)
+
         this.id = state.id
         this.me = state.me
         this.players = state.players
@@ -137,7 +165,7 @@ export class TickTenGame implements TickTenGameState {
         const now = Date.now()
 
         if (now >= this.countdownEndTime!) {
-            this.status = GameStatus.GRADING
+            this.moveTo(GameStatus.GRADING)
             return
         }
 
@@ -145,7 +173,7 @@ export class TickTenGame implements TickTenGameState {
 
         if (this.status === GameStatus.COUNTDOWN) {
             this.countdownTimeout = setTimeout(() => {
-                this.status = GameStatus.GRADING
+                this.moveTo(GameStatus.GRADING)
             }, diffInMs)
         }
     }
@@ -156,6 +184,7 @@ export class TickTenGame implements TickTenGameState {
                 if (response.data) {
                     this.update(response.data)
                     roomState.gateway.play()
+                    sound_manager.selectCard()
                 }
             },
         })
@@ -167,6 +196,7 @@ export class TickTenGame implements TickTenGameState {
                 if (response.data) {
                     this.update(response.data)
                     roomState.gateway.play()
+                    sound_manager.selectCard()
                 }
             },
         })
@@ -235,6 +265,7 @@ export class TickTenGame implements TickTenGameState {
                 if (response.data) {
                     this.update(response.data)
                     roomState.gateway.play()
+                    sound_manager.selectCard()
                 }
             },
         })
@@ -246,6 +277,7 @@ export class TickTenGame implements TickTenGameState {
                 if (response.data) {
                     this.update(response.data)
                     roomState.gateway.play()
+                    sound_manager.selectCard()
                 }
             },
         })

@@ -119,26 +119,21 @@ export const GradingPage = observer(() => {
                                 <LoaderOverlay />
                             )}
                         </main>
-                        {!haveIGraded && (
-                            <footer>
-                                <form
-                                    className="w-full"
-                                    onSubmit={handleSubmit}
-                                >
-                                    <MenuButtonList>
-                                        <MenuButton
-                                            color="var(--green)"
-                                            type="submit"
-                                            innerText={values.score}
-                                            innerTextColor="white"
-                                            disabled={!isValid}
-                                        >
-                                            <span>Submit grading</span>
-                                        </MenuButton>
-                                    </MenuButtonList>
-                                </form>
-                            </footer>
-                        )}
+                        <footer>
+                            <form className="w-full" onSubmit={handleSubmit}>
+                                <MenuButtonList>
+                                    <MenuButton
+                                        color="var(--green)"
+                                        type="submit"
+                                        innerText={values.score}
+                                        innerTextColor="white"
+                                        disabled={!isValid || haveIGraded}
+                                    >
+                                        <span>Submit grading</span>
+                                    </MenuButton>
+                                </MenuButtonList>
+                            </form>
+                        </footer>
                     </>
                 )
             }}

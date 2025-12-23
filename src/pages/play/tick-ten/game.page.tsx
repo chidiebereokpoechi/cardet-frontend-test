@@ -9,7 +9,6 @@ import { roomState } from '../../../modules/rooms'
 import { useTickTenGame } from '../../../util'
 import { MessagesPane, PlayMenu } from '../components'
 import { TurnPage } from './sub-pages'
-import { CountdownPage } from './sub-pages/countdown.page'
 import { GradingPage } from './sub-pages/grading.page'
 import { LeaderboardPage } from './sub-pages/leaderboard.page'
 
@@ -57,13 +56,11 @@ export const TickTenGamePage = observer(() => {
                     <Menu />
                 </CircleButton>
             </header>
-            {/* <AnimateSharedLayout> */}
             {game.status === GameStatus.TURN_STARTED && <TurnPage />}
             {game.status === GameStatus.COUNTDOWN && <TurnPage />}
             {game.status === GameStatus.GRADING && <GradingPage />}
             {game.status === GameStatus.LEADERBOARD && <LeaderboardPage />}
             {game.status === GameStatus.GAME_OVER && <LeaderboardPage />}
-            {/* </AnimateSharedLayout> */}
         </GamePageWrapper>
     )
 })

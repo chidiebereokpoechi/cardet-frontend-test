@@ -1,6 +1,6 @@
 import { map } from 'lodash'
 import { observer } from 'mobx-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { MessageCircle } from 'react-feather'
 import styled from 'styled-components'
 import {
@@ -72,9 +72,16 @@ export const RoomPage = observer(() => {
         }
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         gameManager.getGameState()
     }, [game])
+
+    useEffect(() => {
+        const sub = roomState.getUserRoom()
+        return () => {
+            sub?.unsubscribe()
+        }
+    }, [])
 
     const disableCardetGame =
         room.room_state !== RoomState.LOBBY ||

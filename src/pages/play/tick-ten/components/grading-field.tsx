@@ -1,18 +1,18 @@
 import { useFormikContext } from 'formik'
+import { trim } from 'lodash'
 import { observer } from 'mobx-react'
 import React from 'react'
-import { Check, Copy, X } from 'react-feather'
+import { Check, Copy, Minus, X } from 'react-feather'
 import { Subscription } from 'rxjs'
 import { Answer, Category, Verdict } from '../../../../modules/game/tick-ten'
 import { GradeSubmissionModel } from '../../../../modules/game/tick-ten/models'
 import { classNames, useTickTenGame } from '../../../../util'
-import { CircleButton } from '../../../../components'
-import { trim } from 'lodash'
 
 interface Props {
     category: Category
     answer: Answer
     values: GradeSubmissionModel
+    children?: React.ReactNode
 }
 
 let subscription: Subscription | undefined
@@ -24,6 +24,7 @@ const VerdictButton: React.FC<{
     icon: React.ComponentType<any>
 }> = ({ verdict, color, icon: Icon, category }) => {
     const formik = useFormikContext<GradeSubmissionModel>()
+    const isSelected = formik.values.verdicts[category] === verdict
 
     const onClick = () => {
         formik.setFieldValue(`verdicts.${category}`, verdict)
@@ -32,16 +33,14 @@ const VerdictButton: React.FC<{
     return (
         <button
             type="button"
-            className="flex items-center justify-center font-light w-8 h-8 rounded-xl"
+            className="flex bg-[#132026] items-center justify-center font-light w-10 h-10 rounded-xl border-2 hover:border-white transition-colors"
             style={{
-                backgroundColor:
-                    verdict === formik.values.verdicts[category]
-                        ? color
-                        : '#132026',
+                color: isSelected ? color : '',
+                borderColor: isSelected ? color : '#132026',
             }}
             onClick={onClick}
         >
-            <Icon size={18} />
+            <Icon size={16} />
         </button>
     )
 }
@@ -49,7 +48,7 @@ const VerdictButton: React.FC<{
 export const GradingField: React.FC<Props> = observer(
     ({ category, answer, values }) => {
         const { game } = useTickTenGame()
-        console.log(values.verdicts)
+        const isEmptyAnswer = trim(answer.word).length === 0
 
         if (!game.submissionToGrade) {
             return null
@@ -75,12 +74,10 @@ export const GradingField: React.FC<Props> = observer(
                                 {answer.word}
                             </span>
                         ) : (
-                            <span className="flex text-[var(--understated-grey)]">
-                                ___
-                            </span>
+                            <></>
                         )}
                     </div>
-                    {game.haveIGraded && (
+                    {(game.haveIGraded || isEmptyAnswer) && (
                         <div className="absolute right-0 top-0 flex items-center gap-2">
                             <span
                                 className={classNames(
@@ -96,8 +93,8 @@ export const GradingField: React.FC<Props> = observer(
                             </span>
                         </div>
                     )}
-                    {!game.haveIGraded && (
-                        <div className="grid grid-cols-3 gap-2">
+                    {!game.haveIGraded && !isEmptyAnswer && (
+                        <div className="grid grid-cols-3 gap-1">
                             <VerdictButton
                                 verdict="correct"
                                 category={category}

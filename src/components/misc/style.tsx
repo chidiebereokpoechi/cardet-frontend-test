@@ -56,6 +56,10 @@ export const Stylesheet = createGlobalStyle`
     --red: #d13e44;
     --orange: #ff9100;
 
+    --gold: var(--yellow);
+    --silver: #c0c0c0;
+    --bronze: #cd7f32;
+
     --primary: var(--yellow);
     --good: var(--green);
     --medium: var(--primary);

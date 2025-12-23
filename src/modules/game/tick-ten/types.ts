@@ -15,7 +15,7 @@ export type Letter = string
 export type Category = string
 
 export interface Submission {
-    readonly answers: Record<Category, Answer>
+    answers: Record<Category, Answer>
     readonly gradedBy?: Player
 }
 
@@ -44,7 +44,7 @@ export type Verdict = 'correct' | 'incorrect' | 'duplicate'
 
 export interface Answer {
     readonly word: string
-    readonly verdict?: Verdict
+    verdict?: Verdict
 }
 
 export interface TickTenGameState {

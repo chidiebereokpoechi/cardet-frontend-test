@@ -3,7 +3,7 @@ import { observer } from 'mobx-react'
 import React from 'react'
 import { Subscription } from 'rxjs'
 import { MenuButton, MenuButtonList } from '../../../../components'
-import { useTickTenGame } from '../../../../util'
+import { classNames, useTickTenGame } from '../../../../util'
 
 let subscription: Subscription | undefined
 
@@ -50,6 +50,15 @@ export const LeaderboardPage = observer(() => {
                                     ? '🥉'
                                     : i + 1
 
+                            const scoreColor =
+                                i === 0
+                                    ? 'var(--gold)'
+                                    : i === 1
+                                    ? 'var(--silver)'
+                                    : i === 2
+                                    ? 'var(--bronze)'
+                                    : ''
+
                             return (
                                 <div
                                     className="flex justify-between bg-[#1a2a31] px-[1.75rem] py-3"
@@ -57,13 +66,15 @@ export const LeaderboardPage = observer(() => {
                                 >
                                     <div className="flex justify-between">
                                         <div className="flex justify-center w-6 mr-2">
-                                            <span className=" inline-block">
+                                            <span className="inline-block">
                                                 {position}
                                             </span>
                                         </div>
                                         <span>{name}</span>
                                     </div>
-                                    <span>{score}</span>
+                                    <span style={{ color: scoreColor }}>
+                                        {score}
+                                    </span>
                                 </div>
                             )
                         })}

@@ -178,6 +178,27 @@ export class TickTenGame implements TickTenGameState {
         return tickTenService.getSubmissionToGrade().subscribe({
             next: (response) => {
                 if (response.data) {
+                    const submissonToGrade = response.data
+
+                    Object.entries(
+                        submissonToGrade.submissionToGrade.answers,
+                    ).forEach(([category, answer]) => {
+                        if (!answer.word || answer.word.length < 2) {
+                            answer.verdict = 'incorrect'
+                        }
+
+                        if (
+                            this.submissionToGrade?.others.some((o) => {
+                                return (
+                                    o.answers[category].word === answer.word &&
+                                    answer.word.length > 2
+                                )
+                            })
+                        ) {
+                            answer.verdict = 'duplicate'
+                        }
+                    })
+
                     this.setSubmissionToGrade(response.data)
                 }
             },

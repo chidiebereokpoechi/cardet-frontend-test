@@ -91,7 +91,7 @@ export const GradingField: React.FC<Props> = observer(
                             <></>
                         )}
                     </div>
-                    {(game.haveIGraded || isEmptyAnswer) && (
+                    {game.haveIGraded && (
                         <div className="absolute right-0 top-0 flex items-center gap-2">
                             <span
                                 className={classNames(
@@ -114,13 +114,14 @@ export const GradingField: React.FC<Props> = observer(
                                 category={category}
                                 color="var(--green)"
                                 icon={Check}
-                                disabled={isExactDuplicate}
+                                disabled={isExactDuplicate || isEmptyAnswer}
                             />
                             <VerdictButton
                                 verdict="duplicate"
                                 category={category}
                                 color="var(--blue)"
                                 icon={Copy}
+                                disabled={isEmptyAnswer}
                             />
                             <VerdictButton
                                 verdict="incorrect"

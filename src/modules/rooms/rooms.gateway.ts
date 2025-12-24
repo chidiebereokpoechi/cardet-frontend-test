@@ -26,6 +26,10 @@ export class RoomsGateway {
     }
 
     @SubscribeMessage('started-game')
+    public gameStarted() {
+        gameManager.gameStarted()
+    }
+
     @SubscribeMessage('ended-game')
     public refreshGame() {
         gameManager.getGameState()

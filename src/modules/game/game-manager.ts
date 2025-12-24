@@ -70,6 +70,10 @@ class GameManager {
         this.menu_open = false
     }
 
+    public gameStarted() {
+        sound_manager.playStateChange()
+    }
+
     public getGameState() {
         const room = roomState.room
         if (!room) return

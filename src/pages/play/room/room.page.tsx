@@ -134,13 +134,14 @@ export const RoomPage = observer(() => {
                 </div>
             </header>
             <main className="flex-1 overflow-hidden">
-                <div className="w-100 flex flex-col h-full">
+                <div className="w-100 flex items-center flex-col h-full">
                     <span>Players in the room</span>
-                    <PlayerList className="mt-3 flex flex-1 overflow-y-auto">
+                    <PlayerList className="mt-3 w-full flex flex-1 overflow-y-auto">
                         {map(room.members, (_user) => (
                             <UserPin
                                 name={_user.name}
                                 you={user.id === _user.id}
+                                isAdmin={room.creator.id === _user.id}
                                 key={_user.id}
                             />
                         ))}

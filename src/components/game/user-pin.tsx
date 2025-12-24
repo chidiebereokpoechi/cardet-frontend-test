@@ -34,15 +34,18 @@ const PictureCircle = styled.div`
 interface Props {
     name: string
     you: boolean
+    isAdmin: boolean
 }
 
-export const UserPin: React.FC<Props> = ({ name, you }) => {
+export const UserPin: React.FC<Props> = ({ name, you, isAdmin }) => {
     return (
         <Wrapper>
             <PictureCircle />
             <div className="name-section">
                 <span className={you ? 'you' : undefined}>{name}</span>
-                {you && <b className="you-indicator">🧍🏾‍♂️</b>}
+                {isAdmin && (
+                    <b className="text-[.5rem] you-indicator">(Admin)</b>
+                )}
             </div>
         </Wrapper>
     )

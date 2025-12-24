@@ -46,13 +46,18 @@ class RoomState {
         this.isSettingsPaneOpen = open
     }
 
+    public setGameConfig(config: GameConfig) {
+        if (!this.room) return
+        this.room.game_config = config
+    }
+
     public changeGameConfig(config: GameConfig) {
         if (!this.room) return
         return roomsService.changeGameConfig(config).subscribe({
             next: (response) => {
                 if (response.data) {
                     this.setRoom({ ...response.data })
-                    this.gateway.updateRoom()
+                    this.gateway.updateGameConfig(config)
                 }
             },
         })

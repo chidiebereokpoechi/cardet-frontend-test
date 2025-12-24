@@ -3,7 +3,7 @@ import { gameManager } from '../game'
 import { User } from '../user/user.entity'
 import { userState } from '../user/user.state'
 import { Message } from './message'
-import { Room } from './types'
+import { GameConfig, Room } from './types'
 import { roomState } from './room'
 
 @WsGateway('rooms')
@@ -45,9 +45,9 @@ export class RoomsGateway {
         gameManager.getGameState()
     }
 
-    @SubscribeMessage('updated-room')
-    public updatedRoom() {
-        roomState.getUserRoom()
+    @SubscribeMessage('updated-game-config')
+    public updatedGameConfig(config: GameConfig) {
+        roomState.setGameConfig(config)
     }
 
     public joinRoom(room_id: string) {
@@ -95,9 +95,8 @@ export class RoomsGateway {
         })
     }
 
-    public updateRoom() {
-        const user = userState.user as User
+    public updateGameConfig(config: GameConfig) {
         const room = roomState.room as Room
-        this.handler.emit('update-room', { room_id: room.id, user })
+        this.handler.emit('update-game-confg', { roomId: room.id, config })
     }
 }

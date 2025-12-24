@@ -31,7 +31,7 @@ const StyledForm = styled.form`
         user-select: text;
         height: 3rem;
         border: 3px solid #121518;
-        border-color: white;
+        border-color: #121518;
         color: white;
     }
 

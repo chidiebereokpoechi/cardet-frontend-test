@@ -166,7 +166,7 @@ export class TickTenGame implements TickTenGameState {
             return
         }
 
-        const diffInMs = this.countdownEndTime! - Date.now()
+        const diffInMs = this.countdownEndTime! - now
 
         if (this.status === GameStatus.COUNTDOWN) {
             this.countdownTimeout = setTimeout(() => {

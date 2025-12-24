@@ -83,7 +83,7 @@ export const SettingsPane: React.FC = observer(() => {
                                                     'flex bg-[#132026] relative items-center justify-center w-8 h-8 rounded-xl border-2 transition-colors',
                                                     value
                                                         ? 'border-[var(--green)] text-[var(--green)]'
-                                                        : 'border-[#132026] text-[white]',
+                                                        : 'border-[#132026] text-[var(--understated-grey)]',
                                                 )}
                                             >
                                                 <Field

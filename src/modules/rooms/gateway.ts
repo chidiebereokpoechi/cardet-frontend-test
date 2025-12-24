@@ -97,6 +97,6 @@ export class RoomsGateway {
 
     public updateGameConfig(config: GameConfig) {
         const room = roomState.room as Room
-        this.handler.emit('update-game-confg', { roomId: room.id, config })
+        this.handler.emit('update-game-config', { roomId: room.id, config })
     }
 }

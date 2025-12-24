@@ -131,7 +131,8 @@ export class TickTenGame implements TickTenGameState {
     }
 
     private moveTo(status: GameStatus) {
-        this.update({ ...this, status })
+        this.handleStateChange({ ...this, status })
+        this.status = status
     }
 
     public update(state: TickTenGameState) {

@@ -50,6 +50,12 @@ export interface Answer {
     confidence?: MatchConfidence
 }
 
+export interface TickTenGameConfig {
+    readonly categories: Category[]
+    readonly letters: Letter[]
+    readonly countdownInSeconds: number
+}
+
 export interface TickTenGameState {
     readonly id: string
     readonly me: Player

@@ -5,7 +5,6 @@ import { Clock } from 'react-feather'
 import { Subscription } from 'rxjs'
 import { MenuButton, MenuButtonList } from '../../../../components'
 import { GameStatus } from '../../../../modules/game/tick-ten'
-import { roomState } from '../../../../modules/rooms'
 import {
     classNames,
     useTickTenCountdown,

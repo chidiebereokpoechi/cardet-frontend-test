@@ -1,6 +1,6 @@
 import { HttpClient } from '../../util/api'
 import { GameState } from '../game/game-state'
-import { Room } from './room.entity'
+import { GameConfig, Room } from './types'
 
 class RoomsService {
     public getCurrentRoom() {
@@ -19,12 +19,8 @@ class RoomsService {
         )
     }
 
-    public changeGameConfig(room_id: string, gameConfig: object) {
-        return HttpClient.patch<object, Room>(
-            `rooms/${room_id}`,
-            gameConfig,
-            false,
-        )
+    public changeGameConfig(gameConfig: GameConfig) {
+        return HttpClient.put<object, Room>(`rooms/config`, gameConfig, false)
     }
 
     public getGameState() {

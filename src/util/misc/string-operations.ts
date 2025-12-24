@@ -58,3 +58,5 @@ export const getLevenshteinMatchConfidence = (
     if (confidence >= MatchConfidence.MEDIUM) return MatchConfidence.MEDIUM
     return MatchConfidence.LOW
 }
+
+export const ALL_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')

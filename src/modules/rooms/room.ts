@@ -4,9 +4,9 @@ import { sound_manager } from '../../util'
 import { User } from '../user/user.entity'
 import { userState } from '../user/user.state'
 import { Message } from './message'
-import { Room } from './room.entity'
-import { RoomsGateway } from './rooms.gateway'
-import { roomsService } from './rooms.service'
+import { GameConfig, Room } from './types'
+import { RoomsGateway } from './gateway'
+import { roomsService } from './service'
 
 class RoomState {
     public gateway!: RoomsGateway
@@ -19,6 +19,8 @@ class RoomState {
 
     @observable
     public messages_pane_open?: boolean
+
+    public isSettingsPaneOpen: boolean = false
 
     private constructor() {
         makeAutoObservable(this)
@@ -38,6 +40,22 @@ class RoomState {
         if (open) {
             this.unreadMessages = 0
         }
+    }
+
+    public setIsSettingsPaneOpen(open: boolean) {
+        this.isSettingsPaneOpen = open
+    }
+
+    public changeGameConfig(config: GameConfig) {
+        if (!this.room) return
+        return roomsService.changeGameConfig(config).subscribe({
+            next: (response) => {
+                if (response.data) {
+                    this.setRoom({ ...response.data })
+                    this.gateway.updateRoom()
+                }
+            },
+        })
     }
 
     public addUser(user: User) {

@@ -1,7 +1,7 @@
 import { map } from 'lodash'
 import { observer } from 'mobx-react'
 import React, { useEffect } from 'react'
-import { MessageCircle } from 'react-feather'
+import { MessageCircle, Settings } from 'react-feather'
 import styled from 'styled-components'
 import {
     CircleButton,
@@ -9,12 +9,13 @@ import {
     MenuButtonList,
     MenuPageWrapper,
     UserPin,
-} from '../../components'
-import { gameManager, GameType } from '../../modules/game'
-import { Room, RoomState, roomState } from '../../modules/rooms'
-import { User } from '../../modules/user/user.entity'
-import { userState } from '../../modules/user/user.state'
-import { MessagesPane, PlayerList } from './components'
+} from '../../../components'
+import { gameManager, GameType } from '../../../modules/game'
+import { Room, RoomState, roomState } from '../../../modules/rooms'
+import { User } from '../../../modules/user/user.entity'
+import { userState } from '../../../modules/user/user.state'
+import { MessagesPane, PlayerList } from '../components'
+import { SettingsPane } from './components'
 
 const Counter = styled.div`
     position: absolute;
@@ -94,12 +95,14 @@ export const RoomPage = observer(() => {
     return (
         <MenuPageWrapper>
             {roomState.messages_pane_open && <MessagesPane />}
+            {roomState.isSettingsPaneOpen && <SettingsPane />}
             <header>
                 <div
-                    className="w-100 align-items-center"
+                    className="w-100 align-items-center grid-cols-[48px 1fr 48px]"
                     style={{
                         display: 'grid',
-                        gridTemplateColumns: 'var(--button-height) 1fr',
+                        gridTemplateColumns:
+                            'var(--button-height) 1fr var(--button-height)',
                         gap: '2rem',
                     }}
                 >
@@ -111,7 +114,14 @@ export const RoomPage = observer(() => {
                         ) : null}
                         <MessageCircle />
                     </CircleButton>
-                    <span>{room.id}</span>
+                    <div className="flex justify-center">
+                        <span>{room.id}</span>
+                    </div>
+                    <CircleButton
+                        onClick={() => roomState.setIsSettingsPaneOpen(true)}
+                    >
+                        <Settings />
+                    </CircleButton>
                 </div>
             </header>
             <main className="flex-1 overflow-hidden">

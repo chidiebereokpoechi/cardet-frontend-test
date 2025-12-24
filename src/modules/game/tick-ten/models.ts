@@ -1,5 +1,8 @@
 import { IsObject, IsString, Length } from 'class-validator'
-import { Category, Verdict } from './types'
+import { action, observable } from 'mobx'
+import { GameConfig } from '../../rooms'
+import { Category, Letter, Verdict } from './types'
+import { ALL_LETTERS } from '../../../util/misc/string-operations'
 
 export class RecordAnswerModel {
     @IsString()
@@ -38,5 +41,42 @@ export class GradeSubmissionModel {
             }
         }
         return total
+    }
+}
+
+export class TickTenGameConfigModel {
+    @IsString({ each: true })
+    @Length(2, 10, { each: true })
+    public categories: string[]
+
+    @observable
+    public letters: Record<Letter, boolean>
+
+    public countdownInSeconds: number
+
+    constructor({ tickTenGameConfig: { ...config } }: GameConfig) {
+        this.categories = config.categories
+        this.letters = {}
+
+        ALL_LETTERS.forEach((letter) => {
+            this.letters[letter] = config.letters.includes(letter)
+        })
+
+        this.countdownInSeconds = config.countdownInSeconds
+    }
+
+    public containsLetter(letter: string) {
+        return this.letters[letter]
+    }
+
+    @action
+    public toggleLetter(letter: string) {
+        this.letters[letter] = !this.containsLetter(letter)
+    }
+
+    public get selectedLetters() {
+        return Object.entries(this.letters)
+            .filter(([_, value]) => value)
+            .map(([key]) => key)
     }
 }

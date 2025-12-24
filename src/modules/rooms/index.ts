@@ -1,3 +1,3 @@
-export * from './room.entity'
-export * from './room.state'
-export * from './rooms.service'
+export * from './room'
+export * from './service'
+export * from './types'

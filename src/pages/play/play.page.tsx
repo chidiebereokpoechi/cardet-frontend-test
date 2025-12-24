@@ -4,7 +4,7 @@ import { gameManager } from '../../modules/game'
 import { roomState } from '../../modules/rooms'
 import { CardetGamePage } from './cardet'
 import { PlayOptionsPage } from './options.page'
-import { RoomPage } from './room.page'
+import { RoomPage } from './room/room.page'
 import { TickTenGamePage } from './tick-ten'
 
 export const PlayPage = observer(() => {
@@ -12,9 +12,10 @@ export const PlayPage = observer(() => {
     const cardetGame = gameManager.cardetGame
     const tickTenGame = gameManager.tickTenGame
 
-    const Page = React.useMemo(() => (room ? RoomPage : PlayOptionsPage), [
-        room,
-    ])
+    const Page = React.useMemo(
+        () => (room ? RoomPage : PlayOptionsPage),
+        [room],
+    )
 
     if (cardetGame) return <CardetGamePage />
     if (tickTenGame) return <TickTenGamePage />

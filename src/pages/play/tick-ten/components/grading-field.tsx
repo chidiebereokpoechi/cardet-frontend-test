@@ -147,9 +147,13 @@ export const GradingField: React.FC<Props> = observer(
                                         key={i}
                                         className={classNames(
                                             'text-[.75rem] border-[2px] border-white mr-1 mb-0.5 inline-flex py-1 px-2 rounded-[10px]',
-                                            isCloseDuplicate &&
+                                            [
+                                                MatchConfidence.HIGH,
+                                                MatchConfidence.MEDIUM,
+                                            ].includes(a.confidence!) &&
                                                 '!border-[#3e8cd1] !text-[#3e8cd1]',
-                                            isExactDuplicate &&
+                                            a.confidence ===
+                                                MatchConfidence.EXACT &&
                                                 '!border-[#3e8cd1] !bg-[#3e8cd1] !text-white',
                                         )}
                                     >

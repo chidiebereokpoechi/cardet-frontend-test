@@ -183,6 +183,7 @@ export const RecordAnswerField: React.FC<Props> = ({
                                     />
                                     <button
                                         disabled={disableButton}
+                                        tabIndex={-1}
                                         className={classNames(
                                             'submit-button ml-3',
                                             disableButton

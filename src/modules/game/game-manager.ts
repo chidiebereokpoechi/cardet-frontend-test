@@ -71,6 +71,7 @@ class GameManager {
     }
 
     public gameStarted() {
+        this.getGameState()
         sound_manager.playStateChange()
     }
 

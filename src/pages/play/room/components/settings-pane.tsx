@@ -89,7 +89,7 @@ export const SettingsPane: React.FC = observer(() => {
                                                 <Field
                                                     type="checkbox"
                                                     name={fieldName}
-                                                    className="w-full h-full z-50 absolute top-0 left-0"
+                                                    className="w-full h-full z-50 absolute top-0 left-0 opacity-0 bg-transparent"
                                                     disabled={!isAdmin}
                                                 />
                                                 <span>{letter}</span>

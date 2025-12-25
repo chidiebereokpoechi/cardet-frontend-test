@@ -33,6 +33,9 @@ export class TickTenGame implements TickTenGameState {
     letters: Letter[]
 
     @observable
+    lettersRevealed: Letter[]
+
+    @observable
     categories: Category[]
 
     @observable
@@ -46,6 +49,9 @@ export class TickTenGame implements TickTenGameState {
 
     @observable
     leaderboard: Record<string, number>
+
+    @observable
+    turnScores: Record<string, number>
 
     @observable
     submissionToGrade?: SubmissionToGrade
@@ -105,11 +111,13 @@ export class TickTenGame implements TickTenGameState {
         this.me = state.me
         this.players = state.players
         this.letters = state.letters
+        this.lettersRevealed = state.lettersRevealed
         this.categories = state.categories
         this.turn = state.turn
         this.status = state.status
         this.playerSheet = state.playerSheet
         this.leaderboard = state.leaderboard
+        this.turnScores = state.turnScores
 
         this.evaluateCountdown()
     }
@@ -143,11 +151,13 @@ export class TickTenGame implements TickTenGameState {
         this.me = state.me
         this.players = state.players
         this.letters = state.letters
+        this.lettersRevealed = state.lettersRevealed
         this.categories = state.categories
         this.turn = state.turn
         this.status = state.status
         this.playerSheet = state.playerSheet
         this.leaderboard = state.leaderboard
+        this.turnScores = state.turnScores
 
         this.evaluateCountdown()
         return this

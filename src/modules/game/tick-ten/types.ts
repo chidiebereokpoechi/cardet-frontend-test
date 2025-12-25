@@ -61,11 +61,13 @@ export interface TickTenGameState {
     readonly me: Player
     readonly players: Player[]
     readonly letters: Letter[]
+    readonly lettersRevealed: Letter[]
     readonly categories: Category[]
     readonly turn: Turn
     readonly status: GameStatus
     readonly playerSheet: PlayerSheet
     readonly leaderboard: Record<string, number>
+    readonly turnScores: Record<string, number>
 }
 
 export enum GamePosition {

@@ -40,6 +40,31 @@ export const LeaderboardPage = observer(() => {
                             </span>
                         </span>
                     </div>
+                    <div
+                        className="grid gap-1 mr-4 ml-4 mb-2"
+                        style={{
+                            gridTemplateColumns:
+                                'repeat(auto-fit, minmax(2rem, 1fr))',
+                        }}
+                    >
+                        {game.letters.map((letter) => (
+                            <div
+                                key={letter}
+                                className={classNames(
+                                    'flex bg-[#132026] relative items-center justify-center w-8 h-8 rounded-xl border-2 transition-colors',
+                                    game.lettersRevealed.includes(letter)
+                                        ? 'border-[var(--green)] text-[var(--green)]'
+                                        : 'border-[#132026] text-[var(--understated-grey)]',
+                                )}
+                            >
+                                <span>
+                                    {game.lettersRevealed.includes(letter)
+                                        ? letter
+                                        : '-'}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
                     <div className="grid gap-2">
                         {map(playerScores, ({ name, id, score }, i) => {
                             const position = game.getPlayerPosition(score)
@@ -75,7 +100,7 @@ export const LeaderboardPage = observer(() => {
                                         <span>{name}</span>
                                     </div>
                                     <span style={{ color: scoreColor }}>
-                                        {score}
+                                        {score} (+{game.turnScores[id]})
                                     </span>
                                 </div>
                             )

@@ -1,5 +1,5 @@
-import { AnimateSharedLayout } from 'framer-motion'
 import { observer } from 'mobx-react'
+import Confetti from 'react-confetti'
 import React from 'react'
 import { Menu, MessageCircle } from 'react-feather'
 import styled from 'styled-components'
@@ -42,6 +42,7 @@ export const TickTenGamePage = observer(() => {
         <GamePageWrapper>
             {roomState.messages_pane_open && <MessagesPane />}
             {manager.menu_open && <PlayMenu />}
+            {game.status === GameStatus.GAME_OVER && <Confetti />}
             <header className="justify-content-between align-items-center">
                 <CircleButton onClick={openMessagesPane}>
                     {roomState.unreadMessages ? (

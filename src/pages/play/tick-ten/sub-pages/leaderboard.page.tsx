@@ -56,15 +56,6 @@ export const LeaderboardPage = observer(() => {
                                 )
                             }
 
-                            const isCurrentLetter = game.turn.letter === letter
-                            const color = isCurrentLetter
-                                ? 'var(--green)'
-                                : 'var(--understated-grey)'
-
-                            const borderColor = isCurrentLetter
-                                ? 'var(--green)'
-                                : 'var(--understated-grey)'
-
                             return (
                                 <div
                                     key={letter}
@@ -72,8 +63,8 @@ export const LeaderboardPage = observer(() => {
                                         'flex bg-[#121518] relative items-center justify-center w-8 h-8 rounded-xl border-2 transition-colors mr-1 mb-2',
                                     )}
                                     style={{
-                                        color,
-                                        borderColor,
+                                        color: 'var(--understated-grey)',
+                                        borderColor: 'var(--understated-grey)',
                                     }}
                                 >
                                     <span>{letter}</span>

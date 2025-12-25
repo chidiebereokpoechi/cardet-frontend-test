@@ -18,6 +18,7 @@ import {
     MatchConfidence,
 } from '../../../util/misc/string-operations'
 import { sound_manager } from '../../../util'
+import { gameManager } from '../game-manager'
 
 export class TickTenGame implements TickTenGameState {
     @observable
@@ -174,6 +175,7 @@ export class TickTenGame implements TickTenGameState {
 
         if (now >= this.countdownEndTime!) {
             this.moveTo(GameStatus.GRADING)
+            gameManager.getGameState()
             return
         }
 

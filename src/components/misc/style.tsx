@@ -111,4 +111,25 @@ export const Stylesheet = createGlobalStyle`
   svg {
     stroke-width: 3px;
   }
+
+  .shine {
+    mask-image: linear-gradient(
+        -75deg,
+        rgba(255, 255, 255, .65) 30%,
+        rgba(255, 255, 255, 1) 50%,
+        rgba(255, 255, 255, .65) 70%
+    );
+
+    mask-size: 200%;
+        animation: shine 2s linear infinite;
+    }
+
+    @keyframes shine {
+        from {
+            -webkit-mask-position: 150%;
+        }
+        to {
+            -webkit-mask-position: -50%;
+        }
+    }
 `

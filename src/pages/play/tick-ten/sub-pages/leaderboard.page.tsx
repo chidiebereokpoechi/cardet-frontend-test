@@ -40,34 +40,51 @@ export const LeaderboardPage = observer(() => {
                             </span>
                         </span>
                     </div>
-                    <div
-                        className="grid gap-1 mr-4 ml-4 mb-2"
-                        style={{
-                            gridTemplateColumns:
-                                'repeat(auto-fit, minmax(2rem, 1fr))',
-                        }}
-                    >
-                        {game.letters.map((letter) => (
-                            <div
-                                key={letter}
-                                className={classNames(
-                                    'flex bg-[#132026] relative items-center justify-center w-8 h-8 rounded-xl border-2 transition-colors',
-                                    game.lettersRevealed.includes(letter)
-                                        ? 'border-[var(--green)] text-[var(--green)]'
-                                        : 'border-[#132026] text-[var(--understated-grey)]',
-                                )}
-                            >
-                                <span>
-                                    {game.lettersRevealed.includes(letter)
-                                        ? letter
-                                        : '-'}
-                                </span>
-                            </div>
-                        ))}
+                    <div className="flex flex-wrap justify-center items-center mr-2 ml-4 -mt-2 mb-2">
+                        {game.letters.map((letter) => {
+                            const letterHasBeenPlayed =
+                                game.lettersRevealed.includes(letter)
+
+                            if (!letterHasBeenPlayed) {
+                                return (
+                                    <span
+                                        key={letter}
+                                        className="mr-1 mb-2 w-8 text-center text-[var(--understated-grey)]"
+                                    >
+                                        -
+                                    </span>
+                                )
+                            }
+
+                            const isCurrentLetter = game.turn.letter === letter
+                            const color = isCurrentLetter
+                                ? 'var(--green)'
+                                : 'var(--understated-grey)'
+
+                            const borderColor = isCurrentLetter
+                                ? 'var(--green)'
+                                : 'var(--understated-grey)'
+
+                            return (
+                                <div
+                                    key={letter}
+                                    className={classNames(
+                                        'flex bg-[#121518] relative items-center justify-center w-8 h-8 rounded-xl border-2 transition-colors mr-1 mb-2',
+                                    )}
+                                    style={{
+                                        color,
+                                        borderColor,
+                                    }}
+                                >
+                                    <span>{letter}</span>
+                                </div>
+                            )
+                        })}
                     </div>
                     <div className="grid gap-2">
                         {map(playerScores, ({ name, id, score }, i) => {
                             const position = game.getPlayerPosition(score)
+                            const inTop3 = position !== GamePosition.OTHER
                             const icon =
                                 position === GamePosition.FIRST
                                     ? '🏆'
@@ -86,6 +103,14 @@ export const LeaderboardPage = observer(() => {
                                     ? 'var(--bronze)'
                                     : ''
 
+                            const turnScore = game.turnScores[id]
+                            const turnScoreColor =
+                                turnScore === 40
+                                    ? 'var(--green)'
+                                    : 'var(--understated-grey)'
+
+                            const turnScoreShouldShimmer = turnScore === 40
+
                             return (
                                 <div
                                     className="flex justify-between bg-[#1a2a31] px-[1.75rem] py-3"
@@ -93,14 +118,36 @@ export const LeaderboardPage = observer(() => {
                                 >
                                     <div className="flex justify-between">
                                         <div className="flex justify-center w-6 mr-2">
-                                            <span className="inline-block">
+                                            <span
+                                                className={classNames(
+                                                    'inline-block',
+                                                    inTop3 && 'shine',
+                                                )}
+                                            >
                                                 {icon}
                                             </span>
                                         </div>
-                                        <span>{name}</span>
+                                        <span style={{ color: scoreColor }}>
+                                            {name}
+                                        </span>
                                     </div>
-                                    <span style={{ color: scoreColor }}>
-                                        {score} (+{game.turnScores[id]})
+                                    <span
+                                        className="inline-flex items-start"
+                                        style={{ color: scoreColor }}
+                                    >
+                                        <span>{score}</span>
+                                        <span
+                                            className={classNames(
+                                                'text-[.75rem] ml-1',
+                                                turnScoreShouldShimmer &&
+                                                    'shine',
+                                            )}
+                                            style={{
+                                                color: turnScoreColor,
+                                            }}
+                                        >
+                                            +{game.turnScores[id]}
+                                        </span>
                                     </span>
                                 </div>
                             )

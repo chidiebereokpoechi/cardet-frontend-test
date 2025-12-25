@@ -1,8 +1,8 @@
-import { AnimateSharedLayout } from 'framer-motion'
 import { observer } from 'mobx-react'
 import React from 'react'
 import Confetti from 'react-confetti'
 import { Menu, MessageCircle } from 'react-feather'
+import styled from 'styled-components'
 import { CircleButton, GamePageWrapper } from '../../../components'
 import { roomState } from '../../../modules/rooms'
 import { sound_manager, useCardetGame } from '../../../util'
@@ -13,7 +13,6 @@ import {
     PlayersArea,
     PlayMenu,
 } from '../components'
-import styled from 'styled-components'
 
 const Counter = styled.div`
     position: absolute;

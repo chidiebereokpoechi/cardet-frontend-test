@@ -1,7 +1,7 @@
 import { useField } from 'formik'
 import { motion } from 'framer-motion'
 import { range } from 'lodash'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 const Blinker = styled(motion.div)`
@@ -106,11 +106,20 @@ const InputWrapper = styled(motion.div)`
 
 export const RoomCodeInput = () => {
     const [field, meta, helpers] = useField({ name: ROOM_CODE_FIELD_NAME })
+    const input = useRef<HTMLInputElement | null>(null)
+
+    useEffect(() => {
+        input?.current?.focus()
+    }, [input])
+
     return (
-        <div>
-            <label htmlFor={ROOM_CODE_FIELD_NAME}>Enter Room Code</label>
+        <div className="">
+            <div className="flex justify-center">
+                <label htmlFor={ROOM_CODE_FIELD_NAME}>Enter Room Code</label>
+            </div>
             <InputWrapper>
                 <input
+                    ref={input}
                     className="input"
                     id={ROOM_CODE_FIELD_NAME}
                     maxLength={ROOM_CODE_LENGTH}

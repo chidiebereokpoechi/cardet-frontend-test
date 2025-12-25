@@ -66,23 +66,22 @@ export const JoinRoomPage = observer(() => {
                         <span>Join room</span>
                     </header>
                     <main>
-                        <form className="w-100" onSubmit={handleSubmit}>
+                        <form className="w-full" onSubmit={handleSubmit}>
                             <RoomCodeInput />
                         </form>
                     </main>
-                    {isValid && (
-                        <footer>
-                            <div className="w-100">
-                                <MenuButtonList>
-                                    <MenuButton
-                                        onClick={() => joinRoom(values.room_id)}
-                                    >
-                                        <span>Join room</span>
-                                    </MenuButton>
-                                </MenuButtonList>
-                            </div>
-                        </footer>
-                    )}
+                    <footer>
+                        <div className="w-full">
+                            <MenuButtonList>
+                                <MenuButton
+                                    onClick={() => joinRoom(values.room_id)}
+                                    disabled={!isValid}
+                                >
+                                    <span>Join room</span>
+                                </MenuButton>
+                            </MenuButtonList>
+                        </div>
+                    </footer>
                 </MenuPageWrapper>
             )}
         </Formik>

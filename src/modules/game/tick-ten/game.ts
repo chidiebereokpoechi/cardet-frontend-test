@@ -1,6 +1,7 @@
 import { computed, makeAutoObservable, observable, runInAction } from 'mobx'
 import {
     Category,
+    GamePosition,
     GameStatus,
     Letter,
     Player,
@@ -274,6 +275,23 @@ export class TickTenGame implements TickTenGameState {
                 }
             },
         })
+    }
+
+    public getPlayerPosition(playerScore: number): GamePosition {
+        const position = [...new Set(Object.values(this.leaderboard))]
+            .sort((a, b) => b - a)
+            .indexOf(playerScore)
+
+        switch (position) {
+            case 0:
+                return GamePosition.FIRST
+            case 1:
+                return GamePosition.SECOND
+            case 2:
+                return GamePosition.THIRD
+            default:
+                return GamePosition.OTHER
+        }
     }
 
     public static create(state: TickTenGameState) {

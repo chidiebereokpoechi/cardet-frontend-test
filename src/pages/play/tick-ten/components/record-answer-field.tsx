@@ -144,7 +144,7 @@ export const RecordAnswerField: React.FC<Props> = ({
                     isSubmitting,
                 }) => {
                     const isIdentical =
-                        values.answer === answer && values.answer.length > 2
+                        values.answer === answer && values.answer.length >= 2
 
                     const disableButton =
                         disabled ||

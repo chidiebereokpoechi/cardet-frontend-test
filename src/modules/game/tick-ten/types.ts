@@ -67,3 +67,10 @@ export interface TickTenGameState {
     readonly playerSheet: PlayerSheet
     readonly leaderboard: Record<string, number>
 }
+
+export enum GamePosition {
+    FIRST,
+    SECOND,
+    THIRD,
+    OTHER,
+}

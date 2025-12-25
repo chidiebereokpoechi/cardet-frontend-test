@@ -4,6 +4,7 @@ import React from 'react'
 import { Subscription } from 'rxjs'
 import { MenuButton, MenuButtonList } from '../../../../components'
 import { classNames, useTickTenGame } from '../../../../util'
+import { GamePosition } from '../../../../modules/game/tick-ten'
 
 let subscription: Subscription | undefined
 
@@ -41,21 +42,22 @@ export const LeaderboardPage = observer(() => {
                     </div>
                     <div className="grid gap-2">
                         {map(playerScores, ({ name, id, score }, i) => {
-                            const position =
-                                i === 0
+                            const position = game.getPlayerPosition(score)
+                            const icon =
+                                position === GamePosition.FIRST
                                     ? '🏆'
-                                    : i === 1
+                                    : position === GamePosition.SECOND
                                     ? '🥈'
-                                    : i === 2
+                                    : position === GamePosition.THIRD
                                     ? '🥉'
                                     : i + 1
 
                             const scoreColor =
-                                i === 0
+                                position === GamePosition.FIRST
                                     ? 'var(--gold)'
-                                    : i === 1
+                                    : position === GamePosition.SECOND
                                     ? 'var(--silver)'
-                                    : i === 2
+                                    : position === GamePosition.THIRD
                                     ? 'var(--bronze)'
                                     : ''
 
@@ -67,7 +69,7 @@ export const LeaderboardPage = observer(() => {
                                     <div className="flex justify-between">
                                         <div className="flex justify-center w-6 mr-2">
                                             <span className="inline-block">
-                                                {position}
+                                                {icon}
                                             </span>
                                         </div>
                                         <span>{name}</span>

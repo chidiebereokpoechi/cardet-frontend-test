@@ -19,6 +19,7 @@ const Wrapper = styled.div`
 
     .you-indicator {
         margin-left: 0.5rem;
+        color: var(--primary);
     }
 `
 

@@ -141,10 +141,8 @@ const CategoryInput: React.FC<{
 
 export const SettingsPane: React.FC = observer(() => {
     const room = roomState.room!
-    const user = userState.user!
-
     const gameConfig = room.game_config
-    const isAdmin = room.creator.id === user.id
+    const isAdmin = roomState.amIAdmin
     const config = new TickTenGameConfigModel(gameConfig)
 
     const saveSettings = (values: TickTenGameConfigModel) => {

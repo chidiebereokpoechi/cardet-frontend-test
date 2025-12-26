@@ -3,19 +3,16 @@ import { observer } from 'mobx-react'
 import React from 'react'
 import { Subscription } from 'rxjs'
 import { MenuButton, MenuButtonList } from '../../../../components'
-import { classNames, useTickTenGame } from '../../../../util'
 import { GamePosition } from '../../../../modules/game/tick-ten'
-import { Room, roomState } from '../../../../modules/rooms'
-import { User, userState } from '../../../../modules/user'
+import { roomState } from '../../../../modules/rooms'
+import { classNames, useTickTenGame } from '../../../../util'
 
 let subscription: Subscription | undefined
 
 export const LeaderboardPage = observer(() => {
     const { game, manager } = useTickTenGame()
-    const room = roomState.room as Room
-    const user = userState.user as User
     const isGameOver = game.isGameOver
-    const isAdmin = room.creator.id === user.id
+    const isAdmin = roomState.amIAdmin
 
     const playerScores = game.players
         .map((player) => ({
@@ -65,7 +62,7 @@ export const LeaderboardPage = observer(() => {
                                 <div
                                     key={letter}
                                     className={classNames(
-                                        'flex bg-[#121518] relative items-center justify-center w-8 h-8 rounded-xl border-2 transition-colors mr-1 mb-2',
+                                        'flex bg-[#121518] relative items-center justify-center w-8 h-8 rounded-xl transition-colors mr-1 mb-2',
                                     )}
                                     style={{
                                         color: 'var(--understated-grey)',
@@ -136,7 +133,7 @@ export const LeaderboardPage = observer(() => {
                                         <span>{score}</span>
                                         <span
                                             className={classNames(
-                                                'text-[.75rem] ml-1',
+                                                'text-[.75rem] text-left inline-block w-5 ml-1',
                                                 turnScoreShouldShimmer &&
                                                     'shine',
                                             )}
@@ -144,7 +141,7 @@ export const LeaderboardPage = observer(() => {
                                                 color: turnScoreColor,
                                             }}
                                         >
-                                            +{game.turnScores[id]}
+                                            +{turnScore}
                                         </span>
                                     </span>
                                 </div>

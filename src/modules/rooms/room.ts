@@ -10,17 +10,21 @@ import { GameConfig, Room } from './types'
 
 class RoomState {
     public gateway!: RoomsGateway
-
-    @observable
     public room: Room | null = null
-
-    @observable
     public unreadMessages: number = 0
-
-    @observable
     public messages_pane_open?: boolean
-
     public isSettingsPaneOpen: boolean = false
+
+    public get admin(): User | undefined {
+        if (!this.room) return undefined
+        return this.room.members[0]
+    }
+
+    public get amIAdmin(): boolean {
+        const user = userState.user as User
+        if (!this.room) return false
+        return this.room.members[0].id === user.id
+    }
 
     private constructor() {
         makeAutoObservable(this)

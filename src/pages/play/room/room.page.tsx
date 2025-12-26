@@ -40,8 +40,7 @@ export const RoomPage = observer(() => {
     const user = userState.user as User
     const room = roomState.room as Room
     const game = gameManager.cardetGame
-
-    const isAdmin = room.creator.id === user.id
+    const isAdmin = roomState.amIAdmin
 
     const leaveRoom = React.useCallback(() => {
         return roomState.leaveRoom()
@@ -117,7 +116,7 @@ export const RoomPage = observer(() => {
                             <UserPin
                                 name={_user.name}
                                 you={user.id === _user.id}
-                                isAdmin={room.creator.id === _user.id}
+                                isAdmin={roomState.admin?.id === _user.id}
                                 key={_user.id}
                             />
                         ))}

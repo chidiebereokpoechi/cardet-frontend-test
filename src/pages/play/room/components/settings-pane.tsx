@@ -70,17 +70,82 @@ const Wrapper = styled(MessagesPaneWrapper)`
     }
 `
 
-export const SettingsPane: React.FC = observer(() => {
-    const room = roomState.room!
-    const user = userState.user!
+const CategoryInput: React.FC<{
+    config: TickTenGameConfigModel
+    add: (category: string) => void
+}> = ({ config, add }) => {
+    const validateConfig = (values: { category: string }) => {
+        const errors: Record<string, string> = {}
+        const { category } = values
 
-    const isAdmin = room.creator.id === user.id
+        if (category.length > 0 && category.length < 3) {
+            errors.category = 'Category must be at least 3 characters long'
+        }
+
+        if (config.categories.length === 0) {
+            errors.category = 'At least one category is required'
+        }
+
+        return errors
+    }
+
     const formik = useFormik({
         initialValues: {
             category: '',
         },
-        onSubmit: () => {},
+        validate: validateConfig,
+        onSubmit: (values, helpers) => {
+            add(values.category)
+            helpers.setFieldValue('category', '')
+        },
     })
+
+    const isEmpty = formik.values.category.length === 0
+    const disableButton = isEmpty
+
+    return (
+        <form onSubmit={formik.handleSubmit}>
+            <div className="flex items-center">
+                {formik.errors.category && (
+                    <span className="text-[var(--red)] text-xs ml-1">
+                        {formik.errors.category}
+                    </span>
+                )}
+            </div>
+            <div className="flex">
+                <input
+                    type="text"
+                    className={classNames('flex-1 name-input')}
+                    placeholder="Category"
+                    name="category"
+                    onChange={formik.handleChange}
+                    value={formik.values.category}
+                />
+                <button
+                    disabled={disableButton}
+                    tabIndex={-1}
+                    className={classNames(
+                        'submit-button ml-3',
+                        disableButton
+                            ? 'cursor-not-allowed'
+                            : 'hover:scale-105 transition-transform',
+                    )}
+                    type="submit"
+                >
+                    <Plus />
+                </button>
+            </div>
+        </form>
+    )
+}
+
+export const SettingsPane: React.FC = observer(() => {
+    const room = roomState.room!
+    const user = userState.user!
+
+    const gameConfig = room.game_config
+    const isAdmin = room.creator.id === user.id
+    const config = new TickTenGameConfigModel(gameConfig)
 
     const saveSettings = (values: TickTenGameConfigModel) => {
         roomState.changeGameConfig({
@@ -98,6 +163,7 @@ export const SettingsPane: React.FC = observer(() => {
 
         if ('share' in navigator) {
             try {
+                ;(navigator as any).clipboard.writeText(roomUrl)
                 await (navigator as any).share({
                     title: 'Join My Room',
                     text: 'Click the link below to join my room!',
@@ -119,44 +185,18 @@ export const SettingsPane: React.FC = observer(() => {
         }
     }, [])
 
-    const validateConfig = (config: TickTenGameConfigModel) => {
-        const errors: Record<string, string> = {}
-        const { category } = formik.values
-
-        if (category.length > 0 && category.length < 3) {
-            errors.categories = 'Category must be at least 3 characters long'
-        }
-
-        if (config.categories.length === 0) {
-            errors.categories = 'At least one category is required'
-        }
-
-        return errors
-    }
-
     return (
         <Wrapper>
             <Formik
-                initialValues={new TickTenGameConfigModel(room.game_config)}
+                initialValues={config}
                 enableReinitialize
-                validate={validateConfig}
                 onSubmit={saveSettings}
             >
-                {({
-                    values,
-                    initialValues,
-                    isValid,
-                    errors,
-                    setFieldValue,
-                }) => {
-                    const noChanges = isEqual(initialValues, values)
-                    const isEmpty = formik.values.category.length === 0
-                    const disableButton = isEmpty
-                    const disableSubmit = !isValid || noChanges
+                {({ values, setFieldValue }) => {
+                    const noChanges = isEqual({ ...config }, { ...values })
 
                     const addCategory = (category: string) => {
                         values.addCategory(category)
-                        formik.setFieldValue('category', '')
                         setFieldValue('categories', values.categories)
                     }
 
@@ -246,51 +286,10 @@ export const SettingsPane: React.FC = observer(() => {
                                         )}
                                     </div>
                                     {isAdmin && (
-                                        <form
-                                            onSubmit={(e) => {
-                                                e.preventDefault()
-                                                addCategory(
-                                                    formik.values.category,
-                                                )
-                                            }}
-                                        >
-                                            <div className="flex items-center">
-                                                {errors.categories && (
-                                                    <span className="text-[var(--red)] text-xs ml-1">
-                                                        {errors.categories}
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <div className="flex">
-                                                <input
-                                                    type="text"
-                                                    className={classNames(
-                                                        'flex-1 name-input',
-                                                    )}
-                                                    placeholder="Category"
-                                                    name="category"
-                                                    onChange={
-                                                        formik.handleChange
-                                                    }
-                                                    value={
-                                                        formik.values.category
-                                                    }
-                                                />
-                                                <button
-                                                    disabled={disableButton}
-                                                    tabIndex={-1}
-                                                    className={classNames(
-                                                        'submit-button ml-3',
-                                                        disableButton
-                                                            ? 'cursor-not-allowed'
-                                                            : 'hover:scale-105 transition-transform',
-                                                    )}
-                                                    type="submit"
-                                                >
-                                                    <Plus />
-                                                </button>
-                                            </div>
-                                        </form>
+                                        <CategoryInput
+                                            config={values}
+                                            add={addCategory}
+                                        />
                                     )}
                                 </div>
                             </main>
@@ -307,7 +306,7 @@ export const SettingsPane: React.FC = observer(() => {
                                             <MenuButton
                                                 type="button"
                                                 color="var(--blue)"
-                                                disabled={disableSubmit}
+                                                disabled={noChanges}
                                                 onClick={() =>
                                                     saveSettings(values)
                                                 }

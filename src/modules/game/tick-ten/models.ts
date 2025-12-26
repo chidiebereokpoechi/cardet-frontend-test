@@ -49,13 +49,12 @@ export class TickTenGameConfigModel {
     @Length(2, 10, { each: true })
     public categories: Category[]
 
-    @observable
     public letters: Record<Letter, boolean>
 
     public countdownInSeconds: number
 
     constructor({ tickTenGameConfig: { ...config } }: GameConfig) {
-        this.categories = config.categories
+        this.categories = [...config.categories]
         this.letters = {}
 
         ALL_LETTERS.forEach((letter) => {
@@ -69,7 +68,6 @@ export class TickTenGameConfigModel {
         return this.letters[letter]
     }
 
-    @action
     public toggleLetter(letter: string) {
         this.letters[letter] = !this.containsLetter(letter)
     }

@@ -62,26 +62,6 @@ export const RoomPage = observer(() => {
         return roomState.setMessagesPaneOpen(true)
     }, [])
 
-    const shareRoomLink = async () => {
-        const roomUrl = '/play/join-room?code=' + room.id
-
-        if ('share' in navigator) {
-            try {
-                await (navigator as any).share({
-                    title: 'Join My Room',
-                    text: 'Click the link below to join my room!',
-                    url: roomUrl,
-                })
-            } catch (error) {
-                console.error('Error sharing room link:', error)
-            }
-        } else {
-            // Fallback: Copy to clipboard if Web Share API is unavailable
-            ;(navigator as any).clipboard.writeText(roomUrl)
-            alert('Room link copied to clipboard!')
-        }
-    }
-
     useEffect(() => {
         gameManager.getGameState()
     }, [game])
@@ -129,7 +109,7 @@ export const RoomPage = observer(() => {
                     <CircleButton
                         onClick={() => roomState.setIsSettingsPaneOpen(true)}
                     >
-                        <Menu />
+                        <MoreVertical />
                     </CircleButton>
                 </div>
             </header>
@@ -165,9 +145,6 @@ export const RoomPage = observer(() => {
                         >
                             Play Tick Ten™
                         </MenuButton>
-                        {/* <MenuButton color="#d1a33e" onClick={shareRoomLink}>
-                            Share link to join
-                        </MenuButton> */}
                         <MenuButton color="var(--red)" onClick={leaveRoom}>
                             {room.members.length === 1
                                 ? 'Close room'

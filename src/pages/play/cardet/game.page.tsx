@@ -67,11 +67,9 @@ export const CardetGamePage = observer(() => {
                 </CircleButton>
             </header>
             <main>
-                {/* <AnimateSharedLayout> */}
                 <PlayersArea />
                 <CenterCards />
                 <PlayerCards />
-                {/* </AnimateSharedLayout> */}
             </main>
         </GamePageWrapper>
     )

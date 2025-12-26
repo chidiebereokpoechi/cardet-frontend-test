@@ -35,6 +35,26 @@ export const SettingsPane: React.FC = observer(() => {
         })
     }
 
+    const shareRoomLink = async () => {
+        const roomUrl = '/play/join-room?code=' + room.id
+
+        if ('share' in navigator) {
+            try {
+                await (navigator as any).share({
+                    title: 'Join My Room',
+                    text: 'Click the link below to join my room!',
+                    url: roomUrl,
+                })
+            } catch (error) {
+                console.error('Error sharing room link:', error)
+            }
+        } else {
+            // Fallback: Copy to clipboard if Web Share API is unavailable
+            ;(navigator as any).clipboard.writeText(roomUrl)
+            alert('Room link copied to clipboard!')
+        }
+    }
+
     const menuAction = React.useCallback((handler: () => void) => {
         return () => {
             handler()
@@ -101,6 +121,12 @@ export const SettingsPane: React.FC = observer(() => {
                             <footer>
                                 <form className="w-100" onSubmit={handleSubmit}>
                                     <MenuButtonList>
+                                        <MenuButton
+                                            color="#d1a33e"
+                                            onClick={shareRoomLink}
+                                        >
+                                            <span>Share link to join</span>
+                                        </MenuButton>
                                         <MenuButton
                                             type="submit"
                                             color="var(--blue)"

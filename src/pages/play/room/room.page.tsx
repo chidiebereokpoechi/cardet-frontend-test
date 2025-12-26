@@ -41,6 +41,8 @@ export const RoomPage = observer(() => {
     const room = roomState.room as Room
     const game = gameManager.cardetGame
 
+    const isAdmin = room.creator.id === user.id
+
     const leaveRoom = React.useCallback(() => {
         return roomState.leaveRoom()
     }, [])
@@ -65,12 +67,15 @@ export const RoomPage = observer(() => {
     }, [])
 
     const disableCardetGame =
+        !isAdmin ||
         room.room_state !== RoomState.LOBBY ||
         room.members.length < 2 ||
         room.members.length > 4
 
     const disableTickTenGame =
-        room.room_state !== RoomState.LOBBY || room.members.length < 2
+        !isAdmin ||
+        room.room_state !== RoomState.LOBBY ||
+        room.members.length < 2
 
     return (
         <MenuPageWrapper>

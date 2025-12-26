@@ -5,12 +5,17 @@ import { Subscription } from 'rxjs'
 import { MenuButton, MenuButtonList } from '../../../../components'
 import { classNames, useTickTenGame } from '../../../../util'
 import { GamePosition } from '../../../../modules/game/tick-ten'
+import { Room, roomState } from '../../../../modules/rooms'
+import { User, userState } from '../../../../modules/user'
 
 let subscription: Subscription | undefined
 
 export const LeaderboardPage = observer(() => {
     const { game, manager } = useTickTenGame()
+    const room = roomState.room as Room
+    const user = userState.user as User
     const isGameOver = game.isGameOver
+    const isAdmin = room.creator.id === user.id
 
     const playerScores = game.players
         .map((player) => ({
@@ -148,27 +153,29 @@ export const LeaderboardPage = observer(() => {
                     </div>
                 </div>
             </main>
-            <footer>
-                <div className="w-full">
-                    <MenuButtonList>
-                        {isGameOver ? (
-                            <MenuButton
-                                color="var(--blue)"
-                                onClick={goBackToLobby}
-                            >
-                                <span>Go back to lobby</span>
-                            </MenuButton>
-                        ) : (
-                            <MenuButton
-                                color="var(--green)"
-                                onClick={startNextTurn}
-                            >
-                                <span>Start next round</span>
-                            </MenuButton>
-                        )}
-                    </MenuButtonList>
-                </div>
-            </footer>
+            {isAdmin && (
+                <footer>
+                    <div className="w-full">
+                        <MenuButtonList>
+                            {isGameOver ? (
+                                <MenuButton
+                                    color="var(--blue)"
+                                    onClick={goBackToLobby}
+                                >
+                                    <span>Go back to lobby</span>
+                                </MenuButton>
+                            ) : (
+                                <MenuButton
+                                    color="var(--green)"
+                                    onClick={startNextTurn}
+                                >
+                                    <span>Start next round</span>
+                                </MenuButton>
+                            )}
+                        </MenuButtonList>
+                    </div>
+                </footer>
+            )}
         </>
     )
 })

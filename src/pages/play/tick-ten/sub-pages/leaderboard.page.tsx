@@ -94,13 +94,15 @@ export const LeaderboardPage = observer(() => {
                                     ? 'var(--bronze)'
                                     : ''
 
+                            const maxTurnScore = game.categories.length * 10
                             const turnScore = game.turnScores[id]
                             const turnScoreColor =
-                                turnScore === 40
+                                turnScore === maxTurnScore
                                     ? 'var(--green)'
                                     : 'var(--understated-grey)'
 
-                            const turnScoreShouldShimmer = turnScore === 40
+                            const turnScoreShouldShimmer =
+                                turnScore === maxTurnScore
 
                             return (
                                 <div

@@ -54,7 +54,7 @@ export class TickTenGameConfigModel {
     public countdownInSeconds: number
 
     constructor({ tickTenGameConfig: { ...config } }: GameConfig) {
-        this.categories = [...config.categories]
+        this.categories = config.categories
         this.letters = {}
 
         ALL_LETTERS.forEach((letter) => {

@@ -56,7 +56,7 @@ class RoomState {
         return roomsService.changeGameConfig(config).subscribe({
             next: (response) => {
                 if (response.data) {
-                    this.setRoom({ ...response.data })
+                    this.setGameConfig({ ...response.data.game_config })
                     this.gateway.updateGameConfig(config)
                 }
             },

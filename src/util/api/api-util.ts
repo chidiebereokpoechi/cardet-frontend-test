@@ -5,50 +5,50 @@ import { HttpRequest } from './http/http-request'
 const TOKEN_KEY = 'TOKEN_KEY'
 
 export class ApiUtil {
-  public static token?: string
+    public static token?: string
 
-  public static get BASE_URL() {
-    return process.env.REACT_APP_BASE_URL
-  }
-
-  public static get bearer_token() {
-    if (!this.token) {
-      return undefined
+    public static get BASE_URL() {
+        return process.env.REACT_APP_BASE_URL
     }
 
-    return `Bearer ${this.token}`
-  }
+    public static get bearer_token() {
+        if (!this.token) {
+            return undefined
+        }
 
-  public static setToken(token?: string) {
-    if (!token) {
-      this.token = LocalStorageUtil.extract(TOKEN_KEY)
-      return
+        return `Bearer ${this.token}`
     }
 
-    this.token = token
-    LocalStorageUtil.save(TOKEN_KEY, token)
-  }
+    public static setToken(token?: string) {
+        if (!token) {
+            this.token = LocalStorageUtil.extract(TOKEN_KEY)
+            return
+        }
 
-  public static clearToken() {
-    console.log('TOKEN WAS CLEARED')
-    this.token = undefined
-    LocalStorageUtil.delete(TOKEN_KEY)
-  }
-
-  public static getUrl(endpoint: string): string {
-    return `${this.BASE_URL}/${endpoint}`
-  }
-
-  public static getRequest<RequestType = never>({
-    endpoint,
-    method,
-    body,
-  }: HttpRequest<RequestType>): AjaxRequest {
-    const headers: Record<string, string> = {
-      'content-type': 'application/json',
+        this.token = token
+        LocalStorageUtil.save(TOKEN_KEY, token)
     }
 
-    if (this.bearer_token) headers.authorization = this.bearer_token
-    return { method, url: this.getUrl(endpoint), body, headers }
-  }
+    public static clearToken() {
+        console.info('TOKEN WAS CLEARED')
+        this.token = undefined
+        LocalStorageUtil.delete(TOKEN_KEY)
+    }
+
+    public static getUrl(endpoint: string): string {
+        return `${this.BASE_URL}/${endpoint}`
+    }
+
+    public static getRequest<RequestType = never>({
+        endpoint,
+        method,
+        body,
+    }: HttpRequest<RequestType>): AjaxRequest {
+        const headers: Record<string, string> = {
+            'content-type': 'application/json',
+        }
+
+        if (this.bearer_token) headers.authorization = this.bearer_token
+        return { method, url: this.getUrl(endpoint), body, headers }
+    }
 }

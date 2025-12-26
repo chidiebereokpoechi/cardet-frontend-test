@@ -190,10 +190,19 @@ export const SettingsPane: React.FC = observer(() => {
             <Formik
                 initialValues={config}
                 enableReinitialize
-                onSubmit={saveSettings}
+                onSubmit={() => {}}
             >
                 {({ values, setFieldValue }) => {
-                    const noChanges = isEqual({ ...config }, { ...values })
+                    const noChanges = isEqual(
+                        {
+                            categories: gameConfig.tickTenGameConfig.categories,
+                            letters: gameConfig.tickTenGameConfig.letters,
+                        },
+                        {
+                            categories: values.categories,
+                            letters: values.selectedLetters,
+                        },
+                    )
 
                     const addCategory = (category: string) => {
                         values.addCategory(category)

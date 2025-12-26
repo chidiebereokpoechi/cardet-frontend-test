@@ -8,7 +8,7 @@ import {
 import { WsEventHandler } from './ws-event-handler'
 
 export const WsGateway = <
-    T extends new (...args: any[]) => { handler: WsEventHandler } & any
+    T extends new (...args: any[]) => { handler: WsEventHandler } & any,
 >(
     namespace: string,
 ) => {
@@ -18,7 +18,7 @@ export const WsGateway = <
 
             constructor(...args: any[]) {
                 super()
-                console.log(
+                console.info(
                     `New websocket handler being created for '${namespace}'`,
                 )
                 const handler = new WsEventHandler(

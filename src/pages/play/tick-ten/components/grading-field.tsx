@@ -134,10 +134,7 @@ export const GradingField: React.FC<Props> = observer(
                 </div>
                 <div className="-mb-1">
                     {otherAnswers.length ? (
-                        <details
-                            className="text-[.65rem]"
-                            open={isExactDuplicate || isCloseDuplicate}
-                        >
+                        <details className="text-[.65rem]" open>
                             <summary className="text-[#97979b]">
                                 Other answers
                             </summary>

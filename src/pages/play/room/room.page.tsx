@@ -1,15 +1,7 @@
 import { map } from 'lodash'
 import { observer } from 'mobx-react'
 import React, { useEffect } from 'react'
-import {
-    Circle,
-    CornerUpRight,
-    Menu,
-    MessageCircle,
-    MoreHorizontal,
-    MoreVertical,
-    Settings,
-} from 'react-feather'
+import { MessageCircle, MoreVertical } from 'react-feather'
 import styled from 'styled-components'
 import {
     CircleButton,
@@ -24,7 +16,6 @@ import { User } from '../../../modules/user/user.entity'
 import { userState } from '../../../modules/user/user.state'
 import { MessagesPane, PlayerList } from '../components'
 import { SettingsPane } from './components'
-import { GiCog } from 'react-icons/gi'
 
 const Counter = styled.div`
     position: absolute;

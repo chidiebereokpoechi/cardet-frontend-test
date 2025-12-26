@@ -121,100 +121,96 @@ export const RecordAnswerField: React.FC<Props> = ({
     }, [])
 
     return (
-        <React.Fragment>
-            <Formik
-                enableReinitialize
-                initialErrors={{}}
-                validate={validate}
-                validateOnChange
-                initialValues={new RecordAnswerModel(category, answer ?? '')}
-                onSubmit={(values, actions) => {
-                    actions.setSubmitting(true)
-                    debouncedSubmit(values)?.add(() => {
-                        actions.setSubmitting(false)
-                    })
-                }}
-            >
-                {({
-                    handleSubmit,
-                    initialValues,
-                    isValid,
-                    values,
-                    errors,
-                    isSubmitting,
-                }) => {
-                    const isIdentical =
-                        values.answer === answer && values.answer.length >= 2
+        <Formik
+            enableReinitialize
+            initialErrors={{}}
+            validate={validate}
+            validateOnChange
+            initialValues={new RecordAnswerModel(category, answer ?? '')}
+            onSubmit={(values, actions) => {
+                actions.setSubmitting(true)
+                debouncedSubmit(values)?.add(() => {
+                    actions.setSubmitting(false)
+                })
+            }}
+        >
+            {({
+                handleSubmit,
+                initialValues,
+                isValid,
+                values,
+                errors,
+                isSubmitting,
+            }) => {
+                const isIdentical =
+                    values.answer === answer && values.answer.length >= 2
 
-                    const disableButton =
-                        disabled ||
-                        !isValid ||
-                        isSubmitting ||
-                        values === initialValues ||
-                        isIdentical
+                const disableButton =
+                    disabled ||
+                    !isValid ||
+                    isSubmitting ||
+                    values === initialValues ||
+                    isIdentical
 
-                    return (
-                        <React.Fragment>
-                            <StyledForm onSubmit={handleSubmit}>
-                                <div className="flex items-center">
-                                    <span className="text-xs">{category}</span>
-                                    {errors.answer && (
-                                        <span className="text-[var(--red)] text-xs ml-1">
-                                            {errors.answer}
-                                        </span>
-                                    )}
-                                </div>
-                                <div className="flex">
-                                    <Field
-                                        type="text"
-                                        className={classNames(
-                                            'flex-1 name-input',
-                                            isIdentical && 'identical',
-                                        )}
-                                        name="answer"
-                                        autoCapitalize="off"
-                                        autoComplete="off"
-                                        spellCheck={false}
-                                        autoCorrect="off"
-                                        disabled={disabled}
-                                        onBlur={() => {
-                                            if (!disabled) handleSubmit()
+                return (
+                    <StyledForm onSubmit={handleSubmit}>
+                        <div className="flex items-center">
+                            <span className="text-xs">{category}</span>
+                            {errors.answer && (
+                                <span className="text-[var(--red)] text-xs ml-1">
+                                    {errors.answer}
+                                </span>
+                            )}
+                        </div>
+                        <div className="flex">
+                            <Field
+                                type="text"
+                                className={classNames(
+                                    'flex-1 name-input',
+                                    isIdentical && 'identical',
+                                )}
+                                name="answer"
+                                autoCapitalize="off"
+                                autoComplete="off"
+                                spellCheck={false}
+                                autoCorrect="off"
+                                disabled={disabled}
+                                onBlur={() => {
+                                    if (!disabled) handleSubmit()
+                                }}
+                            />
+                            <button
+                                disabled={disableButton}
+                                tabIndex={-1}
+                                className={classNames(
+                                    'submit-button ml-3',
+                                    disableButton
+                                        ? 'cursor-not-allowed'
+                                        : 'hover:scale-105 transition-transform',
+                                )}
+                                type="submit"
+                            >
+                                {isSubmitting ? (
+                                    <motion.div
+                                        initial={{ rotate: 0 }}
+                                        animate={{ rotate: 360 }}
+                                        transition={{
+                                            loop: true,
+                                            repeat: Infinity,
+                                            duration: 2,
+                                            ease: 'linear',
                                         }}
-                                    />
-                                    <button
-                                        disabled={disableButton}
-                                        tabIndex={-1}
-                                        className={classNames(
-                                            'submit-button ml-3',
-                                            disableButton
-                                                ? 'cursor-not-allowed'
-                                                : 'hover:scale-105 transition-transform',
-                                        )}
-                                        type="submit"
                                     >
-                                        {isSubmitting ? (
-                                            <motion.div
-                                                initial={{ rotate: 0 }}
-                                                animate={{ rotate: 360 }}
-                                                transition={{
-                                                    loop: true,
-                                                    repeat: Infinity,
-                                                    duration: 2,
-                                                    ease: 'linear',
-                                                }}
-                                            >
-                                                <Loader />
-                                            </motion.div>
-                                        ) : (
-                                            <Check />
-                                        )}
-                                    </button>
-                                </div>
-                            </StyledForm>
-                        </React.Fragment>
-                    )
-                }}
-            </Formik>
-        </React.Fragment>
+                                        <Loader />
+                                    </motion.div>
+                                ) : (
+                                    <Check />
+                                )}
+                            </button>
+                        </div>
+                    </StyledForm>
+                )
+            }}
+        </Formik>
     )
 }

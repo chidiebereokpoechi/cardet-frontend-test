@@ -47,7 +47,7 @@ export class GradeSubmissionModel {
 export class TickTenGameConfigModel {
     @IsString({ each: true })
     @Length(2, 10, { each: true })
-    public categories: string[]
+    public categories: Category[]
 
     @observable
     public letters: Record<Letter, boolean>
@@ -78,5 +78,17 @@ export class TickTenGameConfigModel {
         return Object.entries(this.letters)
             .filter(([_, value]) => value)
             .map(([key]) => key)
+    }
+
+    public addCategory(category: Category) {
+        const updatedCategories = new Set(this.categories)
+        updatedCategories.add(category)
+        this.categories = [...updatedCategories]
+    }
+
+    public removeCategory(category: Category) {
+        const updatedCategories = new Set(this.categories)
+        updatedCategories.delete(category)
+        this.categories = [...updatedCategories]
     }
 }

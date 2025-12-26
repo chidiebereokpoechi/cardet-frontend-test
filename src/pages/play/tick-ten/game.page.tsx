@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react'
-import Confetti from 'react-confetti'
 import React from 'react'
-import { Menu, MessageCircle } from 'react-feather'
+import Confetti from 'react-confetti'
+import { MessageCircle, MoreVertical } from 'react-feather'
 import styled from 'styled-components'
 import { CircleButton, GamePageWrapper } from '../../../components'
 import { GameStatus } from '../../../modules/game/tick-ten'
@@ -54,7 +54,7 @@ export const TickTenGamePage = observer(() => {
                 </CircleButton>
                 <span>{game.turn.letter}</span>
                 <CircleButton onClick={() => manager.openMenu()}>
-                    <Menu />
+                    <MoreVertical />
                 </CircleButton>
             </header>
             {(game.status === GameStatus.TURN_STARTED ||

@@ -1,12 +1,12 @@
 import { find, once, remove } from 'lodash'
-import { action, makeAutoObservable, observable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 import { sound_manager } from '../../util'
 import { User } from '../user/user.entity'
 import { userState } from '../user/user.state'
-import { Message } from './message'
-import { GameConfig, Room } from './types'
 import { RoomsGateway } from './gateway'
+import { Message } from './message'
 import { roomsService } from './service'
+import { GameConfig, Room } from './types'
 
 class RoomState {
     public gateway!: RoomsGateway

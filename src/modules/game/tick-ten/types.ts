@@ -38,6 +38,7 @@ export interface PlayerSheet {
 
 export interface Turn {
     readonly letter: Letter
+    readonly readyPlayers: Player[]
     readonly submissions: PlayerTurnSubmission[]
     readonly gradedSubmissions: Player[]
 }

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react'
 import React from 'react'
 import Confetti from 'react-confetti'
-import { MessageCircle, MoreVertical } from 'react-feather'
+import { MessageCircle, MoreHorizontal } from 'react-feather'
 import styled from 'styled-components'
 import { CircleButton, GamePageWrapper } from '../../../components'
 import { roomState } from '../../../modules/rooms'
@@ -63,7 +63,7 @@ export const CardetGamePage = observer(() => {
                     <MessageCircle />
                 </CircleButton>
                 <CircleButton onClick={() => manager.openMenu()}>
-                    <MoreVertical />
+                    <MoreHorizontal />
                 </CircleButton>
             </header>
             <main>

@@ -25,8 +25,18 @@ export const PlayOptionsPage = observer(() => {
     return (
         <MenuPageWrapper>
             <header>
-                <BackButton to="/" />
-                <span>Play</span>
+                <div
+                    className="grid items-center w-full gap-8 grid-cols-[var(--button-height) 1fr var(--button-height)]"
+                    style={{
+                        gridTemplateColumns:
+                            'var(--button-height) 1fr var(--button-height)',
+                    }}
+                >
+                    <BackButton to="/" />
+                    <div className="flex justify-center">
+                        <span>Play</span>
+                    </div>
+                </div>
             </header>
             <main />
             <footer>

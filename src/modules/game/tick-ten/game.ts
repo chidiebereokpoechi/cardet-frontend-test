@@ -79,6 +79,21 @@ export class TickTenGame implements TickTenGameState {
         )
     }
 
+    public get amIReady(): boolean {
+        return this.turn.readyPlayers.some((player) => player.id === this.me.id)
+    }
+
+    public get allPlayersReady(): boolean {
+        return this.turn.readyPlayers.length === this.players.length
+    }
+
+    public get amILastToReadyUp(): boolean {
+        return (
+            this.turn.readyPlayers.length === this.players.length - 1 &&
+            !this.amIReady
+        )
+    }
+
     @computed
     public get countdownStartTime(): number | undefined {
         if (this.turn.submissions.length === 0) return undefined
@@ -280,6 +295,17 @@ export class TickTenGame implements TickTenGameState {
 
     public startNextTurn() {
         return tickTenService.startNextTurn().subscribe({
+            next: (response) => {
+                if (response.data) {
+                    this.update(response.data)
+                    roomState.gateway.play()
+                }
+            },
+        })
+    }
+
+    public readyUp() {
+        return tickTenService.readyUp().subscribe({
             next: (response) => {
                 if (response.data) {
                     this.update(response.data)

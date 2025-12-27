@@ -114,8 +114,10 @@ export const RoomCodeInput = () => {
 
     return (
         <div className="">
-            <div className="flex justify-center">
-                <label htmlFor={ROOM_CODE_FIELD_NAME}>Enter Room Code</label>
+            <div className="flex justify-start mb-3">
+                <label className="!m-0" htmlFor={ROOM_CODE_FIELD_NAME}>
+                    Enter Room Code
+                </label>
             </div>
             <InputWrapper>
                 <input

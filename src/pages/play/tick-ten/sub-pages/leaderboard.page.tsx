@@ -6,6 +6,7 @@ import { MenuButton, MenuButtonList } from '../../../../components'
 import { GamePosition } from '../../../../modules/game/tick-ten'
 import { roomState } from '../../../../modules/rooms'
 import { classNames, useTickTenGame } from '../../../../util'
+import { Check } from 'react-feather'
 
 let subscription: Subscription | undefined
 
@@ -13,6 +14,9 @@ export const LeaderboardPage = observer(() => {
     const { game, manager } = useTickTenGame()
     const isGameOver = game.isGameOver
     const isAdmin = roomState.amIAdmin
+    const allPlayersReady = game.allPlayersReady
+    const amIReady = game.amIReady
+    const amILastToReadyUp = game.amILastToReadyUp
 
     const playerScores = game.players
         .map((player) => ({
@@ -24,6 +28,11 @@ export const LeaderboardPage = observer(() => {
     const startNextTurn = () => {
         subscription?.unsubscribe()
         subscription = game.startNextTurn()
+    }
+
+    const readyUp = () => {
+        subscription?.unsubscribe()
+        subscription = game.readyUp()
     }
 
     const goBackToLobby = () => {
@@ -111,7 +120,7 @@ export const LeaderboardPage = observer(() => {
                                     className="flex justify-between bg-[#1a2a31] px-[1.75rem] py-3"
                                     key={id}
                                 >
-                                    <div className="flex justify-between">
+                                    <div className="flex justify-between items-center">
                                         <div className="flex justify-center w-6 mr-2">
                                             <span
                                                 className={classNames(
@@ -125,6 +134,13 @@ export const LeaderboardPage = observer(() => {
                                         <span style={{ color: scoreColor }}>
                                             {name}
                                         </span>
+                                        {game.turn.readyPlayers.find(
+                                            (player) => player.id === id,
+                                        ) && (
+                                            <div className="ml-2 text-[var(--green)]">
+                                                <Check size={12} />
+                                            </div>
+                                        )}
                                     </div>
                                     <span
                                         className="inline-flex items-start"
@@ -133,7 +149,7 @@ export const LeaderboardPage = observer(() => {
                                         <span>{score}</span>
                                         <span
                                             className={classNames(
-                                                'text-[.75rem] text-left inline-block w-5 ml-1',
+                                                'text-[.75rem] text-right inline-block w-6',
                                                 turnScoreShouldShimmer &&
                                                     'shine',
                                             )}
@@ -150,29 +166,32 @@ export const LeaderboardPage = observer(() => {
                     </div>
                 </div>
             </main>
-            {isAdmin && (
-                <footer>
-                    <div className="w-full">
-                        <MenuButtonList>
-                            {isGameOver ? (
-                                <MenuButton
-                                    color="var(--blue)"
-                                    onClick={goBackToLobby}
-                                >
-                                    <span>Go back to lobby</span>
-                                </MenuButton>
-                            ) : (
-                                <MenuButton
-                                    color="var(--green)"
-                                    onClick={startNextTurn}
-                                >
-                                    <span>Start next round</span>
-                                </MenuButton>
-                            )}
-                        </MenuButtonList>
-                    </div>
-                </footer>
-            )}
+            <footer>
+                <div className="w-full">
+                    <MenuButtonList>
+                        {isGameOver ? (
+                            <MenuButton
+                                color="var(--blue)"
+                                onClick={goBackToLobby}
+                            >
+                                <span>Go back to lobby</span>
+                            </MenuButton>
+                        ) : (
+                            <MenuButton
+                                color="var(--green)"
+                                onClick={readyUp}
+                                disabled={amIReady}
+                            >
+                                <span>
+                                    {amILastToReadyUp
+                                        ? `Start next turn`
+                                        : `Ready up`}
+                                </span>
+                            </MenuButton>
+                        )}
+                    </MenuButtonList>
+                </div>
+            </footer>
         </>
     )
 })

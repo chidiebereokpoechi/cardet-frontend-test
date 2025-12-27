@@ -2,7 +2,7 @@ import { Field, Formik, useFormik } from 'formik'
 import { isEqual } from 'lodash'
 import { observer } from 'mobx-react'
 import React from 'react'
-import { Plus, X } from 'react-feather'
+import { Plus, Share, X } from 'react-feather'
 import styled from 'styled-components'
 import {
     CircleButton,
@@ -105,13 +105,6 @@ const CategoryInput: React.FC<{
 
     return (
         <form onSubmit={formik.handleSubmit}>
-            <div className="flex items-center">
-                {formik.errors.category && (
-                    <span className="text-[var(--red)] text-xs ml-1">
-                        {formik.errors.category}
-                    </span>
-                )}
-            </div>
             <div className="flex">
                 <input
                     type="text"
@@ -134,6 +127,13 @@ const CategoryInput: React.FC<{
                 >
                     <Plus />
                 </button>
+            </div>
+            <div className="flex items-center mt-2">
+                {formik.errors.category && (
+                    <span className="text-[var(--red)] text-xs ml-1">
+                        {formik.errors.category}
+                    </span>
+                )}
             </div>
         </form>
     )
@@ -215,16 +215,29 @@ export const SettingsPane: React.FC = observer(() => {
                     return (
                         <>
                             <header className="justify-content-end align-items-center">
-                                <CircleButton
-                                    onClick={menuAction(() =>
-                                        roomState.setIsSettingsPaneOpen(false),
-                                    )}
+                                <div
+                                    className="grid items-center w-full gap-8 grid-cols-[var(--button-height) 1fr var(--button-height)]"
+                                    style={{
+                                        gridTemplateColumns:
+                                            '1fr var(--button-height)',
+                                    }}
                                 >
-                                    <X />
-                                </CircleButton>
+                                    <div>
+                                        <span>Settings</span>
+                                    </div>
+                                    <CircleButton
+                                        onClick={menuAction(() =>
+                                            roomState.setIsSettingsPaneOpen(
+                                                false,
+                                            ),
+                                        )}
+                                    >
+                                        <X />
+                                    </CircleButton>
+                                </div>
                             </header>
                             <main className="grid grid-cols-1 gap-8">
-                                <div className="grid gap-2 place-items-center w-full">
+                                <div className="grid gap-3 place-items-center w-full">
                                     <span className="flex w-full">
                                         Selected letters
                                     </span>
@@ -262,9 +275,9 @@ export const SettingsPane: React.FC = observer(() => {
                                         })}
                                     </div>
                                 </div>
-                                <div className="grid gap-2 w-full">
+                                <div className="grid gap-3 w-full">
                                     <span>Categories</span>
-                                    <div className="flex w-full flex-wrap">
+                                    <div className="flex w-full flex-wrap -mb-2">
                                         {[...values.categories].map(
                                             (category) => (
                                                 <div
@@ -274,20 +287,22 @@ export const SettingsPane: React.FC = observer(() => {
                                                     <span className="inline-flex text-[.83rem] text-[var(--understated-grey)] px-2.5 text-white">
                                                         {category}
                                                     </span>
-                                                    {isAdmin && (
-                                                        <button
-                                                            className={classNames(
-                                                                ' bg-[#132026] h-10 rounded-lg p-2.5 !pl-0 rounded-l-[0] transition-colors flex items-center justify-center text-[var(--understated-grey)] hover:text-white',
-                                                            )}
-                                                            onClick={() =>
-                                                                removeCategory(
-                                                                    category,
-                                                                )
-                                                            }
-                                                        >
-                                                            <X size={16} />
-                                                        </button>
-                                                    )}
+                                                    {isAdmin &&
+                                                        values.categories
+                                                            .length > 1 && (
+                                                            <button
+                                                                className={classNames(
+                                                                    ' bg-[#132026] h-10 rounded-lg p-2.5 !pl-0 rounded-l-[0] transition-colors flex items-center justify-center text-[var(--understated-grey)] hover:text-white',
+                                                                )}
+                                                                onClick={() =>
+                                                                    removeCategory(
+                                                                        category,
+                                                                    )
+                                                                }
+                                                            >
+                                                                <X size={16} />
+                                                            </button>
+                                                        )}
                                                 </div>
                                             ),
                                         )}

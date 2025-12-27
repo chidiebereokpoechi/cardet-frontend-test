@@ -75,13 +75,13 @@ class GameManager {
         sound_manager.playStateChange()
     }
 
-    public getGameState() {
+    public getGameState(noisy: boolean = false) {
         const room = roomState.room
         if (!room) return
 
         sub?.unsubscribe()
 
-        sub = roomsService.getGameState().subscribe({
+        sub = roomsService.getGameState(noisy).subscribe({
             next: (response) => {
                 runInAction(() => {
                     if (!response.data.state) {

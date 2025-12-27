@@ -19,6 +19,7 @@ export const MenuPageWrapper = styled.div`
 
     header .logo {
         width: 3rem;
+        border-radius: 1rem;
     }
 
     main {

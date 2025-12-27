@@ -1,7 +1,7 @@
 import { map } from 'lodash'
 import { observer } from 'mobx-react'
 import React, { useEffect } from 'react'
-import { MessageCircle, MoreVertical } from 'react-feather'
+import { MessageCircle, MoreHorizontal } from 'react-feather'
 import styled from 'styled-components'
 import {
     CircleButton,
@@ -82,12 +82,10 @@ export const RoomPage = observer(() => {
             {roomState.isSettingsPaneOpen && <SettingsPane />}
             <header>
                 <div
-                    className="w-100 align-items-center grid-cols-[48px 1fr 48px]"
+                    className="grid items-center w-full gap-8 grid-cols-[var(--button-height) 1fr var(--button-height)]"
                     style={{
-                        display: 'grid',
                         gridTemplateColumns:
                             'var(--button-height) 1fr var(--button-height)',
-                        gap: '2rem',
                     }}
                 >
                     <CircleButton onClick={openMessagesPane}>
@@ -104,14 +102,16 @@ export const RoomPage = observer(() => {
                     <CircleButton
                         onClick={() => roomState.setIsSettingsPaneOpen(true)}
                     >
-                        <MoreVertical />
+                        <MoreHorizontal />
                     </CircleButton>
                 </div>
             </header>
             <main className="flex-1 overflow-hidden">
-                <div className="w-100 flex items-center flex-col h-full">
-                    <span>Players in the room</span>
-                    <PlayerList className="mt-3 w-full flex flex-1 overflow-y-auto">
+                <div className="w-100 flex flex-col h-full">
+                    <span className="inline-block mb-3">
+                        Players in the room
+                    </span>
+                    <PlayerList className="w-full flex flex-1 overflow-y-auto">
                         {map(room.members, (_user) => (
                             <UserPin
                                 name={_user.name}
@@ -126,20 +126,24 @@ export const RoomPage = observer(() => {
             <footer>
                 <div className="w-100">
                     <MenuButtonList>
-                        <MenuButton
-                            color="var(--green)"
-                            onClick={() => startGame(GameType.CARDET)}
-                            disabled={disableCardetGame}
-                        >
-                            Play Cardet™
-                        </MenuButton>
-                        <MenuButton
-                            color="var(--blue)"
-                            onClick={() => startGame(GameType.TICK_TEN)}
-                            disabled={disableTickTenGame}
-                        >
-                            Play Tick Ten™
-                        </MenuButton>
+                        {isAdmin && (
+                            <MenuButton
+                                color="var(--green)"
+                                onClick={() => startGame(GameType.CARDET)}
+                                disabled={disableCardetGame}
+                            >
+                                Play Cardet™
+                            </MenuButton>
+                        )}
+                        {isAdmin && (
+                            <MenuButton
+                                color="var(--blue)"
+                                onClick={() => startGame(GameType.TICK_TEN)}
+                                disabled={disableTickTenGame}
+                            >
+                                Play Tick Ten™
+                            </MenuButton>
+                        )}
                         <MenuButton color="var(--red)" onClick={leaveRoom}>
                             {room.members.length === 1
                                 ? 'Close room'

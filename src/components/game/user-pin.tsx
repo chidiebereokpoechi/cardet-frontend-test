@@ -29,7 +29,7 @@ const PictureCircle = styled.div`
     width: 2rem;
     background-size: contain;
     background-repeat: no-repeat;
-    border-radius: 1rem;
+    border-radius: 0.75rem;
 `
 
 interface Props {

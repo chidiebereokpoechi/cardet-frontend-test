@@ -38,6 +38,14 @@ class TickTenService {
             false,
         )
     }
+
+    public readyUp() {
+        return HttpClient.post<never, TickTenGameState>(
+            `tick-ten/ready-up`,
+            undefined,
+            false,
+        )
+    }
 }
 
 export const tickTenService = new TickTenService()

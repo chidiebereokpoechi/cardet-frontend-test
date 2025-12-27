@@ -23,8 +23,8 @@ class RoomsService {
         return HttpClient.put<object, Room>(`rooms/config`, gameConfig, false)
     }
 
-    public getGameState() {
-        return HttpClient.get<GameState>(`rooms/state`)
+    public getGameState(noisy: boolean = false) {
+        return HttpClient.get<GameState>(`rooms/state`, !noisy)
     }
 
     public startGame(gameType: string) {

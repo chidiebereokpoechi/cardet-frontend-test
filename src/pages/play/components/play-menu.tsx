@@ -50,7 +50,9 @@ export const PlayMenu: React.FC = observer(() => {
                             </span>
                         </MenuButton>
                         <MenuButton
-                            onClick={menuAction(() => manager.getGameState())}
+                            onClick={menuAction(() =>
+                                manager.getGameState(true),
+                            )}
                             color="#4d5f82"
                             icon={RefreshCcw}
                         >

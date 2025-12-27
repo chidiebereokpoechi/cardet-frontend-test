@@ -284,7 +284,7 @@ export const SettingsPane: React.FC = observer(() => {
                                                     key={category}
                                                     className="inline-flex flex-nowrap items-center h-10 mb-2 mr-2 bg-[#132026] rounded-lg"
                                                 >
-                                                    <span className="inline-flex text-[.83rem] text-[var(--understated-grey)] px-2.5 text-white">
+                                                    <span className="inline-flex text-[.75rem] text-[var(--understated-grey)] px-3 text-white">
                                                         {category}
                                                     </span>
                                                     {isAdmin &&

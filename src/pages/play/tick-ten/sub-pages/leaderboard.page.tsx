@@ -6,7 +6,7 @@ import { MenuButton, MenuButtonList } from '../../../../components'
 import { GamePosition } from '../../../../modules/game/tick-ten'
 import { roomState } from '../../../../modules/rooms'
 import { classNames, useTickTenGame } from '../../../../util'
-import { Check } from 'react-feather'
+import { ArrowRight, Check } from 'react-feather'
 
 let subscription: Subscription | undefined
 
@@ -181,6 +181,7 @@ export const LeaderboardPage = observer(() => {
                                 color="var(--green)"
                                 onClick={readyUp}
                                 disabled={amIReady}
+                                icon={amILastToReadyUp ? ArrowRight : Check}
                             >
                                 <span>
                                     {amILastToReadyUp

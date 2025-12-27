@@ -65,6 +65,27 @@ export const RoomPage = observer(() => {
         }
     }, [])
 
+    const shareRoomLink = async () => {
+        const roomUrl = '/play/join-room?code=' + room.id
+
+        if ('share' in navigator) {
+            try {
+                ;(navigator as any).clipboard.writeText(roomUrl)
+                await (navigator as any).share({
+                    title: 'Join My Room',
+                    text: 'Click the link below to join my room!',
+                    url: roomUrl,
+                })
+            } catch (error) {
+                console.error('Error sharing room link:', error)
+            }
+        } else {
+            // Fallback: Copy to clipboard if Web Share API is unavailable
+            ;(navigator as any).clipboard.writeText(roomUrl)
+            alert('Room link copied to clipboard!')
+        }
+    }
+
     const disableCardetGame =
         !isAdmin ||
         room.room_state !== RoomState.LOBBY ||
@@ -142,6 +163,14 @@ export const RoomPage = observer(() => {
                                 disabled={disableTickTenGame}
                             >
                                 Play Tick Ten™
+                            </MenuButton>
+                        )}
+                        {!isAdmin && (
+                            <MenuButton
+                                color="var(--yellow)"
+                                onClick={shareRoomLink}
+                            >
+                                <span>Share link to join</span>
                             </MenuButton>
                         )}
                         <MenuButton color="var(--red)" onClick={leaveRoom}>

@@ -320,7 +320,7 @@ export const SettingsPane: React.FC = observer(() => {
                                     <div className="w-100">
                                         <MenuButtonList>
                                             <MenuButton
-                                                color="#d1a33e"
+                                                color="var(--yellow)"
                                                 onClick={shareRoomLink}
                                             >
                                                 <span>Share link to join</span>
